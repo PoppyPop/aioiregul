@@ -1,7 +1,6 @@
 BeautifulSoup4
 aiohttp
 FastAPI
-aiofiles
 uvicorn
 pytest-asyncio
 pytest-xdist

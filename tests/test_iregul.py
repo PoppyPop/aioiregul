@@ -4,17 +4,17 @@ import pytest
 
 from . import CONFIGS_DIR, STATIC_DIR
 
-import src.iregul
+import src.aioiregul
 import aiohttp
 import asyncio
 
 
 @pytest.mark.asyncio
 async def test_collect():
-    opt = src.iregul.ConnectionOptions(
+    opt = src.aioiregul.ConnectionOptions(
         username='empty', password='bottle', iregul_base_url='http://localhost:8779/modules/')
     async with aiohttp.ClientSession() as session:
-        dev = src.iregul.Device(session, opt)
+        dev = src.aioiregul.Device(session, opt)
 
         res = await dev.collect()
         

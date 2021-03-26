@@ -1,4 +1,4 @@
-# IRegulScrapper
+# aioiregul
 
 ## Asynchronous library to get data from Iregul systems
 

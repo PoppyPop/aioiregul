@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1 user-scalable=no,width = 320" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+
+<link rel="stylesheet" type="text/css" href="css/i-regul-main.css"/>
+<link rel="stylesheet" type="text/css" href="css/i-regul-etat.css"/>
+<link rel="stylesheet" type="text/css" href="css/i-regul-outil-parametres.css"/>
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() { 
+	$(".BtnForm" ).click(function() {
+		$('#load').fadeIn('slow', function() {
+		});
+	});  
+		
+	$(".input_mod_red").click(function(){
+		$("input").addClass("input_mod_red").removeClass("activeField");	
+		$(this).addClass("activeField").removeClass("input_mod_red");
+	});
+	
+	$(function() {     
+		$("#soustraire").click(function() { 
+			var valeur = $('.activeField').val(); 
+			var nouvelleValeur = parseFloat(valeur) - 1;
+			$('.activeField').val(nouvelleValeur); 
+		}); 
+	}); 
+ 
+	$(function() {     
+		$("#ajouter").click(function() { 
+			var valeur = $('.activeField').val(); 
+			var nouvelleValeur = parseFloat(valeur) + 1; 
+			$('.activeField').val(nouvelleValeur); 
+			$('#quantity').attr("value",nouvelleValeur);
+		}); 
+	}); 
+
+});  
+</script>
+
+</head>
+<body>
+<div id="reg-home">
+
+<div id="load" >		<br/><br/><br/><br/><br/>		Mise à jour en cours...	</div>
+<div id="success" >		<br/><br/><br/><br/><br/>		Mise à jour reussi...	</div>
+<div id="failed" >		<br/><br/><br/><br/><br/>		Echec mise à jour...	<br/><br/>
+<div id="PictureBox_home_failed" onclick="location.href='../i-regul/index.php?';" style="cursor:pointer;"></div>
+</div>
+
+<div id="reg-setup-etat">
+    <div id="Label_etat"><a href="index.php"><strong>
+    sorties    </strong></a></div>
+   
+<form  id="formID" action="includes/processform.php" method="POST" enctype="multipart/form-data"> 
+<input id="SNiregul" name="SNiregul"  type="hidden" value="Empty" />
+<input id="Update" name="Update"  type="hidden" value="etat" />
+<input id="EtatSel" name="EtatSel"  type="hidden" value="sorties" />
+<input type="submit"  class="BtnForm"  id="Resfresh" value""/>
+</form>
+
+<form  id="formID" action="includes/processform.php" method="POST" enctype="multipart/form-data"> 
+<input id="Update" name="Update"  type="hidden" value="etat-change" />
+<input id="SNiregul" name="SNiregul"  type="hidden" value="Empty" />
+
+<div id="content_cablage"> 
+
+    <table id="tbl_etat" > 
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">1</td>
+    <td id="ali_td_tbl_etat">Compresseur</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">100</td>
+    <td id="ali_td_tbl_etat">Détendeur</td>
+    <td id="val_td_tbl_etat">
+	    1 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">0</td>
+    <td id="ali_td_tbl_etat">Distri chaud/froid</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">6</td>
+    <td id="ali_td_tbl_etat">Capteur</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">2</td>
+    <td id="ali_td_tbl_etat">Vanne inversion</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">4</td>
+    <td id="ali_td_tbl_etat">Cordon chauffant</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">101</td>
+    <td id="ali_td_tbl_etat">Vitesse capteur</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">5</td>
+    <td id="ali_td_tbl_etat">Fonction externe</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">0</td>
+    <td id="ali_td_tbl_etat">Prod chaud/froid</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">0</td>
+    <td id="ali_td_tbl_etat">Test</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">0</td>
+    <td id="ali_td_tbl_etat">Chauffage autorisé</td>
+    <td id="val_td_tbl_etat">
+	    1 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">0</td>
+    <td id="ali_td_tbl_etat">Rafraichissement autorisé</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">7</td>
+    <td id="ali_td_tbl_etat">Circulateur technique</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">3</td>
+    <td id="ali_td_tbl_etat">Appoint chauffage</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">8</td>
+    <td id="ali_td_tbl_etat">Circulateur zone 1</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">11</td>
+    <td id="ali_td_tbl_etat">Circulateur zone 2</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">0</td>
+    <td id="ali_td_tbl_etat">Pas d'alarme</td>
+    <td id="val_td_tbl_etat">
+	    1 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">0</td>
+    <td id="ali_td_tbl_etat">Vitesse compresseur</td>
+    <td id="val_td_tbl_etat">
+	    0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+</table>
+</div>  
+       
+    <div id="reg-cablage-menu"> 
+    <table width="320"  height="35" border="0" cellpadding="3">
+  		<tr>
+    		<td> <a href="index-Etat.php?Etat=sorties">sorties</a></td>
+   			 <td><a href="index-Etat.php?Etat=sondes"> sondes</a></td>
+   			 <td><a href="index-Etat.php?Etat=entrees">entrées</a></td>
+    		 <td> <a href="index-Etat.php?Etat=mesures">mesures</a></td>
+               		</tr>
+	</table>
+    </div>
+    <div id="reg-home-menu">   
+    
+ 	         <div id="PictureBox_home" onclick="location.href='../i-regul/index.php';" style="cursor:pointer;"></div>
+	</div>
+</div>
+</body>
+</html>

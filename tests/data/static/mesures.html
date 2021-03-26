@@ -1,0 +1,676 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="initial-scale=1,maximum-scale=1,minimum-scale=1 user-scalable=no,width = 320" />
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+
+<link rel="stylesheet" type="text/css" href="css/i-regul-main.css"/>
+<link rel="stylesheet" type="text/css" href="css/i-regul-etat.css"/>
+<link rel="stylesheet" type="text/css" href="css/i-regul-outil-parametres.css"/>
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() { 
+	$(".BtnForm" ).click(function() {
+		$('#load').fadeIn('slow', function() {
+		});
+	});  
+		
+	$(".input_mod_red").click(function(){
+		$("input").addClass("input_mod_red").removeClass("activeField");	
+		$(this).addClass("activeField").removeClass("input_mod_red");
+	});
+	
+	$(function() {     
+		$("#soustraire").click(function() { 
+			var valeur = $('.activeField').val(); 
+			var nouvelleValeur = parseFloat(valeur) - 1;
+			$('.activeField').val(nouvelleValeur); 
+		}); 
+	}); 
+ 
+	$(function() {     
+		$("#ajouter").click(function() { 
+			var valeur = $('.activeField').val(); 
+			var nouvelleValeur = parseFloat(valeur) + 1; 
+			$('.activeField').val(nouvelleValeur); 
+			$('#quantity').attr("value",nouvelleValeur);
+		}); 
+	}); 
+
+});  
+</script>
+
+</head>
+<body>
+<div id="reg-home">
+
+<div id="load" >		<br/><br/><br/><br/><br/>		Mise à jour en cours...	</div>
+<div id="success" >		<br/><br/><br/><br/><br/>		Mise à jour reussi...	</div>
+<div id="failed" >		<br/><br/><br/><br/><br/>		Echec mise à jour...	<br/><br/>
+<div id="PictureBox_home_failed" onclick="location.href='../i-regul/index.php?';" style="cursor:pointer;"></div>
+</div>
+
+<div id="reg-setup-etat">
+    <div id="Label_etat"><a href="index.php"><strong>
+    mesures    </strong></a></div>
+   
+<form  id="formID" action="includes/processform.php" method="POST" enctype="multipart/form-data"> 
+<input id="SNiregul" name="SNiregul"  type="hidden" value="Empty" />
+<input id="Update" name="Update"  type="hidden" value="etat" />
+<input id="EtatSel" name="EtatSel"  type="hidden" value="mesures" />
+<input type="submit"  class="BtnForm"  id="Resfresh" value""/>
+</form>
+
+<form  id="formID" action="includes/processform.php" method="POST" enctype="multipart/form-data"> 
+<input id="Update" name="Update"  type="hidden" value="etat-change" />
+<input id="SNiregul" name="SNiregul"  type="hidden" value="Empty" />
+
+<div id="content_cablage"> 
+
+    <table id="tbl_etat" > 
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">1</td>
+    <td id="ali_td_tbl_etat">Surchauffe</td>
+    <td id="val_td_tbl_etat">
+	    10.9 
+    </td>
+    <td id="unit_td_tbl_etat">
+	°    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">2</td>
+    <td id="ali_td_tbl_etat">Delta mesuré</td>
+    <td id="val_td_tbl_etat">
+	    3.9 
+    </td>
+    <td id="unit_td_tbl_etat">
+	°    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">3</td>
+    <td id="ali_td_tbl_etat">Delta maxi</td>
+    <td id="val_td_tbl_etat">
+	    16.6 
+    </td>
+    <td id="unit_td_tbl_etat">
+	°    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">4</td>
+    <td id="ali_td_tbl_etat">Delta moyen</td>
+    <td id="val_td_tbl_etat">
+	    3.9 
+    </td>
+    <td id="unit_td_tbl_etat">
+	°    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">5</td>
+    <td id="ali_td_tbl_etat">Puissance moyenne</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kW    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">6</td>
+    <td id="ali_td_tbl_etat">Puissance calorifique</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kW    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">7</td>
+    <td id="ali_td_tbl_etat">Puissance compresseur</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	W    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">8</td>
+    <td id="ali_td_tbl_etat">COP</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">11</td>
+    <td id="ali_td_tbl_etat">Delta chauffage</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	°    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">12</td>
+    <td id="ali_td_tbl_etat">Delta capteur</td>
+    <td id="val_td_tbl_etat">
+	    -0.7 
+    </td>
+    <td id="unit_td_tbl_etat">
+	°    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">15</td>
+    <td id="ali_td_tbl_etat">Puissance accessoires</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	W    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">16</td>
+    <td id="ali_td_tbl_etat">Puissance absorbée</td>
+    <td id="val_td_tbl_etat">
+	    283.6 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">17</td>
+    <td id="ali_td_tbl_etat">Puissance absorbée</td>
+    <td id="val_td_tbl_etat">
+	    2.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	MWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">19</td>
+    <td id="ali_td_tbl_etat">Nombre Démarrages</td>
+    <td id="val_td_tbl_etat">
+	    2856.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">20</td>
+    <td id="ali_td_tbl_etat">Conso divers T1</td>
+    <td id="val_td_tbl_etat">
+	    0.4 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">21</td>
+    <td id="ali_td_tbl_etat">Conso chauffage T1</td>
+    <td id="val_td_tbl_etat">
+	    12.8 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">22</td>
+    <td id="ali_td_tbl_etat">Conso Rafraichissement T1</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">25</td>
+    <td id="ali_td_tbl_etat">Conso dégivrage T1</td>
+    <td id="val_td_tbl_etat">
+	    0.1 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">26</td>
+    <td id="ali_td_tbl_etat">Conso total T1</td>
+    <td id="val_td_tbl_etat">
+	    13.3 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">27</td>
+    <td id="ali_td_tbl_etat">Conso compteur 1 T1</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">28</td>
+    <td id="ali_td_tbl_etat">Conso compteur 2 T1</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">29</td>
+    <td id="ali_td_tbl_etat">Conso compteur 3 T1</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">30</td>
+    <td id="ali_td_tbl_etat">Conso divers T2</td>
+    <td id="val_td_tbl_etat">
+	    55.1 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">31</td>
+    <td id="ali_td_tbl_etat">Conso chauffage T2</td>
+    <td id="val_td_tbl_etat">
+	    2172.7 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">32</td>
+    <td id="ali_td_tbl_etat">Conso rafraichissement T2</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">35</td>
+    <td id="ali_td_tbl_etat">Conso dégivrage T2</td>
+    <td id="val_td_tbl_etat">
+	    22.1 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">36</td>
+    <td id="ali_td_tbl_etat">Conso total T2</td>
+    <td id="val_td_tbl_etat">
+	    2249.9 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">37</td>
+    <td id="ali_td_tbl_etat">Conso compteur 1 T2</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">38</td>
+    <td id="ali_td_tbl_etat">Conso compteur 2 T2</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">39</td>
+    <td id="ali_td_tbl_etat">Conso compteur 3 T2</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">40</td>
+    <td id="ali_td_tbl_etat">Conso divers T3</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">41</td>
+    <td id="ali_td_tbl_etat">Conso chauffage T3</td>
+    <td id="val_td_tbl_etat">
+	    0.1 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">42</td>
+    <td id="ali_td_tbl_etat">Conso rafraichissement T3</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">45</td>
+    <td id="ali_td_tbl_etat">Conso dégivrage T3</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">46</td>
+    <td id="ali_td_tbl_etat">Conso total T3</td>
+    <td id="val_td_tbl_etat">
+	    0.1 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">47</td>
+    <td id="ali_td_tbl_etat">Conso compteur 1 T3</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">48</td>
+    <td id="ali_td_tbl_etat">Conso compteur 2 T3</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">49</td>
+    <td id="ali_td_tbl_etat">Conso compteur 3 T3</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	kWh    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">50</td>
+    <td id="ali_td_tbl_etat">Heures divers T1</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">51</td>
+    <td id="ali_td_tbl_etat">Heures chauffage T1</td>
+    <td id="val_td_tbl_etat">
+	    4.8 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">52</td>
+    <td id="ali_td_tbl_etat">Heures rafraichissement T1</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">55</td>
+    <td id="ali_td_tbl_etat">Heures dégivrage T1</td>
+    <td id="val_td_tbl_etat">
+	    0.1 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">56</td>
+    <td id="ali_td_tbl_etat">Heures total T1</td>
+    <td id="val_td_tbl_etat">
+	    4.8 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">57</td>
+    <td id="ali_td_tbl_etat">Heures appoint T1</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">60</td>
+    <td id="ali_td_tbl_etat">Heures divers T2</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">61</td>
+    <td id="ali_td_tbl_etat">Heures chauffage T2</td>
+    <td id="val_td_tbl_etat">
+	    1035.2 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">62</td>
+    <td id="ali_td_tbl_etat">Heures rafraichissement T2</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">65</td>
+    <td id="ali_td_tbl_etat">Heures dégivrage T2</td>
+    <td id="val_td_tbl_etat">
+	    12.8 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">66</td>
+    <td id="ali_td_tbl_etat">Heures total T2</td>
+    <td id="val_td_tbl_etat">
+	    1048.2 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">67</td>
+    <td id="ali_td_tbl_etat">Heures appoint T2</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">70</td>
+    <td id="ali_td_tbl_etat">Heures divers T3</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">71</td>
+    <td id="ali_td_tbl_etat">Heures chauffage T3</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">72</td>
+    <td id="ali_td_tbl_etat">Heures rafraichissement T3</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">75</td>
+    <td id="ali_td_tbl_etat">Heures dégivrage T3</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">76</td>
+    <td id="ali_td_tbl_etat">Heures total T3</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">77</td>
+    <td id="ali_td_tbl_etat">Heures appoint T3</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	h    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">100</td>
+    <td id="ali_td_tbl_etat">u(t)</td>
+    <td id="val_td_tbl_etat">
+	    0.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	zorg    </td>
+    </tr>
+
+<tr id="etahover">
+    <td id="id_td_tbl_etat">99</td>
+    <td id="ali_td_tbl_etat">boot</td>
+    <td id="val_td_tbl_etat">
+	    21.0 
+    </td>
+    <td id="unit_td_tbl_etat">
+	    </td>
+    </tr>
+
+</table>
+</div>  
+       
+    <div id="reg-cablage-menu"> 
+    <table width="320"  height="35" border="0" cellpadding="3">
+  		<tr>
+    		<td> <a href="index-Etat.php?Etat=sorties">sorties</a></td>
+   			 <td><a href="index-Etat.php?Etat=sondes"> sondes</a></td>
+   			 <td><a href="index-Etat.php?Etat=entrees">entrées</a></td>
+    		 <td> <a href="index-Etat.php?Etat=mesures">mesures</a></td>
+               		</tr>
+	</table>
+    </div>
+    <div id="reg-home-menu">   
+    
+ 	         <div id="PictureBox_home" onclick="location.href='../i-regul/index.php';" style="cursor:pointer;"></div>
+	</div>
+</div>
+</body>
+</html>

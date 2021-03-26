@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<head>
+    <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale2.3; user-scalable=1;" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>    
+    <link rel="stylesheet" type="text/css" href="../login/css/main.css"/>
+	<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    
+    <script type="text/javascript" src="https://code.jquery.com/jquery-latest.pack.js"></script>
+    <style>
+		label {
+			display: inline-block; width: 5em;
+		}
+		fieldset div {
+			margin-bottom: 2em;
+		}
+		fieldset .help {
+			display: inline-block;
+		}
+		.ui-tooltip {
+			width: 210px;
+		}
+	</style>
+    <script type="text/javascript">
+	$(document).ready(function() {	
+	
+	$("input").focus(function(){
+    	// Select field contents
+    	this.select();
+		});
+		
+		/*
+	 $(function() {
+		var tooltips = $( "[title]" ).tooltip();
+		$( "<button>" )
+		.text( "Show help" )
+		.button()
+		.click(function() {
+		tooltips.tooltip( "open" );
+		})
+		.insertAfter( "form" );
+	});
+	
+	*/
+	
+	});
+    </script>
+</head>
+<body>
+
+<div id="dialog"></div>
+
+
+
+<div id="reg-home">
+<div id="success" ><br/><br/><br/><br/><br/>Mise à jour reussi...</div>
+<div id="failed"  ><br/><br/><br/><br/><br/>Echec mise à jour ...<br/><br/>
+    <div id="PictureBox_home_failed" onclick="location.href='../login/main.php';" style="cursor:pointer;"></div>
+</div>
+
+<div id="PictureBox_logoff" onclick="location.href='../login/process.php';"  style="cursor:pointer;"></div>
+<div id="center_main">
+
+Bienvenue <b>Empty Bottle</b>, vous êtes connecté. <br><br>         <div id="btn_useredit" onclick="location.href='useredit.php';" style="cursor:pointer;"></div>
+         <div id="btn_i-regul" onclick="location.href='../../modules/i-regul/index.php';" style="cursor:pointer;"></div>
+
+
+
+</div>
+</body>
+</html>

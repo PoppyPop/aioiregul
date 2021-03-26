@@ -7,14 +7,14 @@
 Requires Python 3 and uses asyncio, aiohttp and BeautifulSoup4.
 
 ```python
-import iregul 
+import aioiregul 
 import aiohttp
 import asyncio
 
 async def main():
-    opt = iregul.ConnectionOptions(username='User', password='Pass')
+    opt = aioiregul.ConnectionOptions(username='User', password='Pass')
     async with aiohttp.ClientSession() as session:
-        dev = iregul.Device(session, opt)
+        dev = aioiregul.Device(session, opt)
 
         res = await dev.collect()
 

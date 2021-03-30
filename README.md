@@ -13,12 +13,12 @@ import asyncio
 
 async def main():
     opt = aioiregul.ConnectionOptions(username='User', password='Pass')
-    async with aiohttp.ClientSession() as session:
-        dev = aioiregul.Device(session, opt)
 
-        res = await dev.collect()
+    dev = aioiregul.Device(opt)
 
-        print(res)
+    res = await dev.collect()
+
+    print(res)
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())

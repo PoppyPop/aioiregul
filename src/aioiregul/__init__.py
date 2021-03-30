@@ -28,18 +28,15 @@ class IRegulData:
 class Device:
     """IRegul device reppresentation."""
 
-    aiohttp_session: aiohttp.ClientSession
     options: ConnectionOptions
     login_url: str
     iregulApiBaseUrl: str
 
     def __init__(
         self,
-        aiohttp_session: aiohttp.ClientSession,
         options: ConnectionOptions,
     ):
         """Device init."""
-        self.aiohttp_session = aiohttp_session
         self.options = options
 
         self.login_url = urljoin(
@@ -47,14 +44,14 @@ class Device:
         self.iregulApiBaseUrl = urljoin(
             self.options.iregul_base_url, 'i-regul/')
 
-    async def __connect(self) -> bool:
+    async def __connect(self, http_session: aiohttp.ClientSession) -> bool:
         payload = {
             'sublogin': '1',
             'user': self.options.username,
             'pass': self.options.password
         }
 
-        async with self.aiohttp_session.post(self.login_url, data=payload) as resp:
+        async with http_session.post(self.login_url, data=payload) as resp:
             result_text = await resp.text()
             soup_login = BeautifulSoup(result_text, 'html.parser')
             table_login = soup_login.find('div', attrs={'id': 'btn_i-regul'})
@@ -65,14 +62,14 @@ class Device:
             print('Login Ko')
             return False
 
-    async def __refresh(self) -> bool:
+    async def __refresh(self, http_session: aiohttp.ClientSession) -> bool:
         payload = {
             'SNiregul': self.options.username,
             'Update': 'etat',
             'EtatSel': '1'
         }
 
-        async with self.aiohttp_session.post(urljoin(self.iregulApiBaseUrl, 'includes/processform.php'), data=payload) as resp:
+        async with http_session.post(urljoin(self.iregulApiBaseUrl, 'includes/processform.php'), data=payload) as resp:
             # data_upd_result = await resp.text()
             # print(resp.get)
             data_upd_dict = dict(parse.parse_qsl(
@@ -86,9 +83,9 @@ class Device:
             print('Update Ok')
             return True
 
-    async def __collect(self, type: str):
+    async def __collect(self, http_session: aiohttp.ClientSession, type: str):
         # Collect data
-        async with self.aiohttp_session.get(urljoin(self.iregulApiBaseUrl, 'index-Etat.php?Etat=' + type)) as resp:
+        async with http_session.get(urljoin(self.iregulApiBaseUrl, 'index-Etat.php?Etat=' + type)) as resp:
             soup_collect = BeautifulSoup(await resp.text(), 'html.parser')
             table_collect = soup_collect.find(
                 'table', attrs={'id': 'tbl_etat'})
@@ -111,14 +108,19 @@ class Device:
 
             return result
 
+    async def authenticate(self) -> bool:
+        async with aiohttp.ClientSession() as session:
+            return await self.__connect(session)
+
     async def collect(self):
         # First Login and Refresh Datas
-        if await self.__connect() and await self.__refresh():
-            # Collect datas
-            result = {}
-            result['outputs'] = await self.__collect('sorties')
-            result['sensors'] = await self.__collect('sondes')
-            result['inputs'] = await self.__collect('entrees')
-            result['measures'] = await self.__collect('mesures')
+        async with aiohttp.ClientSession() as session:
+            if await self.__connect(session) and await self.__refresh(session):
+                # Collect datas
+                result = {}
+                result['outputs'] = await self.__collect(session, 'sorties')
+                result['sensors'] = await self.__collect(session, 'sondes')
+                result['inputs'] = await self.__collect(session, 'entrees')
+                result['measures'] = await self.__collect(session, 'mesures')
 
-            return result
+                return result

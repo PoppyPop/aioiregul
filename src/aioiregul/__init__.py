@@ -5,7 +5,9 @@ from urllib import parse
 from bs4 import BeautifulSoup
 from slugify import slugify
 from datetime import datetime, timedelta
+import logging
 
+LOGGER = logging.getLogger(__package__)
 
 @dataclass
 class ConnectionOptions:
@@ -60,10 +62,10 @@ class Device:
                 table_login = soup_login.find(
                     'div', attrs={'id': 'btn_i-regul'})
                 if table_login != None:
-                    print('Login Ok')
+                    LOGGER.debug('Login Ok')
                     return True
 
-                print('Login Ko')
+                LOGGER.error('Login Ko')
                 if (throwException):
                     raise InvalidAuth()
                 else:
@@ -71,7 +73,7 @@ class Device:
         except aiohttp.ClientConnectionError:
             raise CannotConnect()
 
-    async def __refresh(self, http_session: aiohttp.ClientSession, throwException: bool) -> bool:
+    async def __refresh(self, http_session: aiohttp.ClientSession, refreshMandatory: bool) -> bool:
         payload = {
             'SNiregul': self.options.username,
             'Update': 'etat',
@@ -85,28 +87,28 @@ class Device:
             return True
 
         if (datetime.now() - self.lastupdate < self.options.refresh_rate):
-            print('Too short, refresh not required')
+            LOGGER.info('Too short, refresh not required')
             return True
 
-        print('Last refresh: ', self.lastupdate)
+        LOGGER.info('Last refresh: ', self.lastupdate)
         self.lastupdate = datetime.now()
 
         try:
             async with http_session.post(urljoin(self.iregulApiBaseUrl, 'includes/processform.php'), data=payload) as resp:
-                # data_upd_result = await resp.text()
-                # print(resp.get)
+
                 data_upd_dict = dict(parse.parse_qsl(
                     parse.urlsplit(str(resp.url)).query))
                 data_upd_cmd = data_upd_dict.get('CMD', None)
 
                 if (data_upd_cmd == None or data_upd_cmd != 'Success'):
-                    print('Update Ko')
-                    if (throwException):
-                        raise CannotConnect()
-                    else:
+                    LOGGER.error('Update Ko')
+                    if (refreshMandatory):
                         return False
+                    else:
+                        # We don't care if it has worked or not
+                        return True
 
-                print('Update Ok')
+                LOGGER.debug('Update Ok')
                 return True
         except aiohttp.ClientConnectionError:
             raise CannotConnect()
@@ -119,7 +121,7 @@ class Device:
                 table_collect = soup_collect.find(
                     'table', attrs={'id': 'tbl_etat'})
                 results_collect = table_collect.find_all('tr')
-                print(type, '-> Number of results', len(results_collect))
+                LOGGER.debug(type, '-> Number of results', len(results_collect))
                 result = {}
 
                 for i in results_collect:
@@ -145,10 +147,10 @@ class Device:
         async with aiohttp.ClientSession() as session:
             return await self.__connect(session, False)
 
-    async def collect(self):
+    async def collect(self, refreshMandatory: bool = True):
         # First Login and Refresh Datas
         async with aiohttp.ClientSession() as session:
-            if await self.__connect(session, True) and await self.__refresh(session, True):
+            if await self.__connect(session, True) and await self.__refresh(session, refreshMandatory):
                 # Collect datas
                 result = {}
                 result['outputs'] = await self.__collect(session, 'sorties')

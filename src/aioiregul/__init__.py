@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from urllib import parse
 from bs4 import BeautifulSoup
 from slugify import slugify
+from datetime import datetime, timedelta
 
 
 @dataclass
@@ -13,7 +14,7 @@ class ConnectionOptions:
     username: str
     password: str
     iregul_base_url: str = 'https://vpn.i-regul.com/modules/'
-
+    refresh_rate: timedelta = timedelta(minutes=1)
 
 @dataclass
 class IRegulData:
@@ -31,6 +32,7 @@ class Device:
     options: ConnectionOptions
     login_url: str
     iregulApiBaseUrl: str
+    lastupdate: datetime = None
 
     def __init__(
         self,
@@ -55,7 +57,8 @@ class Device:
             async with http_session.post(self.login_url, data=payload) as resp:
                 result_text = await resp.text()
                 soup_login = BeautifulSoup(result_text, 'html.parser')
-                table_login = soup_login.find('div', attrs={'id': 'btn_i-regul'})
+                table_login = soup_login.find(
+                    'div', attrs={'id': 'btn_i-regul'})
                 if table_login != None:
                     print('Login Ok')
                     return True
@@ -68,13 +71,25 @@ class Device:
         except aiohttp.ClientConnectionError:
             raise CannotConnect()
 
-
     async def __refresh(self, http_session: aiohttp.ClientSession, throwException: bool) -> bool:
         payload = {
             'SNiregul': self.options.username,
             'Update': 'etat',
             'EtatSel': '1'
         }
+
+        # Refresh rate limit
+        if (self.lastupdate == None):
+            # First pass
+            self.lastupdate = datetime.now()
+            return True
+
+        if (datetime.now() - self.lastupdate < self.options.refresh_rate):
+            print('Too short, refresh not required')
+            return True
+
+        print('Last refresh: ', self.lastupdate)
+        self.lastupdate = datetime.now()
 
         try:
             async with http_session.post(urljoin(self.iregulApiBaseUrl, 'includes/processform.php'), data=payload) as resp:
@@ -121,7 +136,7 @@ class Device:
                     sId = slugify(sId + "-" + sAli)
 
                     result[sId] = IRegulData(sId, sAli, sVal, sUnit)
-                    
+
                 return result
         except aiohttp.ClientConnectionError:
             raise CannotConnect()
@@ -146,6 +161,7 @@ class Device:
 
 class CannotConnect(Exception):
     """Error to indicate we cannot connect."""
+
 
 class InvalidAuth(Exception):
     """Error to indicate there is invalid auth."""

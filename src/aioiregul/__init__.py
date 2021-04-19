@@ -90,7 +90,7 @@ class Device:
             LOGGER.info('Too short, refresh not required')
             return True
 
-        LOGGER.info('Last refresh: %d', self.lastupdate)
+        LOGGER.info('Last refresh: %s', self.lastupdate)
         self.lastupdate = datetime.now()
 
         try:

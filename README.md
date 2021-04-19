@@ -2,7 +2,7 @@
 
 ## Asynchronous library to get data from Iregul systems
 
-## This library is under development.
+## This library is under development
 
 Requires Python 3 and uses asyncio, aiohttp and BeautifulSoup4.
 

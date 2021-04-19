@@ -1,5 +1,6 @@
 BeautifulSoup4
 aiohttp
+python-slugify
 FastAPI
 uvicorn
 pytest-asyncio

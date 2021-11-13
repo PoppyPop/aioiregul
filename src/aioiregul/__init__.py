@@ -48,8 +48,25 @@ class Device:
         """Device init."""
         self.options = options
 
+        self.main_url = urljoin(self.options.iregul_base_url, "login/main.php")
         self.login_url = urljoin(self.options.iregul_base_url, "login/process.php")
         self.iregulApiBaseUrl = urljoin(self.options.iregul_base_url, "i-regul/")
+
+    async def __isauth(self, http_session: aiohttp.ClientSession) -> bool:
+
+        try:
+            async with http_session.get(self.main_url) as resp:
+                result_text = await resp.text()
+                soup_login = BeautifulSoup(result_text, "html.parser")
+                table_login = soup_login.find("div", attrs={"id": "btn_i-regul"})
+                if table_login is not None:
+                    LOGGER.debug("Login Ok")
+                    return True
+
+                LOGGER.error("Login Ko")
+                return False
+        except aiohttp.ClientConnectionError:
+            raise CannotConnect()
 
     async def __connect(
         self, http_session: aiohttp.ClientSession, throwException: bool
@@ -162,16 +179,21 @@ class Device:
         except aiohttp.ClientConnectionError:
             raise CannotConnect()
 
+    async def isauth(self, http_session: aiohttp.ClientSession) -> bool:
+        return await self.__isauth(http_session)
+
     async def authenticate(self, http_session: aiohttp.ClientSession) -> bool:
         return await self.__connect(http_session, False)
 
     async def collect(
         self, http_session: aiohttp.ClientSession, refreshMandatory: bool = True
     ):
+        if not await self.__isauth(http_session):
+            http_session.cookies.clear()
+            await self.__connect(http_session, True)
+
         # First Login and Refresh Datas
-        if await self.__connect(http_session, True) and await self.__refresh(
-            http_session, refreshMandatory
-        ):
+        if await self.__refresh(http_session, refreshMandatory):
             # Collect datas
             result = {}
             result["outputs"] = await self.__collect(http_session, "sorties")

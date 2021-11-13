@@ -55,11 +55,16 @@ async def mesures(Etat: str = None):
 
 @app.post("/modules/login/process.php")
 async def process():
-    return __returnfile("login.html")
+    return __returnfile("main.html")
 
 
 @app.get("/modules/login/main.php")
 async def loginmainpage():
+    return __returnfile("main.html")
+
+
+@app.get("/fail/login/main.php")
+async def failloginmainpage():
     return __returnfile("login.html")
 
 

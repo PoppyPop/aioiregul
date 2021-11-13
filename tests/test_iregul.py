@@ -37,6 +37,20 @@ async def test_isauth():
 
 
 @pytest.mark.asyncio
+async def test_notisauth():
+    opt = src.aioiregul.ConnectionOptions(
+        username="empty",
+        password="bottle",
+        iregul_base_url="http://localhost:8779/fail/",
+    )
+
+    dev = src.aioiregul.Device(opt)
+
+    async with aiohttp.ClientSession() as session:
+        assert not await dev.isauth(session)
+
+
+@pytest.mark.asyncio
 async def test_collect():
     opt = src.aioiregul.ConnectionOptions(
         username="empty",

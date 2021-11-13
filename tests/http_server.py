@@ -58,9 +58,14 @@ async def process():
     return __returnfile("login.html")
 
 
+@app.get("/modules/login/main.php")
+async def loginmainpage():
+    return __returnfile("login.html")
+
+
 def __returnfile(name: str):
     if os.path.isfile(STATIC_DIR / name):
-        with open(STATIC_DIR / name, "r") as file:
+        with open(STATIC_DIR / name, "r", encoding="utf-8") as file:
             html_content = file.read()
             return HTMLResponse(content=html_content, status_code=200)
     return StreamingResponse(

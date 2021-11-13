@@ -57,7 +57,7 @@ jobs:
 
       - name: Install Python modules
         run: |
-          pip install --constraint=.github/workflows/constraints.txt pytest pytest-asyncio pytest-xdist FastAPI uvicorn
+          pip install --constraint=.github/workflows/constraints.txt pytest pytest-asyncio pytest-xdist FastAPI uvicorn BeautifulSoup4 aiohttp python-slugify
 
       - name: Run unit tests
         run: python -m pytest --import-mode=append tests/

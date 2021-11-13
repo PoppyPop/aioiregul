@@ -63,7 +63,7 @@ class Device:
                     LOGGER.debug("Login Ok")
                     return True
 
-                LOGGER.error("Login Ko")
+                LOGGER.debug("Not Auth")
                 return False
         except aiohttp.ClientConnectionError:
             raise CannotConnect()
@@ -123,11 +123,12 @@ class Device:
                 data_upd_cmd = data_upd_dict.get("CMD", None)
 
                 if data_upd_cmd is None or data_upd_cmd != "Success":
-                    LOGGER.error("Update Ko")
                     if refreshMandatory:
+                        LOGGER.error("Update Ko")
                         return False
                     else:
                         # We don't care if it has worked or not
+                        LOGGER.debug("Update Ko")
                         return True
 
                 LOGGER.debug("Update Ok")

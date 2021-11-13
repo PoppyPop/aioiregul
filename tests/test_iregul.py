@@ -41,7 +41,7 @@ async def test_collect():
         assert len(res["sensors"]) == 15
         assert len(res["inputs"]) == 9
         assert len(res["measures"]) == 57
-        assert res["measures"]["puissance-absorba-c-e"].value == Decimal("2283.6")
+        assert res["measures"]["puissance-absorbee"].value == Decimal("2283.6")
 
 
 @pytest.mark.asyncio
@@ -68,4 +68,4 @@ async def test_update():
         assert len(res["sensors"]) == 15
         assert len(res["inputs"]) == 9
         assert len(res["measures"]) == 57
-        assert res["measures"]["puissance-absorba-c-e"].value == Decimal("2283.6")
+        assert res["measures"]["puissance-absorbee"].value == Decimal("2283.6")

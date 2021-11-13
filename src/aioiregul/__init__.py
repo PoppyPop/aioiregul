@@ -189,7 +189,7 @@ class Device:
         self, http_session: aiohttp.ClientSession, refreshMandatory: bool = True
     ):
         if not await self.__isauth(http_session):
-            http_session.cookies.clear()
+            http_session.cookie_jar.clear()
             await self.__connect(http_session, True)
 
         # First Login and Refresh Datas

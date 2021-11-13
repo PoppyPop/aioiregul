@@ -7,7 +7,7 @@
 Requires Python 3 and uses asyncio, aiohttp and BeautifulSoup4.
 
 ```python
-import aioiregul 
+import aioiregul
 import aiohttp
 import asyncio
 

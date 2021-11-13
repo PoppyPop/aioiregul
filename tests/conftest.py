@@ -1,8 +1,4 @@
 """Configuration for the pytest test suite."""
-
-import json
-import os
-import random
 import subprocess
 import sys
 import time
@@ -10,8 +6,6 @@ from pathlib import Path
 
 import pytest
 import requests
-
-from . import CONFIGS_DIR, SESSIONS_DIR
 
 
 @pytest.fixture(autouse=True)
@@ -51,11 +45,11 @@ def spawn_and_wait_server(port=8779):
         stderr=subprocess.DEVNULL,
     )
     while True:
-        if process.returncode != None and process.returncode != 0:
+        if process.returncode is not None and process.returncode != 0:
             raise Exception(process.returncode)
         try:
             requests.get(f"http://localhost:{port}/gen/1024")
-        except:
+        except Exception:
             time.sleep(0.1)
         else:
             break

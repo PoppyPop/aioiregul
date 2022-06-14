@@ -122,9 +122,7 @@ class Device:
             raise CannotConnect()
 
     async def __checkreturn(self, refreshMandatory: bool, url: str) -> bool:
-        data_upd_dict = dict(
-            parse.parse_qsl(parse.urlsplit(str(url)).query)
-        )
+        data_upd_dict = dict(parse.parse_qsl(parse.urlsplit(str(url)).query))
         data_upd_cmd = data_upd_dict.get("CMD", None)
 
         if data_upd_cmd is None or data_upd_cmd != "Success":

@@ -116,25 +116,26 @@ class Device:
             async with http_session.post(
                 urljoin(self.iregulApiBaseUrl, "includes/processform.php"), data=payload
             ) as resp:
+                return await self.__checkreturn(refreshMandatory, resp.url)
 
-                data_upd_dict = dict(
-                    parse.parse_qsl(parse.urlsplit(str(resp.url)).query)
-                )
-                data_upd_cmd = data_upd_dict.get("CMD", None)
-
-                if data_upd_cmd is None or data_upd_cmd != "Success":
-                    if refreshMandatory:
-                        LOGGER.error("Update Ko")
-                        return False
-                    else:
-                        # We don't care if it has worked or not
-                        LOGGER.debug("Update Ko")
-                        return True
-
-                LOGGER.debug("Update Ok")
-                return True
         except aiohttp.ClientConnectionError:
             raise CannotConnect()
+
+    async def __checkreturn(self, refreshMandatory: bool, url: str) -> bool:
+        data_upd_dict = dict(parse.parse_qsl(parse.urlsplit(str(url)).query))
+        data_upd_cmd = data_upd_dict.get("CMD", None)
+
+        if data_upd_cmd is None or data_upd_cmd != "Success":
+            if refreshMandatory:
+                LOGGER.error("Update Ko")
+                return False
+            else:
+                # We don't care if it has worked or not
+                LOGGER.debug("Update Ko")
+                return True
+
+        LOGGER.debug("Update Ok")
+        return True
 
     async def __collect(self, http_session: aiohttp.ClientSession, type: str):
         # Collect data
@@ -185,6 +186,18 @@ class Device:
 
     async def authenticate(self, http_session: aiohttp.ClientSession) -> bool:
         return await self.__connect(http_session, False)
+
+    async def defrost(self, http_session: aiohttp.ClientSession) -> bool:
+        if not await self.__isauth(http_session):
+            http_session.cookie_jar.clear()
+            await self.__connect(http_session, True)
+
+        payload = {"SNiregul": self.options.username, "Update": "203"}
+
+        async with http_session.post(
+            urljoin(self.iregulApiBaseUrl, "includes/processform.php"), data=payload
+        ) as resp:
+            return await self.__checkreturn(True, resp.url)
 
     async def collect(
         self, http_session: aiohttp.ClientSession, refreshMandatory: bool = True

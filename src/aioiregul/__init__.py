@@ -53,7 +53,6 @@ class Device:
         self.iregulApiBaseUrl = urljoin(self.options.iregul_base_url, "i-regul/")
 
     async def __isauth(self, http_session: aiohttp.ClientSession) -> bool:
-
         try:
             async with http_session.get(self.main_url) as resp:
                 result_text = await resp.text()
@@ -150,7 +149,6 @@ class Device:
                 result = {}
 
                 for i in results_collect:
-
                     sAli = (
                         i.find("td", attrs={"id": "ali_td_tbl_etat"}).getText().strip()
                     )

@@ -6,5 +6,5 @@ reorder-python-imports==3.10.0
 pytest==7.4.0
 pytest-asyncio==0.21.0
 pytest-xdist==3.3.1
-FastAPI==0.99.1
+FastAPI==0.100.0
 uvicorn==0.22.0

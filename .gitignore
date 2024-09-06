@@ -1,3 +1,8 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -136,3 +141,43 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+# uv
+.uv/
+uv.lock
+
+# Ruff
+.ruff_cache/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# IDE
+.idea/
+*.swp
+*.swo
+*.bak
+*.tmp
+
+# Temporary files
+*.temp
+d2utmp*
+*.old
+*.new

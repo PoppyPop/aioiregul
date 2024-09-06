@@ -1,7 +1,6 @@
 import logging
 from dataclasses import dataclass
-from datetime import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 from decimal import Decimal
 from urllib import parse
 from urllib.parse import urljoin
@@ -9,6 +8,22 @@ from urllib.parse import urljoin
 import aiohttp
 from bs4 import BeautifulSoup
 from slugify import slugify
+
+# Import decoder and mappers for public API
+from .decoder import DecodedFrame, decode_file, decode_text
+from .mappers import MappedFrame, map_frame
+from .models import (
+    AnalogSensor,
+    Configuration,
+    Input,
+    Label,
+    Measurement,
+    Memory,
+    ModbusRegister,
+    Output,
+    Parameter,
+    Zone,
+)
 
 LOGGER = logging.getLogger(__package__)
 
@@ -65,11 +80,9 @@ class Device:
                 LOGGER.debug("Not Auth")
                 return False
         except aiohttp.ClientConnectionError:
-            raise CannotConnect()
+            raise CannotConnect() from None
 
-    async def __connect(
-        self, http_session: aiohttp.ClientSession, throwException: bool
-    ) -> bool:
+    async def __connect(self, http_session: aiohttp.ClientSession, throwException: bool) -> bool:
         payload = {
             "sublogin": "1",
             "user": self.options.username,
@@ -91,11 +104,9 @@ class Device:
                 else:
                     return False
         except aiohttp.ClientConnectionError:
-            raise CannotConnect()
+            raise CannotConnect() from None
 
-    async def __refresh(
-        self, http_session: aiohttp.ClientSession, refreshMandatory: bool
-    ) -> bool:
+    async def __refresh(self, http_session: aiohttp.ClientSession, refreshMandatory: bool) -> bool:
         payload = {"SNiregul": self.options.username, "Update": "etat", "EtatSel": "1"}
 
         # Refresh rate limit
@@ -118,11 +129,11 @@ class Device:
                 return await self.__checkreturn(refreshMandatory, resp.url)
 
         except aiohttp.ClientConnectionError:
-            raise CannotConnect()
+            raise CannotConnect() from None
 
     async def __checkreturn(self, refreshMandatory: bool, url: str) -> bool:
         data_upd_dict = dict(parse.parse_qsl(parse.urlsplit(str(url)).query))
-        data_upd_cmd = data_upd_dict.get("CMD", None)
+        data_upd_cmd = data_upd_dict.get("CMD")
 
         if data_upd_cmd is None or data_upd_cmd != "Success":
             if refreshMandatory:
@@ -149,19 +160,13 @@ class Device:
                 result = {}
 
                 for i in results_collect:
-                    sAli = (
-                        i.find("td", attrs={"id": "ali_td_tbl_etat"}).getText().strip()
-                    )
+                    sAli = i.find("td", attrs={"id": "ali_td_tbl_etat"}).getText().strip()
                     sId = slugify(sAli)
 
                     # sId = i.find(
                     #    'td', attrs={'id': 'id_td_tbl_etat'}).getText().strip()
-                    sVal = Decimal(
-                        i.find("td", attrs={"id": "val_td_tbl_etat"}).getText().strip()
-                    )
-                    sUnit = (
-                        i.find("td", attrs={"id": "unit_td_tbl_etat"}).getText().strip()
-                    )
+                    sVal = Decimal(i.find("td", attrs={"id": "val_td_tbl_etat"}).getText().strip())
+                    sUnit = i.find("td", attrs={"id": "unit_td_tbl_etat"}).getText().strip()
 
                     # Transform MWH to KWh
                     if sUnit == "MWh":
@@ -177,7 +182,7 @@ class Device:
 
                 return result
         except aiohttp.ClientConnectionError:
-            raise CannotConnect()
+            raise CannotConnect() from None
 
     async def isauth(self, http_session: aiohttp.ClientSession) -> bool:
         return await self.__isauth(http_session)
@@ -197,9 +202,7 @@ class Device:
         ) as resp:
             return await self.__checkreturn(True, resp.url)
 
-    async def collect(
-        self, http_session: aiohttp.ClientSession, refreshMandatory: bool = True
-    ):
+    async def collect(self, http_session: aiohttp.ClientSession, refreshMandatory: bool = True):
         if not await self.__isauth(http_session):
             http_session.cookie_jar.clear()
             await self.__connect(http_session, True)

@@ -1,4 +1,5 @@
 """Tests for the `automateddl` module."""
+
 import asyncio
 from datetime import timedelta
 from decimal import Decimal

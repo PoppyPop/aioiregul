@@ -6,3 +6,4 @@ FastAPI
 uvicorn
 pytest-asyncio
 pytest-xdist
+pre-commit

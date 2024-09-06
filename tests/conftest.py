@@ -1,4 +1,5 @@
 """Configuration for the pytest test suite."""
+
 import subprocess
 import sys
 import time

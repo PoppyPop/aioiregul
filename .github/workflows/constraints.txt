@@ -1,4 +1,4 @@
-pip==24.2
+pip==24.3.1
 pre-commit==3.8.0
 pytest==8.3.3
 pytest-asyncio==0.24.0

@@ -3,5 +3,5 @@ pre-commit==4.2.0
 pytest==8.4.0
 pytest-asyncio==0.26.0
 pytest-xdist==3.7.0
-FastAPI==0.115.12
+FastAPI==0.115.13
 uvicorn==0.34.3

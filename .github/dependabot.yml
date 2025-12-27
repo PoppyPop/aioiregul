@@ -4,10 +4,10 @@ updates:
     directory: "/"
     schedule:
       interval: daily
-  - package-ecosystem: pip
-    directory: "/.github/workflows"
+  - package-ecosystem: "devcontainers"
+    directory: "/"
     schedule:
-      interval: daily
+      interval: weekly
   - package-ecosystem: pip
     directory: "/"
     schedule:

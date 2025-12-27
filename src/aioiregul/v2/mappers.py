@@ -27,7 +27,7 @@ from .models import (
 
 def _extract_typed_fields(
     data: dict[str, Any], typed_fields: set[str]
-) -> tuple[dict[str, Any], dict[str, Any]]:
+) -> tuple[dict[str, Any], dict[str, str]]:
     """Split data dict into typed fields and extra fields.
 
     Args:
@@ -35,15 +35,15 @@ def _extract_typed_fields(
         typed_fields: Set of field names that have typed attributes.
 
     Returns:
-        Tuple of (typed_dict, extra_dict).
+        Tuple of (typed_dict, extra_dict) where extra values are stringified.
     """
     typed: dict[str, Any] = {}
-    extra: dict[str, Any] = {}
+    extra: dict[str, str] = {}
     for k, v in data.items():
         if k in typed_fields:
             typed[k] = v
         else:
-            extra[k] = v
+            extra[k] = str(v)
     return typed, extra
 
 
@@ -201,7 +201,7 @@ def map_labels(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Label]:
         return labels
 
     for idx, fields in groups["J"].items():
-        labels.append(Label(index=idx, labels=dict(fields)))
+        labels.append(Label(index=idx, labels={k: str(v) for k, v in fields.items()}))
 
     return labels
 
@@ -287,7 +287,7 @@ def map_configuration(groups: dict[str, dict[int, dict[str, Any]]]) -> Configura
 
     # Typically there's only one config entry at index 0
     for idx, fields in groups["C"].items():
-        return Configuration(index=idx, settings=dict(fields))
+        return Configuration(index=idx, settings={k: str(v) for k, v in fields.items()})
 
     return None
 
@@ -306,7 +306,7 @@ def map_memory(groups: dict[str, dict[int, dict[str, Any]]]) -> Memory | None:
 
     # Typically there's only one memory entry at index 0
     for idx, fields in groups["mem"].items():
-        return Memory(index=idx, state=dict(fields))
+        return Memory(index=idx, state={k: str(v) for k, v in fields.items()})
 
     return None
 

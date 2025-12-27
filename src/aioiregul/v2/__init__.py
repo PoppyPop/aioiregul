@@ -11,14 +11,12 @@ Key Components:
 - Models: Strongly-typed dataclasses for protocol groups
 """
 
-from .client import IRegulClient
-from .decoder import DecodedFrame, decode_file, decode_text
-from .mappers import MappedFrame, map_frame
-from .models import (
+from ..models import (
     AnalogSensor,
     Configuration,
     Input,
     Label,
+    MappedFrame,
     Measurement,
     Memory,
     ModbusRegister,
@@ -26,6 +24,9 @@ from .models import (
     Parameter,
     Zone,
 )
+from .client import IRegulClient
+from .decoder import DecodedFrame, decode_file, decode_text
+from .mappers import map_frame
 
 __all__ = [
     "IRegulClient",

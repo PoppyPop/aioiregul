@@ -1,6 +1,6 @@
 # aioiregul
 
-[![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![Python Version](https://img.shields.io/badge/python-3.14+-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
 Asynchronous Python library to interact with IRegul systems via their undocumented API over sockets.
@@ -17,7 +17,7 @@ Asynchronous Python library to interact with IRegul systems via their undocument
 
 ## Requirements
 
-- Python 3.10 or higher
+- Python 3.14 or higher
 - aiohttp
 - BeautifulSoup4
 - python-slugify

@@ -2,12 +2,11 @@
 
 import asyncio
 from datetime import timedelta
-from decimal import Decimal
 from pathlib import Path
 
 import aiohttp
 import pytest
-import src.aioiregul
+import src.aioiregul.v1
 from aiohttp import web
 
 STATIC_DIR = Path(__file__).parent / "data" / "static"
@@ -60,104 +59,106 @@ async def mock_server():
 
 @pytest.mark.asyncio
 async def test_auth(mock_server):
-    opt = src.aioiregul.ConnectionOptions(
+    opt = src.aioiregul.v1.ConnectionOptions(
         username="empty",
         password="bottle",
         iregul_base_url=f"{mock_server}/modules/",
     )
 
-    dev = src.aioiregul.Device(opt)
-
     async with aiohttp.ClientSession() as session:
-        assert await dev.authenticate(session)
+        dev = src.aioiregul.v1.Device(opt, session)
+        assert await dev.get_data()
 
 
 @pytest.mark.asyncio
 async def test_isauth(mock_server):
-    opt = src.aioiregul.ConnectionOptions(
+    opt = src.aioiregul.v1.ConnectionOptions(
         username="empty",
         password="bottle",
         iregul_base_url=f"{mock_server}/modules/",
     )
 
-    dev = src.aioiregul.Device(opt)
-
     async with aiohttp.ClientSession() as session:
-        assert await dev.isauth(session)
+        dev = src.aioiregul.v1.Device(opt, session)
+        assert await dev.get_data()
 
 
 @pytest.mark.asyncio
 async def test_defrost(mock_server):
-    opt = src.aioiregul.ConnectionOptions(
+    opt = src.aioiregul.v1.ConnectionOptions(
         username="empty",
         password="bottle",
         iregul_base_url=f"{mock_server}/modules/",
     )
 
-    dev = src.aioiregul.Device(opt)
-
     async with aiohttp.ClientSession() as session:
-        assert await dev.defrost(session)
+        dev = src.aioiregul.v1.Device(opt, session)
+        assert await dev.defrost()
 
 
 @pytest.mark.asyncio
 async def test_notisauth(mock_server):
-    opt = src.aioiregul.ConnectionOptions(
+    opt = src.aioiregul.v1.ConnectionOptions(
         username="empty",
         password="bottle",
         iregul_base_url=f"{mock_server}/fail/",
     )
 
-    dev = src.aioiregul.Device(opt)
-
     async with aiohttp.ClientSession() as session:
-        assert not await dev.isauth(session)
+        dev = src.aioiregul.v1.Device(opt, session)
+        with pytest.raises(src.aioiregul.v1.InvalidAuth):
+            await dev.get_data()
 
 
 @pytest.mark.asyncio
 async def test_collect(mock_server):
-    opt = src.aioiregul.ConnectionOptions(
+    opt = src.aioiregul.v1.ConnectionOptions(
         username="empty",
         password="bottle",
         iregul_base_url=f"{mock_server}/modules/",
     )
 
-    dev = src.aioiregul.Device(opt)
-
     async with aiohttp.ClientSession() as session:
-        res = await dev.collect(session)
+        dev = src.aioiregul.v1.Device(opt, session)
+        res = await dev.get_data()
 
         assert res is not None
-        assert len(res) == 4
-        assert len(res["outputs"]) == 18
-        assert len(res["sensors"]) == 15
-        assert len(res["inputs"]) == 9
-        assert len(res["measures"]) == 57
-        assert res["measures"]["puissance-absorbee"].value == Decimal("2283.6")
+        assert len(res.outputs) == 18
+        assert len(res.analog_sensors) == 15
+        assert len(res.inputs) == 9
+        assert len(res.measurements) == 57
+
+        # Find the aggregated "Puissance absorbée" measurement
+        puissance_abs = next(
+            m for m in res.measurements.values() if m.alias == "Puissance absorbée"
+        )
+        assert puissance_abs.valeur == pytest.approx(2283.6)
 
 
 @pytest.mark.asyncio
 async def test_update(mock_server):
-    opt = src.aioiregul.ConnectionOptions(
+    opt = src.aioiregul.v1.ConnectionOptions(
         username="empty",
         password="bottle",
         iregul_base_url=f"{mock_server}/modules/",
         refresh_rate=timedelta(seconds=1),
     )
 
-    dev = src.aioiregul.Device(opt)
-
     async with aiohttp.ClientSession() as session:
-        res = await dev.collect(session)
+        dev = src.aioiregul.v1.Device(opt, session)
+        res = await dev.get_data()
 
         await asyncio.sleep(2)
 
-        res = await dev.collect(session)
+        res = await dev.get_data()
 
         assert res is not None
-        assert len(res) == 4
-        assert len(res["outputs"]) == 18
-        assert len(res["sensors"]) == 15
-        assert len(res["inputs"]) == 9
-        assert len(res["measures"]) == 57
-        assert res["measures"]["puissance-absorbee"].value == Decimal("2283.6")
+        assert len(res.outputs) == 18
+        assert len(res.analog_sensors) == 15
+        assert len(res.inputs) == 9
+        assert len(res.measurements) == 57
+
+        puissance_abs = next(
+            m for m in res.measurements.values() if m.alias == "Puissance absorbée"
+        )
+        assert puissance_abs.valeur == pytest.approx(2283.6)

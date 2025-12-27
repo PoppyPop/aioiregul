@@ -17,21 +17,21 @@ from pathlib import Path
 from typing import Any
 
 
-def _serialize_value(value: Any) -> Any:
+def _serialize_value(value: Any) -> Any:  # noqa: ANN401
     """Convert value to JSON-serializable format."""
     from datetime import datetime
 
     if isinstance(value, datetime):
         return value.isoformat()
-    if isinstance(value, (int | float | str | bool | type(None))):
+    if isinstance(value, int | float | str | bool | type(None)):
         return value
     if isinstance(value, dict):
-        return {k: _serialize_value(v) for k, v in value.items()}
+        return {k: _serialize_value(v) for k, v in value.items()}  # pyright: ignore[reportUnknownVariableType]
     if isinstance(value, list | tuple):
-        return [_serialize_value(v) for v in value]
+        return [_serialize_value(v) for v in value]  # pyright: ignore[reportUnknownVariableType]
     # Dataclass or object with __dict__
     if hasattr(value, "__dict__"):
-        return {k: _serialize_value(v) for k, v in value.__dict__.items()}
+        return {k: _serialize_value(v) for k, v in value.__dict__.items()}  # pyright: ignore[reportUnknownVariableType]
     return str(value)
 
 
@@ -44,8 +44,8 @@ async def decode_command(args: argparse.Namespace) -> int:
     Returns:
         Exit code (0 for success).
     """
-    from .decoder import decode_file
-    from .mappers import map_frame
+    from .v2.decoder import decode_file
+    from .v2.mappers import map_frame
 
     file_path = Path(args.file)
     if not file_path.exists():
@@ -58,17 +58,15 @@ async def decode_command(args: argparse.Namespace) -> int:
         print(f"Error decoding file: {e}", file=sys.stderr)
         return 1
 
-    if args.mapped:
-        # Map to typed dataclasses
-        mapped = map_frame(frame)
-        data = _serialize_value(mapped)
-    else:
-        # Raw decoded frame
-        data = _serialize_value(frame)
+    mapped = map_frame(frame)
 
     if args.json:
-        # JSON output
-        print(json.dumps(data, indent=2))
+        if args.mapped:
+            print(mapped.as_json(indent=2))
+        else:
+            # Raw decoded frame
+            data = _serialize_value(frame)
+            print(json.dumps(data, indent=2))
     else:
         # Human-readable summary
         print(f"File: {file_path}")
@@ -78,7 +76,6 @@ async def decode_command(args: argparse.Namespace) -> int:
         print(f"\nGroups found: {', '.join(sorted(frame.groups.keys()))}")
 
         if args.mapped:
-            mapped = map_frame(frame)
             print("\nMapped Data Summary:")
             print(f"  Zones: {len(mapped.zones)}")
             print(f"  Inputs: {len(mapped.inputs)}")
@@ -94,7 +91,7 @@ async def decode_command(args: argparse.Namespace) -> int:
             # Show sample zones
             if mapped.zones:
                 print("\nSample Zones (first 3):")
-                for zone in mapped.zones[:3]:
+                for zone in list(mapped.zones.values())[:3]:
                     print(
                         f"  Zone {zone.index} ({zone.zone_nom}): "
                         f"normal={zone.consigne_normal}°, "
@@ -105,7 +102,7 @@ async def decode_command(args: argparse.Namespace) -> int:
             # Show sample measurements
             if mapped.measurements:
                 print("\nSample Measurements (first 5):")
-                for measure in mapped.measurements[:5]:
+                for measure in list(mapped.measurements.values())[:5]:
                     print(f"  M{measure.index} ({measure.alias}): {measure.valeur} {measure.unit}")
         else:
             print("\nGroup details:")

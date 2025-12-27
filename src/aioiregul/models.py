@@ -1,14 +1,23 @@
-"""Typed dataclasses for IRegul protocol groups.
+"""Shared typed dataclasses for IRegul protocol groups.
 
 This module defines strongly-typed representations for the main data groups
 returned by the IRegul API: zones (Z), inputs (I), outputs (O), measurements (M),
-parameters (P), and labels (J).
+parameters (P), labels (J), and other supporting structures, plus MappedFrame
+and the IRegulDeviceInterface protocol for device operations.
 """
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+import json
+from dataclasses import asdict, dataclass, field
+from datetime import datetime
 from typing import Any
+
+
+def _empty_str_str_dict() -> dict[str, str]:
+    """Return an empty dict with str keys and str values for dataclass defaults."""
+
+    return {}
 
 
 @dataclass
@@ -39,7 +48,7 @@ class Zone:
     temperature_max: float | None = None
     temperature_min: float | None = None
     zone_active: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, str] = field(default_factory=_empty_str_str_dict)
 
 
 @dataclass
@@ -68,7 +77,7 @@ class Input:
     esclave: int | None = None
     min: int | None = None
     max: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, str] = field(default_factory=_empty_str_str_dict)
 
 
 @dataclass
@@ -97,7 +106,7 @@ class Output:
     esclave: int | None = None
     min: int | None = None
     max: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, str] = field(default_factory=_empty_str_str_dict)
 
 
 @dataclass
@@ -122,7 +131,7 @@ class Measurement:
     id: int | None = None
     flag: int | None = None
     type: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, str] = field(default_factory=_empty_str_str_dict)
 
 
 @dataclass
@@ -147,7 +156,7 @@ class Parameter:
     max: float
     pas: float
     id: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, str] = field(default_factory=_empty_str_str_dict)
 
 
 @dataclass
@@ -164,7 +173,7 @@ class Label:
     """
 
     index: int
-    labels: dict[str, str] = field(default_factory=dict)
+    labels: dict[str, str] = field(default_factory=_empty_str_str_dict)
 
 
 @dataclass
@@ -195,7 +204,7 @@ class ModbusRegister:
     valeur: int | None = None
     id: int | None = None
     flag: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, str] = field(default_factory=_empty_str_str_dict)
 
 
 @dataclass
@@ -211,7 +220,7 @@ class Configuration:
     """
 
     index: int
-    settings: dict[str, Any] = field(default_factory=dict)
+    settings: dict[str, str] = field(default_factory=_empty_str_str_dict)
 
 
 @dataclass
@@ -246,7 +255,7 @@ class AnalogSensor:
     max: int | None = None
     esclave: int | None = None
     etat: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, str] = field(default_factory=_empty_str_str_dict)
 
 
 @dataclass
@@ -262,4 +271,54 @@ class Memory:
     """
 
     index: int
-    state: dict[str, Any] = field(default_factory=dict)
+    state: dict[str, str] = field(default_factory=_empty_str_str_dict)
+
+
+@dataclass
+class MappedFrame:
+    """Complete mapped frame with all typed group data.
+
+    Attributes:
+        is_old: Whether this is old data (from OLD prefix).
+        timestamp: Frame timestamp.
+        count: Optional token count.
+        zones: Dictionary of zone configurations indexed by zone ID.
+        inputs: Dictionary of digital inputs indexed by input ID.
+        outputs: Dictionary of outputs indexed by output ID.
+        measurements: Dictionary of measurements indexed by measurement ID.
+        parameters: Dictionary of configuration parameters indexed by parameter ID.
+        labels: Dictionary of label groups indexed by label ID.
+        modbus_registers: Dictionary of Modbus register data indexed by register ID.
+        analog_sensors: Dictionary of analog sensor data indexed by sensor ID.
+        configuration: System configuration.
+        memory: System memory/state.
+    """
+
+    is_old: bool
+    timestamp: datetime
+    count: int | None
+    zones: dict[int, Zone]
+    inputs: dict[int, Input]
+    outputs: dict[int, Output]
+    measurements: dict[int, Measurement]
+    parameters: dict[int, Parameter]
+    labels: dict[int, Label]
+    modbus_registers: dict[int, ModbusRegister]
+    analog_sensors: dict[int, AnalogSensor]
+    configuration: Configuration | None
+    memory: Memory | None
+
+    def as_json(self, indent: int | None = None, ensure_ascii: bool = False) -> str:
+        """Serialize the mapped frame to a JSON string.
+
+        Args:
+            indent: Indentation level for pretty-printing. Use None for a compact string.
+            ensure_ascii: Whether to escape non-ASCII characters.
+
+        Returns:
+            JSON string representation of the mapped frame.
+        """
+        payload: dict[str, Any] = asdict(self)
+        # Ensure timestamp is ISO-formatted string for JSON serialization
+        payload["timestamp"] = self.timestamp.isoformat()
+        return json.dumps(payload, indent=indent, ensure_ascii=ensure_ascii)

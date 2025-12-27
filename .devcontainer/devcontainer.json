@@ -1,6 +1,6 @@
 {
   "name": "Python Development",
-  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  "image": "mcr.microsoft.com/devcontainers/python:3.14",
   "workspaceMount": "source=aioiregul-workspace,target=/workspace,type=volume",
   "workspaceFolder": "/workspace",
   "customizations": {
@@ -10,7 +10,7 @@
         "python.pythonPath": ".venv/bin/python",
         "python.terminal.activateEnvInCurrentTerminal": true,
         "python.testing.pytestArgs": ["--no-cov"],
-        "python.analysis.typeCheckingMode": "basic",
+        "python.analysis.typeCheckingMode": "strict",
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,
         "editor.formatOnType": true,

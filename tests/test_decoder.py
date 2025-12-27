@@ -6,7 +6,7 @@ from src.aioiregul.v2.decoder import decode_file
 
 @pytest.mark.asyncio
 async def test_decode_501_new_basic():
-    frame = await decode_file("examples/501-NEW.txt")
+    frame = await decode_file("tests/data/v2messages/501-NEW.txt")
 
     assert not frame.is_old
     assert frame.timestamp == datetime(2025, 1, 15, 23, 38, 51)
@@ -29,7 +29,7 @@ async def test_decode_501_new_basic():
 
 @pytest.mark.asyncio
 async def test_decode_501_old_flag():
-    frame = await decode_file("examples/501-OLD.txt")
+    frame = await decode_file("tests/data/v2messages/501-OLD.txt")
 
     assert frame.is_old
     assert frame.timestamp == datetime(2025, 1, 15, 23, 34, 47)
@@ -38,7 +38,7 @@ async def test_decode_501_old_flag():
 
 @pytest.mark.asyncio
 async def test_decode_502_new_rich_groups():
-    frame = await decode_file("examples/502-NEW.txt")
+    frame = await decode_file("tests/data/v2messages/502-NEW.txt")
 
     assert not frame.is_old
     assert frame.timestamp == datetime(2025, 1, 15, 23, 37, 46)
@@ -62,7 +62,7 @@ async def test_decode_502_new_rich_groups():
 
 @pytest.mark.asyncio
 async def test_decode_502_old_flag():
-    frame = await decode_file("examples/502-OLD.txt")
+    frame = await decode_file("tests/data/v2messages/502-OLD.txt")
 
     assert frame.is_old
     assert frame.timestamp == datetime(2025, 1, 15, 23, 37, 3)

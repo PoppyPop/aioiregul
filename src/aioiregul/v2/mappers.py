@@ -6,16 +6,14 @@ into strongly-typed model objects for easier consumption by API clients.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime
 from typing import Any
 
-from .decoder import DecodedFrame
-from .models import (
+from ..models import (
     AnalogSensor,
     Configuration,
     Input,
     Label,
+    MappedFrame,
     Measurement,
     Memory,
     ModbusRegister,
@@ -23,11 +21,12 @@ from .models import (
     Parameter,
     Zone,
 )
+from .decoder import DecodedFrame
 
 
 def _extract_typed_fields(
     data: dict[str, Any], typed_fields: set[str]
-) -> tuple[dict[str, Any], dict[str, Any]]:
+) -> tuple[dict[str, Any], dict[str, str]]:
     """Split data dict into typed fields and extra fields.
 
     Args:
@@ -35,28 +34,28 @@ def _extract_typed_fields(
         typed_fields: Set of field names that have typed attributes.
 
     Returns:
-        Tuple of (typed_dict, extra_dict).
+        Tuple of (typed_dict, extra_dict) where extra values are stringified.
     """
-    typed = {}
-    extra = {}
+    typed: dict[str, Any] = {}
+    extra: dict[str, str] = {}
     for k, v in data.items():
         if k in typed_fields:
             typed[k] = v
         else:
-            extra[k] = v
+            extra[k] = str(v)
     return typed, extra
 
 
-def map_zones(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Zone]:
-    """Map group Z to a list of Zone dataclasses.
+def map_zones(groups: dict[str, dict[int, dict[str, Any]]]) -> dict[int, Zone]:
+    """Map group Z to a dict of Zone dataclasses indexed by zone ID.
 
     Args:
         groups: Decoded groups from DecodedFrame.
 
     Returns:
-        List of Zone objects.
+        Dict of Zone objects indexed by zone ID.
     """
-    zones = []
+    zones: dict[int, Zone] = {}
     if "Z" not in groups:
         return zones
 
@@ -74,21 +73,21 @@ def map_zones(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Zone]:
 
     for idx, fields in groups["Z"].items():
         typed, extra = _extract_typed_fields(fields, typed_fields)
-        zones.append(Zone(index=idx, extra=extra, **typed))
+        zones[idx] = Zone(index=idx, extra=extra, **typed)
 
     return zones
 
 
-def map_inputs(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Input]:
-    """Map group I to a list of Input dataclasses.
+def map_inputs(groups: dict[str, dict[int, dict[str, Any]]]) -> dict[int, Input]:
+    """Map group I to a dict of Input dataclasses indexed by input ID.
 
     Args:
         groups: Decoded groups from DecodedFrame.
 
     Returns:
-        List of Input objects.
+        Dict of Input objects indexed by input ID.
     """
-    inputs = []
+    inputs: dict[int, Input] = {}
     if "I" not in groups:
         return inputs
 
@@ -106,21 +105,21 @@ def map_inputs(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Input]:
 
     for idx, fields in groups["I"].items():
         typed, extra = _extract_typed_fields(fields, typed_fields)
-        inputs.append(Input(index=idx, extra=extra, **typed))
+        inputs[idx] = Input(index=idx, extra=extra, **typed)
 
     return inputs
 
 
-def map_outputs(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Output]:
-    """Map group O to a list of Output dataclasses.
+def map_outputs(groups: dict[str, dict[int, dict[str, Any]]]) -> dict[int, Output]:
+    """Map group O to a dict of Output dataclasses indexed by output ID.
 
     Args:
         groups: Decoded groups from DecodedFrame.
 
     Returns:
-        List of Output objects.
+        Dict of Output objects indexed by output ID.
     """
-    outputs = []
+    outputs: dict[int, Output] = {}
     if "O" not in groups:
         return outputs
 
@@ -138,21 +137,21 @@ def map_outputs(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Output]:
 
     for idx, fields in groups["O"].items():
         typed, extra = _extract_typed_fields(fields, typed_fields)
-        outputs.append(Output(index=idx, extra=extra, **typed))
+        outputs[idx] = Output(index=idx, extra=extra, **typed)
 
     return outputs
 
 
-def map_measurements(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Measurement]:
-    """Map group M to a list of Measurement dataclasses.
+def map_measurements(groups: dict[str, dict[int, dict[str, Any]]]) -> dict[int, Measurement]:
+    """Map group M to a dict of Measurement dataclasses indexed by measurement ID.
 
     Args:
         groups: Decoded groups from DecodedFrame.
 
     Returns:
-        List of Measurement objects.
+        Dict of Measurement objects indexed by measurement ID.
     """
-    measurements = []
+    measurements: dict[int, Measurement] = {}
     if "M" not in groups:
         return measurements
 
@@ -160,21 +159,21 @@ def map_measurements(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Measu
 
     for idx, fields in groups["M"].items():
         typed, extra = _extract_typed_fields(fields, typed_fields)
-        measurements.append(Measurement(index=idx, extra=extra, **typed))
+        measurements[idx] = Measurement(index=idx, extra=extra, **typed)
 
     return measurements
 
 
-def map_parameters(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Parameter]:
-    """Map group P to a list of Parameter dataclasses.
+def map_parameters(groups: dict[str, dict[int, dict[str, Any]]]) -> dict[int, Parameter]:
+    """Map group P to a dict of Parameter dataclasses indexed by parameter ID.
 
     Args:
         groups: Decoded groups from DecodedFrame.
 
     Returns:
-        List of Parameter objects.
+        Dict of Parameter objects indexed by parameter ID.
     """
-    parameters = []
+    parameters: dict[int, Parameter] = {}
     if "P" not in groups:
         return parameters
 
@@ -182,40 +181,40 @@ def map_parameters(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Paramet
 
     for idx, fields in groups["P"].items():
         typed, extra = _extract_typed_fields(fields, typed_fields)
-        parameters.append(Parameter(index=idx, extra=extra, **typed))
+        parameters[idx] = Parameter(index=idx, extra=extra, **typed)
 
     return parameters
 
 
-def map_labels(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Label]:
-    """Map group J to a list of Label dataclasses.
+def map_labels(groups: dict[str, dict[int, dict[str, Any]]]) -> dict[int, Label]:
+    """Map group J to a dict of Label dataclasses indexed by label ID.
 
     Args:
         groups: Decoded groups from DecodedFrame.
 
     Returns:
-        List of Label objects.
+        Dict of Label objects indexed by label ID.
     """
-    labels = []
+    labels: dict[int, Label] = {}
     if "J" not in groups:
         return labels
 
     for idx, fields in groups["J"].items():
-        labels.append(Label(index=idx, labels=dict(fields)))
+        labels[idx] = Label(index=idx, labels={k: str(v) for k, v in fields.items()})
 
     return labels
 
 
-def map_modbus_registers(groups: dict[str, dict[int, dict[str, Any]]]) -> list[ModbusRegister]:
-    """Map group B to a list of ModbusRegister dataclasses.
+def map_modbus_registers(groups: dict[str, dict[int, dict[str, Any]]]) -> dict[int, ModbusRegister]:
+    """Map group B to a dict of ModbusRegister dataclasses indexed by register ID.
 
     Args:
         groups: Decoded groups from DecodedFrame.
 
     Returns:
-        List of ModbusRegister objects.
+        Dict of ModbusRegister objects indexed by register ID.
     """
-    registers = []
+    registers: dict[int, ModbusRegister] = {}
     if "B" not in groups:
         return registers
 
@@ -234,21 +233,21 @@ def map_modbus_registers(groups: dict[str, dict[int, dict[str, Any]]]) -> list[M
 
     for idx, fields in groups["B"].items():
         typed, extra = _extract_typed_fields(fields, typed_fields)
-        registers.append(ModbusRegister(index=idx, extra=extra, **typed))
+        registers[idx] = ModbusRegister(index=idx, extra=extra, **typed)
 
     return registers
 
 
-def map_analog_sensors(groups: dict[str, dict[int, dict[str, Any]]]) -> list[AnalogSensor]:
-    """Map group A to a list of AnalogSensor dataclasses.
+def map_analog_sensors(groups: dict[str, dict[int, dict[str, Any]]]) -> dict[int, AnalogSensor]:
+    """Map group A to a dict of AnalogSensor dataclasses indexed by sensor ID.
 
     Args:
         groups: Decoded groups from DecodedFrame.
 
     Returns:
-        List of AnalogSensor objects.
+        Dict of AnalogSensor objects indexed by sensor ID.
     """
-    sensors = []
+    sensors: dict[int, AnalogSensor] = {}
     if "A" not in groups:
         return sensors
 
@@ -268,7 +267,7 @@ def map_analog_sensors(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Ana
 
     for idx, fields in groups["A"].items():
         typed, extra = _extract_typed_fields(fields, typed_fields)
-        sensors.append(AnalogSensor(index=idx, extra=extra, **typed))
+        sensors[idx] = AnalogSensor(index=idx, extra=extra, **typed)
 
     return sensors
 
@@ -287,7 +286,7 @@ def map_configuration(groups: dict[str, dict[int, dict[str, Any]]]) -> Configura
 
     # Typically there's only one config entry at index 0
     for idx, fields in groups["C"].items():
-        return Configuration(index=idx, settings=dict(fields))
+        return Configuration(index=idx, settings={k: str(v) for k, v in fields.items()})
 
     return None
 
@@ -306,44 +305,9 @@ def map_memory(groups: dict[str, dict[int, dict[str, Any]]]) -> Memory | None:
 
     # Typically there's only one memory entry at index 0
     for idx, fields in groups["mem"].items():
-        return Memory(index=idx, state=dict(fields))
+        return Memory(index=idx, state={k: str(v) for k, v in fields.items()})
 
     return None
-
-
-@dataclass
-class MappedFrame:
-    """Complete mapped frame with all typed group data.
-
-    Attributes:
-        is_old: Whether this is old data (from OLD prefix).
-        timestamp: Frame timestamp.
-        count: Optional token count.
-        zones: List of zone configurations.
-        inputs: List of digital inputs.
-        outputs: List of outputs.
-        measurements: List of measurements.
-        parameters: List of configuration parameters.
-        labels: List of label groups.
-        modbus_registers: List of Modbus register data.
-        analog_sensors: List of analog sensor data.
-        configuration: System configuration.
-        memory: System memory/state.
-    """
-
-    is_old: bool
-    timestamp: datetime
-    count: int | None
-    zones: list[Zone]
-    inputs: list[Input]
-    outputs: list[Output]
-    measurements: list[Measurement]
-    parameters: list[Parameter]
-    labels: list[Label]
-    modbus_registers: list[ModbusRegister]
-    analog_sensors: list[AnalogSensor]
-    configuration: Configuration | None
-    memory: Memory | None
 
 
 def map_frame(frame: DecodedFrame) -> MappedFrame:

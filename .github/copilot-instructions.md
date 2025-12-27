@@ -22,6 +22,7 @@ description: "Python library coding standards"
 - Prefer modern Python syntax (e.g., Python 3.10+ features like `match-case` and `|` for union types).
 - Use type hints for all public functions and methods.
 - Provide docstrings following PEP 257 conventions
+- Prefix all commands with `uv run` when calling CLI commands.
 
 ## Code Style & Structure
 
@@ -29,6 +30,7 @@ description: "Python library coding standards"
 - Organize imports in groups: standard library, third-party, local imports.
 - Use `f-strings` for string formatting.
 - Avoid global state; prefer dependency injection.
+- We use `ruff` for linting and formatting; ensure code passes all checks before committing.
 
 ## Documentation
 

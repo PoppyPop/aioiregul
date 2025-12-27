@@ -14,7 +14,7 @@ import asyncio
 import json
 import sys
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 
 def _serialize_value(value: Any) -> Any:
@@ -23,12 +23,14 @@ def _serialize_value(value: Any) -> Any:
 
     if isinstance(value, datetime):
         return value.isoformat()
-    if isinstance(value, (int | float | str | bool | type(None))):
+    if isinstance(value, int | float | str | bool | type(None)):
         return value
     if isinstance(value, dict):
-        return {k: _serialize_value(v) for k, v in value.items()}
+        typed_dict = cast(dict[str, Any], value)
+        return {k: _serialize_value(v) for k, v in typed_dict.items()}
     if isinstance(value, list | tuple):
-        return [_serialize_value(v) for v in value]
+        typed_iterable = cast(tuple[Any, ...] | list[Any], value)
+        return [_serialize_value(v) for v in typed_iterable]
     # Dataclass or object with __dict__
     if hasattr(value, "__dict__"):
         return {k: _serialize_value(v) for k, v in value.__dict__.items()}

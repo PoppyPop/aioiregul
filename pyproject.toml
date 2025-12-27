@@ -83,24 +83,21 @@ known-first-party = ["aioiregul"]
 
 # MyPy configuration
 [tool.mypy]
-python_version = "3.10"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-check_untyped_defs = true
-disallow_untyped_decorators = false
-no_implicit_optional = true
-warn_redundant_casts = true
-warn_unused_ignores = true
-warn_no_return = true
-follow_imports = "normal"
-strict_optional = true
-strict_equality = true
 files = ["src/aioiregul"]
+strict = true
+warn_unused_ignores = true
+
+[tool.pyright]
+include = ["src"]
+exclude = ["**/__pycache__", ".git", ".venv", "htmlcov", "tests", "examples"]
+pythonVersion = "3.10"
+venvPath = "."
+venv = ".venv"
+typeCheckingMode = "strict"
+reportMissingTypeStubs = "warning"
 
 [[tool.mypy.overrides]]
-module = ["slugify.*", "bs4.*"]
+module = ["aiohttp", "aiohttp.*", "bs4", "bs4.*", "slugify", "slugify.*", "dotenv", "dotenv.*"]
 ignore_missing_imports = true
 
 # Pytest configuration
@@ -147,8 +144,7 @@ dev = [
     "pytest-asyncio>=0.21.0",
     "pytest-cov>=4.1.0",
     "pytest-xdist>=3.3.0",
-    # Code Quality
-    "mypy>=1.7.0",
+    "pyright>=1.1.389",
     "pre-commit>=3.5.0",
     "ruff>=0.1.0",
     # Type Stubs

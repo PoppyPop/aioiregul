@@ -11,6 +11,18 @@ from dataclasses import dataclass, field
 from typing import Any
 
 
+def _empty_str_any_dict() -> dict[str, Any]:
+    """Return an empty dict with str keys and any values for dataclass defaults."""
+
+    return {}
+
+
+def _empty_str_str_dict() -> dict[str, str]:
+    """Return an empty dict with str keys and str values for dataclass defaults."""
+
+    return {}
+
+
 @dataclass
 class Zone:
     """Zone configuration and status (group Z).
@@ -39,7 +51,7 @@ class Zone:
     temperature_max: float | None = None
     temperature_min: float | None = None
     zone_active: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, Any] = field(default_factory=_empty_str_any_dict)
 
 
 @dataclass
@@ -68,7 +80,7 @@ class Input:
     esclave: int | None = None
     min: int | None = None
     max: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, Any] = field(default_factory=_empty_str_any_dict)
 
 
 @dataclass
@@ -97,7 +109,7 @@ class Output:
     esclave: int | None = None
     min: int | None = None
     max: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, Any] = field(default_factory=_empty_str_any_dict)
 
 
 @dataclass
@@ -122,7 +134,7 @@ class Measurement:
     id: int | None = None
     flag: int | None = None
     type: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, Any] = field(default_factory=_empty_str_any_dict)
 
 
 @dataclass
@@ -147,7 +159,7 @@ class Parameter:
     max: float
     pas: float
     id: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, Any] = field(default_factory=_empty_str_any_dict)
 
 
 @dataclass
@@ -164,7 +176,7 @@ class Label:
     """
 
     index: int
-    labels: dict[str, str] = field(default_factory=dict)
+    labels: dict[str, str] = field(default_factory=_empty_str_str_dict)
 
 
 @dataclass
@@ -195,7 +207,7 @@ class ModbusRegister:
     valeur: int | None = None
     id: int | None = None
     flag: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, Any] = field(default_factory=_empty_str_any_dict)
 
 
 @dataclass
@@ -211,7 +223,7 @@ class Configuration:
     """
 
     index: int
-    settings: dict[str, Any] = field(default_factory=dict)
+    settings: dict[str, Any] = field(default_factory=_empty_str_any_dict)
 
 
 @dataclass
@@ -246,7 +258,7 @@ class AnalogSensor:
     max: int | None = None
     esclave: int | None = None
     etat: int | None = None
-    extra: dict[str, Any] = field(default_factory=dict)
+    extra: dict[str, Any] = field(default_factory=_empty_str_any_dict)
 
 
 @dataclass
@@ -262,4 +274,4 @@ class Memory:
     """
 
     index: int
-    state: dict[str, Any] = field(default_factory=dict)
+    state: dict[str, Any] = field(default_factory=_empty_str_any_dict)

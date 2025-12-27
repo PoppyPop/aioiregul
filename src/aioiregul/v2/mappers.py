@@ -37,8 +37,8 @@ def _extract_typed_fields(
     Returns:
         Tuple of (typed_dict, extra_dict).
     """
-    typed = {}
-    extra = {}
+    typed: dict[str, Any] = {}
+    extra: dict[str, Any] = {}
     for k, v in data.items():
         if k in typed_fields:
             typed[k] = v

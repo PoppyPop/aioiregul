@@ -5,12 +5,11 @@ from __future__ import annotations
 import asyncio
 import logging
 import os
-from typing import Any
 
 from dotenv import load_dotenv
 
 from .decoder import decode_text
-from .mappers import map_frame
+from .mappers import MappedFrame, map_frame
 
 # Load environment variables from .env file
 load_dotenv()
@@ -59,11 +58,7 @@ class IRegulClient:
         self.device_id = device_id or _get_env("IREGUL_DEVICE_ID")
         self.device_key = device_key or _get_env("IREGUL_DEVICE_KEY")
 
-    async def get_data(
-        self,
-        timeout: float = 60.0,
-        mapped: bool = True,
-    ) -> dict[str, Any]:
+    async def get_data(self, timeout: float = 60.0) -> MappedFrame:
         """
         Connect to device and retrieve full data using command 502.
 
@@ -74,12 +69,9 @@ class IRegulClient:
 
         Args:
             timeout: Maximum time in seconds to wait for response (default: 60)
-            mapped: If True, return mapped typed data; if False, return raw decoder data
 
         Returns:
-            Dictionary containing the decoded and optionally mapped device data.
-            If mapped=True, returns MappedFrame as dict.
-            If mapped=False, returns DecodedFrame as dict.
+            MappedFrame containing the typed device data.
 
         Raises:
             asyncio.TimeoutError: If response not received within timeout period
@@ -111,30 +103,7 @@ class IRegulClient:
             decoded = await decode_text(new_response)
             LOGGER.debug(f"Decoded frame with timestamp: {decoded.timestamp}")
 
-            # Return mapped or raw data
-            if mapped:
-                mapped_frame = map_frame(decoded)
-                return {
-                    "timestamp": decoded.timestamp,
-                    "zones": [z.__dict__ for z in mapped_frame.zones],
-                    "inputs": [i.__dict__ for i in mapped_frame.inputs],
-                    "outputs": [o.__dict__ for o in mapped_frame.outputs],
-                    "measurements": [m.__dict__ for m in mapped_frame.measurements],
-                    "parameters": [p.__dict__ for p in mapped_frame.parameters],
-                    "labels": [label.__dict__ for label in mapped_frame.labels],
-                    "analog_sensors": [a.__dict__ for a in mapped_frame.analog_sensors],
-                    "modbus_registers": [r.__dict__ for r in mapped_frame.modbus_registers],
-                    "configuration": (
-                        mapped_frame.configuration.__dict__ if mapped_frame.configuration else None
-                    ),
-                    "memory": (mapped_frame.memory.__dict__ if mapped_frame.memory else None),
-                }
-            else:
-                return {
-                    "timestamp": decoded.timestamp,
-                    "is_old_format": decoded.is_old,
-                    "groups": decoded.groups,
-                }
+            return map_frame(decoded)
         finally:
             writer.close()
             await writer.wait_closed()

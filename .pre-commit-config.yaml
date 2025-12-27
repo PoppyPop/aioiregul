@@ -18,11 +18,13 @@ repos:
       - id: ruff-format
   - repo: local
     hooks:
-      - id: mypy
-        name: mypy
-        entry: .venv/bin/mypy
+      - id: pyright
+        name: pyright
+        entry: .venv/bin/pyright
         language: system
+        types_or: [python]
         pass_filenames: false
+        args: ["--project", "pyproject.toml"]
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.2.1
     hooks:

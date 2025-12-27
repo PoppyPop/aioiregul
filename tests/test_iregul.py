@@ -7,7 +7,7 @@ from pathlib import Path
 
 import aiohttp
 import pytest
-import src.aioiregul
+import src.aioiregul.v1
 from aiohttp import web
 
 STATIC_DIR = Path(__file__).parent / "data" / "static"
@@ -60,13 +60,13 @@ async def mock_server():
 
 @pytest.mark.asyncio
 async def test_auth(mock_server):
-    opt = src.aioiregul.ConnectionOptions(
+    opt = src.aioiregul.v1.ConnectionOptions(
         username="empty",
         password="bottle",
         iregul_base_url=f"{mock_server}/modules/",
     )
 
-    dev = src.aioiregul.Device(opt)
+    dev = src.aioiregul.v1.Device(opt)
 
     async with aiohttp.ClientSession() as session:
         assert await dev.authenticate(session)
@@ -74,13 +74,13 @@ async def test_auth(mock_server):
 
 @pytest.mark.asyncio
 async def test_isauth(mock_server):
-    opt = src.aioiregul.ConnectionOptions(
+    opt = src.aioiregul.v1.ConnectionOptions(
         username="empty",
         password="bottle",
         iregul_base_url=f"{mock_server}/modules/",
     )
 
-    dev = src.aioiregul.Device(opt)
+    dev = src.aioiregul.v1.Device(opt)
 
     async with aiohttp.ClientSession() as session:
         assert await dev.isauth(session)
@@ -88,13 +88,13 @@ async def test_isauth(mock_server):
 
 @pytest.mark.asyncio
 async def test_defrost(mock_server):
-    opt = src.aioiregul.ConnectionOptions(
+    opt = src.aioiregul.v1.ConnectionOptions(
         username="empty",
         password="bottle",
         iregul_base_url=f"{mock_server}/modules/",
     )
 
-    dev = src.aioiregul.Device(opt)
+    dev = src.aioiregul.v1.Device(opt)
 
     async with aiohttp.ClientSession() as session:
         assert await dev.defrost(session)
@@ -102,13 +102,13 @@ async def test_defrost(mock_server):
 
 @pytest.mark.asyncio
 async def test_notisauth(mock_server):
-    opt = src.aioiregul.ConnectionOptions(
+    opt = src.aioiregul.v1.ConnectionOptions(
         username="empty",
         password="bottle",
         iregul_base_url=f"{mock_server}/fail/",
     )
 
-    dev = src.aioiregul.Device(opt)
+    dev = src.aioiregul.v1.Device(opt)
 
     async with aiohttp.ClientSession() as session:
         assert not await dev.isauth(session)
@@ -116,13 +116,13 @@ async def test_notisauth(mock_server):
 
 @pytest.mark.asyncio
 async def test_collect(mock_server):
-    opt = src.aioiregul.ConnectionOptions(
+    opt = src.aioiregul.v1.ConnectionOptions(
         username="empty",
         password="bottle",
         iregul_base_url=f"{mock_server}/modules/",
     )
 
-    dev = src.aioiregul.Device(opt)
+    dev = src.aioiregul.v1.Device(opt)
 
     async with aiohttp.ClientSession() as session:
         res = await dev.collect(session)
@@ -138,14 +138,14 @@ async def test_collect(mock_server):
 
 @pytest.mark.asyncio
 async def test_update(mock_server):
-    opt = src.aioiregul.ConnectionOptions(
+    opt = src.aioiregul.v1.ConnectionOptions(
         username="empty",
         password="bottle",
         iregul_base_url=f"{mock_server}/modules/",
         refresh_rate=timedelta(seconds=1),
     )
 
-    dev = src.aioiregul.Device(opt)
+    dev = src.aioiregul.v1.Device(opt)
 
     async with aiohttp.ClientSession() as session:
         res = await dev.collect(session)

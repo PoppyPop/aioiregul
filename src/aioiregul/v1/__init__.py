@@ -194,14 +194,6 @@ class Device:
         except aiohttp.ClientConnectionError as e:
             raise CannotConnect() from e
 
-    async def isauth(self, http_session: aiohttp.ClientSession) -> bool:
-        """Check if authenticated."""
-        return await self.__isauth(http_session)
-
-    async def authenticate(self, http_session: aiohttp.ClientSession) -> bool:
-        """Authenticate with device."""
-        return await self.__connect(http_session, False)
-
     async def defrost(self, http_session: aiohttp.ClientSession) -> bool:
         """Trigger defrost operation."""
         if not await self.__isauth(http_session):
@@ -215,7 +207,7 @@ class Device:
         ) as resp:
             return await self.__checkreturn(True, str(resp.url))
 
-    async def collect(
+    async def get_data(
         self, http_session: aiohttp.ClientSession, refreshMandatory: bool = True
     ) -> MappedFrame | None:
         """Collect all data from device.

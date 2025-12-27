@@ -68,7 +68,7 @@ async def test_auth(mock_server):
     dev = src.aioiregul.v1.Device(opt)
 
     async with aiohttp.ClientSession() as session:
-        assert await dev.authenticate(session)
+        assert await dev.get_data(session, False)
 
 
 @pytest.mark.asyncio
@@ -82,7 +82,7 @@ async def test_isauth(mock_server):
     dev = src.aioiregul.v1.Device(opt)
 
     async with aiohttp.ClientSession() as session:
-        assert await dev.isauth(session)
+        assert await dev.get_data(session)
 
 
 @pytest.mark.asyncio
@@ -109,8 +109,9 @@ async def test_notisauth(mock_server):
 
     dev = src.aioiregul.v1.Device(opt)
 
-    async with aiohttp.ClientSession() as session:
-        assert not await dev.isauth(session)
+    with pytest.raises(src.aioiregul.v1.InvalidAuth):
+        async with aiohttp.ClientSession() as session:
+            await dev.get_data(session)
 
 
 @pytest.mark.asyncio
@@ -124,7 +125,7 @@ async def test_collect(mock_server):
     dev = src.aioiregul.v1.Device(opt)
 
     async with aiohttp.ClientSession() as session:
-        res = await dev.collect(session)
+        res = await dev.get_data(session)
 
         assert res is not None
         assert len(res.outputs) == 18
@@ -149,11 +150,11 @@ async def test_update(mock_server):
     dev = src.aioiregul.v1.Device(opt)
 
     async with aiohttp.ClientSession() as session:
-        res = await dev.collect(session)
+        res = await dev.get_data(session)
 
         await asyncio.sleep(2)
 
-        res = await dev.collect(session)
+        res = await dev.get_data(session)
 
         assert res is not None
         assert len(res.outputs) == 18

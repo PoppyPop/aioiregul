@@ -44,8 +44,8 @@ async def decode_command(args: argparse.Namespace) -> int:
     Returns:
         Exit code (0 for success).
     """
-    from .decoder import decode_file
-    from .mappers import map_frame
+    from .v2.decoder import decode_file
+    from .v2.mappers import map_frame
 
     file_path = Path(args.file)
     if not file_path.exists():

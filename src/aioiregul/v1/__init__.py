@@ -18,7 +18,7 @@ from urllib import parse
 from urllib.parse import urljoin
 
 import aiohttp
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from slugify import slugify
 
 LOGGER = logging.getLogger(__name__)
@@ -50,7 +50,7 @@ class Device:
     options: ConnectionOptions
     login_url: str
     iregulApiBaseUrl: str
-    lastupdate: datetime = None
+    lastupdate: datetime | None = None
 
     def __init__(
         self,
@@ -122,7 +122,7 @@ class Device:
                 urljoin(self.iregulApiBaseUrl, "includes/processform.php"),
                 data=payload,
             ) as resp:
-                return await self.__checkreturn(refreshMandatory, resp.url)
+                return await self.__checkreturn(refreshMandatory, str(resp.url))
 
         except aiohttp.ClientConnectionError as e:
             raise CannotConnect() from e
@@ -142,7 +142,9 @@ class Device:
         LOGGER.debug("Update Ok")
         return True
 
-    async def __collect(self, http_session: aiohttp.ClientSession, type_: str):
+    async def __collect(
+        self, http_session: aiohttp.ClientSession, type_: str
+    ) -> dict[str, IRegulData]:
         """Collect data from device."""
         try:
             async with http_session.get(
@@ -150,28 +152,41 @@ class Device:
             ) as resp:
                 soup_collect = BeautifulSoup(await resp.text(), "html.parser")
                 table_collect = soup_collect.find("table", attrs={"id": "tbl_etat"})
+                if table_collect is None:
+                    LOGGER.warning("No data table found for %s", type_)
+                    return {}
+
+                if not isinstance(table_collect, Tag):
+                    LOGGER.warning("Unexpected data table type for %s", type_)
+                    return {}
+
                 results_collect = table_collect.find_all("tr")
                 LOGGER.debug("%s -> Number of results: %d", type_, len(results_collect))
-                result = {}
+                result: dict[str, IRegulData] = {}
 
-                for i in results_collect:
-                    sAli = i.find("td", attrs={"id": "ali_td_tbl_etat"}).getText().strip()
-                    sId = slugify(sAli)
+                for row in results_collect:
+                    alias_cell = row.find("td", attrs={"id": "ali_td_tbl_etat"})
+                    value_cell = row.find("td", attrs={"id": "val_td_tbl_etat"})
+                    unit_cell = row.find("td", attrs={"id": "unit_td_tbl_etat"})
 
-                    sVal = Decimal(i.find("td", attrs={"id": "val_td_tbl_etat"}).getText().strip())
-                    sUnit = i.find("td", attrs={"id": "unit_td_tbl_etat"}).getText().strip()
+                    if alias_cell is None or value_cell is None or unit_cell is None:
+                        LOGGER.debug("Skipping incomplete row for %s", type_)
+                        continue
 
-                    # Transform MWH to KWh
-                    if sUnit == "MWh":
-                        sUnit = "KWh"
-                        sVal = sVal * Decimal(1000)
+                    alias = alias_cell.get_text(strip=True)
+                    identifier = slugify(alias)
 
-                    # Check for duplicate
-                    if sId in result:
-                        # Duplicate
-                        result[sId].value = result[sId].value + sVal
+                    value = Decimal(value_cell.get_text(strip=True))
+                    unit = unit_cell.get_text(strip=True)
+
+                    if unit == "MWh":
+                        unit = "KWh"
+                        value = value * Decimal(1000)
+
+                    if identifier in result:
+                        result[identifier].value = result[identifier].value + value
                     else:
-                        result[sId] = IRegulData(sId, sAli, sVal, sUnit)
+                        result[identifier] = IRegulData(identifier, alias, value, unit)
 
                 return result
         except aiohttp.ClientConnectionError as e:
@@ -196,9 +211,11 @@ class Device:
         async with http_session.post(
             urljoin(self.iregulApiBaseUrl, "includes/processform.php"), data=payload
         ) as resp:
-            return await self.__checkreturn(True, resp.url)
+            return await self.__checkreturn(True, str(resp.url))
 
-    async def collect(self, http_session: aiohttp.ClientSession, refreshMandatory: bool = True):
+    async def collect(
+        self, http_session: aiohttp.ClientSession, refreshMandatory: bool = True
+    ) -> dict[str, dict[str, IRegulData]] | None:
         """Collect all data from device."""
         if not await self.__isauth(http_session):
             http_session.cookie_jar.clear()
@@ -207,13 +224,15 @@ class Device:
         # First Login and Refresh Datas
         if await self.__refresh(http_session, refreshMandatory):
             # Collect datas
-            result = {}
+            result: dict[str, dict[str, IRegulData]] = {}
             result["outputs"] = await self.__collect(http_session, "sorties")
             result["sensors"] = await self.__collect(http_session, "sondes")
             result["inputs"] = await self.__collect(http_session, "entrees")
             result["measures"] = await self.__collect(http_session, "mesures")
 
             return result
+
+        return None
 
 
 class CannotConnect(Exception):

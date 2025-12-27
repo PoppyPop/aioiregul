@@ -56,7 +56,7 @@ def map_zones(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Zone]:
     Returns:
         List of Zone objects.
     """
-    zones = []
+    zones: list[Zone] = []
     if "Z" not in groups:
         return zones
 
@@ -88,7 +88,7 @@ def map_inputs(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Input]:
     Returns:
         List of Input objects.
     """
-    inputs = []
+    inputs: list[Input] = []
     if "I" not in groups:
         return inputs
 
@@ -120,7 +120,7 @@ def map_outputs(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Output]:
     Returns:
         List of Output objects.
     """
-    outputs = []
+    outputs: list[Output] = []
     if "O" not in groups:
         return outputs
 
@@ -152,7 +152,7 @@ def map_measurements(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Measu
     Returns:
         List of Measurement objects.
     """
-    measurements = []
+    measurements: list[Measurement] = []
     if "M" not in groups:
         return measurements
 
@@ -174,7 +174,7 @@ def map_parameters(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Paramet
     Returns:
         List of Parameter objects.
     """
-    parameters = []
+    parameters: list[Parameter] = []
     if "P" not in groups:
         return parameters
 
@@ -196,7 +196,7 @@ def map_labels(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Label]:
     Returns:
         List of Label objects.
     """
-    labels = []
+    labels: list[Label] = []
     if "J" not in groups:
         return labels
 
@@ -215,7 +215,7 @@ def map_modbus_registers(groups: dict[str, dict[int, dict[str, Any]]]) -> list[M
     Returns:
         List of ModbusRegister objects.
     """
-    registers = []
+    registers: list[ModbusRegister] = []
     if "B" not in groups:
         return registers
 
@@ -248,7 +248,7 @@ def map_analog_sensors(groups: dict[str, dict[int, dict[str, Any]]]) -> list[Ana
     Returns:
         List of AnalogSensor objects.
     """
-    sensors = []
+    sensors: list[AnalogSensor] = []
     if "A" not in groups:
         return sensors
 

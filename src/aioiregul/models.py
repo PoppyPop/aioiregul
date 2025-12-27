@@ -1,13 +1,14 @@
-"""Typed dataclasses for IRegul protocol groups.
+"""Shared typed dataclasses for IRegul protocol groups.
 
 This module defines strongly-typed representations for the main data groups
 returned by the IRegul API: zones (Z), inputs (I), outputs (O), measurements (M),
-parameters (P), and labels (J).
+parameters (P), labels (J), and other supporting structures.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from datetime import datetime
 
 
 def _empty_str_str_dict() -> dict[str, str]:
@@ -268,3 +269,38 @@ class Memory:
 
     index: int
     state: dict[str, str] = field(default_factory=_empty_str_str_dict)
+
+
+@dataclass
+class MappedFrame:
+    """Complete mapped frame with all typed group data.
+
+    Attributes:
+        is_old: Whether this is old data (from OLD prefix).
+        timestamp: Frame timestamp.
+        count: Optional token count.
+        zones: List of zone configurations.
+        inputs: List of digital inputs.
+        outputs: List of outputs.
+        measurements: List of measurements.
+        parameters: List of configuration parameters.
+        labels: List of label groups.
+        modbus_registers: List of Modbus register data.
+        analog_sensors: List of analog sensor data.
+        configuration: System configuration.
+        memory: System memory/state.
+    """
+
+    is_old: bool
+    timestamp: datetime
+    count: int | None
+    zones: list[Zone]
+    inputs: list[Input]
+    outputs: list[Output]
+    measurements: list[Measurement]
+    parameters: list[Parameter]
+    labels: list[Label]
+    modbus_registers: list[ModbusRegister]
+    analog_sensors: list[AnalogSensor]
+    configuration: Configuration | None
+    memory: Memory | None

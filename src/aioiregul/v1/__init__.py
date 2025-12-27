@@ -21,6 +21,8 @@ import aiohttp
 from bs4 import BeautifulSoup, Tag
 from slugify import slugify
 
+from ..models import AnalogSensor, Input, MappedFrame, Measurement, Output
+
 LOGGER = logging.getLogger(__name__)
 
 
@@ -215,24 +217,75 @@ class Device:
 
     async def collect(
         self, http_session: aiohttp.ClientSession, refreshMandatory: bool = True
-    ) -> dict[str, dict[str, IRegulData]] | None:
-        """Collect all data from device."""
+    ) -> MappedFrame | None:
+        """Collect all data from device.
+
+        The legacy HTML tables are parsed and converted into a :class:`MappedFrame`
+        so that the return type matches the v2 socket client's
+        :meth:`aioiregul.v2.client.IRegulClient.get_data` method.
+
+        Only a subset of fields is available in v1, so the mapped frame
+        contains:
+
+        - ``outputs``: Parsed as :class:`Output` instances.
+        - ``inputs``: Parsed as :class:`Input` instances.
+        - ``analog_sensors``: Parsed from the ``sondes`` page.
+        - ``measurements``: Parsed from the ``mesures`` page.
+
+        All other groups (zones, parameters, labels, configuration,
+        memory, bus registers) are left empty or ``None``.
+        """
         if not await self.__isauth(http_session):
             http_session.cookie_jar.clear()
             await self.__connect(http_session, True)
 
         # First Login and Refresh Datas
-        if await self.__refresh(http_session, refreshMandatory):
-            # Collect datas
-            result: dict[str, dict[str, IRegulData]] = {}
-            result["outputs"] = await self.__collect(http_session, "sorties")
-            result["sensors"] = await self.__collect(http_session, "sondes")
-            result["inputs"] = await self.__collect(http_session, "entrees")
-            result["measures"] = await self.__collect(http_session, "mesures")
+        if not await self.__refresh(http_session, refreshMandatory):
+            return None
 
-            return result
+        # Collect legacy HTML data
+        outputs_raw = await self.__collect(http_session, "sorties")
+        sensors_raw = await self.__collect(http_session, "sondes")
+        inputs_raw = await self.__collect(http_session, "entrees")
+        measures_raw = await self.__collect(http_session, "mesures")
 
-        return None
+        # Map to shared typed models
+        outputs = [
+            Output(index=i, valeur=int(data.value), alias=data.name)
+            for i, data in enumerate(outputs_raw.values(), start=1)
+        ]
+
+        inputs = [
+            Input(index=i, valeur=int(data.value), alias=data.name)
+            for i, data in enumerate(inputs_raw.values(), start=1)
+        ]
+
+        analog_sensors = [
+            AnalogSensor(index=i, valeur=float(data.value), unit=data.unit, alias=data.name)
+            for i, data in enumerate(sensors_raw.values(), start=1)
+        ]
+
+        measurements = [
+            Measurement(index=i, valeur=float(data.value), unit=data.unit, alias=data.name)
+            for i, data in enumerate(measures_raw.values(), start=1)
+        ]
+
+        # Build a minimal mapped frame compatible with v2
+        return MappedFrame(
+            is_old=False,
+            timestamp=datetime.now(),
+            count=None,
+            zones=[],
+            inputs=inputs,
+            outputs=outputs,
+            measurements=measurements,
+            parameters=[],
+            labels=[],
+            modbus_registers=[],
+            analog_sensors=analog_sensors,
+            configuration=None,
+            memory=None,
+        )
 
 
 class CannotConnect(Exception):

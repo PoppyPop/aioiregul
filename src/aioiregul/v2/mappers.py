@@ -6,16 +6,14 @@ into strongly-typed model objects for easier consumption by API clients.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime
 from typing import Any
 
-from .decoder import DecodedFrame
-from .models import (
+from ..models import (
     AnalogSensor,
     Configuration,
     Input,
     Label,
+    MappedFrame,
     Measurement,
     Memory,
     ModbusRegister,
@@ -23,6 +21,7 @@ from .models import (
     Parameter,
     Zone,
 )
+from .decoder import DecodedFrame
 
 
 def _extract_typed_fields(
@@ -309,41 +308,6 @@ def map_memory(groups: dict[str, dict[int, dict[str, Any]]]) -> Memory | None:
         return Memory(index=idx, state={k: str(v) for k, v in fields.items()})
 
     return None
-
-
-@dataclass
-class MappedFrame:
-    """Complete mapped frame with all typed group data.
-
-    Attributes:
-        is_old: Whether this is old data (from OLD prefix).
-        timestamp: Frame timestamp.
-        count: Optional token count.
-        zones: List of zone configurations.
-        inputs: List of digital inputs.
-        outputs: List of outputs.
-        measurements: List of measurements.
-        parameters: List of configuration parameters.
-        labels: List of label groups.
-        modbus_registers: List of Modbus register data.
-        analog_sensors: List of analog sensor data.
-        configuration: System configuration.
-        memory: System memory/state.
-    """
-
-    is_old: bool
-    timestamp: datetime
-    count: int | None
-    zones: list[Zone]
-    inputs: list[Input]
-    outputs: list[Output]
-    measurements: list[Measurement]
-    parameters: list[Parameter]
-    labels: list[Label]
-    modbus_registers: list[ModbusRegister]
-    analog_sensors: list[AnalogSensor]
-    configuration: Configuration | None
-    memory: Memory | None
 
 
 def map_frame(frame: DecodedFrame) -> MappedFrame:

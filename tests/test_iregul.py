@@ -2,7 +2,6 @@
 
 import asyncio
 from datetime import timedelta
-from decimal import Decimal
 from pathlib import Path
 
 import aiohttp
@@ -128,12 +127,14 @@ async def test_collect(mock_server):
         res = await dev.collect(session)
 
         assert res is not None
-        assert len(res) == 4
-        assert len(res["outputs"]) == 18
-        assert len(res["sensors"]) == 15
-        assert len(res["inputs"]) == 9
-        assert len(res["measures"]) == 57
-        assert res["measures"]["puissance-absorbee"].value == Decimal("2283.6")
+        assert len(res.outputs) == 18
+        assert len(res.analog_sensors) == 15
+        assert len(res.inputs) == 9
+        assert len(res.measurements) == 57
+
+        # Find the aggregated "Puissance absorbée" measurement
+        puissance_abs = next(m for m in res.measurements if m.alias == "Puissance absorbée")
+        assert puissance_abs.valeur == pytest.approx(2283.6)
 
 
 @pytest.mark.asyncio
@@ -155,9 +156,10 @@ async def test_update(mock_server):
         res = await dev.collect(session)
 
         assert res is not None
-        assert len(res) == 4
-        assert len(res["outputs"]) == 18
-        assert len(res["sensors"]) == 15
-        assert len(res["inputs"]) == 9
-        assert len(res["measures"]) == 57
-        assert res["measures"]["puissance-absorbee"].value == Decimal("2283.6")
+        assert len(res.outputs) == 18
+        assert len(res.analog_sensors) == 15
+        assert len(res.inputs) == 9
+        assert len(res.measurements) == 57
+
+        puissance_abs = next(m for m in res.measurements if m.alias == "Puissance absorbée")
+        assert puissance_abs.valeur == pytest.approx(2283.6)

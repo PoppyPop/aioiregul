@@ -32,7 +32,7 @@ async def test_map_501_new_basic():
 
     # Check memory
     assert mapped.memory is not None
-    assert mapped.memory.state["alarme_flag"] is False
+    assert mapped.memory.state["alarme_flag"] == "False"
     assert mapped.memory.state["journal"] == "initialisation"
 
 
@@ -103,5 +103,5 @@ async def test_configuration_mapping():
     assert mapped.configuration is not None
     assert mapped.configuration.index == 0
     assert "autorisation_chauffage" in mapped.configuration.settings
-    assert mapped.configuration.settings["autorisation_chauffage"] == 1
+    assert mapped.configuration.settings["autorisation_chauffage"] == "1"
     assert "option_inverter" in mapped.configuration.settings

@@ -4,26 +4,12 @@ from __future__ import annotations
 
 import asyncio
 import logging
-import os
 from typing import Any
-
-from dotenv import load_dotenv
 
 from .decoder import decode_text
 from .mappers import map_frame
 
-# Load environment variables from .env file
-load_dotenv()
-
 LOGGER = logging.getLogger(__name__)
-
-
-def _get_env(key: str, default: str | None = None) -> str:
-    """Get environment variable with optional default."""
-    value = os.getenv(key, default)
-    if value is None:
-        raise ValueError(f"Missing required environment variable: {key}")
-    return value
 
 
 class IRegulClient:
@@ -31,36 +17,28 @@ class IRegulClient:
 
     def __init__(
         self,
-        host: str | None = None,
-        port: int | None = None,
-        device_id: str | None = None,
-        device_key: str | None = None,
+        host: str = "i-regul.fr",
+        port: int = 443,
+        username: str = "empty",
+        device_key: str = "REDACTED",
     ):
         """
         Initialize IRegul socket client.
 
-        Configuration is loaded from environment variables if not provided as arguments:
-        - IREGUL_HOST (default: i-regul.fr)
-        - IREGUL_PORT (default: 443)
-        - IREGUL_DEVICE_ID (required if not provided)
-        - IREGUL_DEVICE_KEY (required if not provided)
-
         Args:
             host: Hostname or IP address of the IRegul device
             port: Port number for the socket connection
-            device_id: Device identifier for the IRegul device
-            device_key: Device key/token for authentication
-
-        Raises:
-            ValueError: If required environment variables are missing
+            username: Username for authentication (default: "empty")
+            device_key: Device key/token for authentication (default: "REDACTED")
         """
-        self.host = host or os.getenv("IREGUL_HOST", "i-regul.fr")
-        self.port = port or int(os.getenv("IREGUL_PORT", "443"))
-        self.device_id = device_id or _get_env("IREGUL_DEVICE_ID")
-        self.device_key = device_key or _get_env("IREGUL_DEVICE_KEY")
+        self.host = host
+        self.port = port
+        self.username = username
+        self.device_key = device_key
 
     async def get_data(
         self,
+        device_id: str = "REDACTED",
         timeout: float = 60.0,
         mapped: bool = True,
     ) -> dict[str, Any]:
@@ -70,9 +48,8 @@ class IRegulClient:
         Issues a 502 command (full data with parameters and labels), waits for
         the response, skips the OLD message format, and returns the NEW message.
 
-        The device_id is set during client initialization via IREGUL_DEVICE_ID env var.
-
         Args:
+            device_id: The device ID to query (default: "REDACTED")
             timeout: Maximum time in seconds to wait for response (default: 60)
             mapped: If True, return mapped typed data; if False, return raw decoder data
 
@@ -98,7 +75,7 @@ class IRegulClient:
 
         try:
             # Build and send the 502 command
-            message = f"cdraminfo{self.device_id}{self.device_key}{{502#}}"
+            message = f"cdraminfo{device_id}{self.device_key}{{502#}}"
             LOGGER.debug(f"Sending command: {message}")
             writer.write(message.encode("utf-8"))
             await writer.drain()

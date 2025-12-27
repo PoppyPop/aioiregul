@@ -6,12 +6,10 @@
   "customizations": {
     "vscode": {
       "settings": {
-        "python.experiments.optOutFrom": ["pythonTestAdapter"],
         "python.defaultInterpreterPath": ".venv/bin/python",
         "python.pythonPath": ".venv/bin/python",
         "python.terminal.activateEnvInCurrentTerminal": true,
         "python.testing.pytestArgs": ["--no-cov"],
-        "pylint.importStrategy": "fromEnvironment",
         "python.analysis.typeCheckingMode": "basic",
         "editor.formatOnPaste": false,
         "editor.formatOnSave": true,
@@ -36,7 +34,6 @@
         "ms-python.python",
         "ms-python.vscode-pylance",
         "charliermarsh.ruff",
-        "ms-python.pylint",
         "redhat.vscode-yaml",
         "esbenp.prettier-vscode",
         "GitHub.vscode-pull-request-github",

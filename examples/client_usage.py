@@ -1,31 +1,26 @@
-"""Example: Using the IRegul socket client to fetch device data.
-
-Before running this example:
-1. Copy .env.example to .env
-2. Fill in your device details (IREGUL_DEVICE_ID, IREGUL_DEVICE_KEY, etc.)
-3. Run this script
-"""
+"""Example: Using the IRegul socket client to fetch device data."""
 
 import asyncio
 
-from aioiregul.v2 import IRegulClient
+from aioiregul import IRegulClient
 
 
 async def main():
     """
     Connect to an IRegul device and fetch data using the socket client.
 
-    Configuration is loaded from environment variables (.env file).
-
     This example demonstrates:
     1. Creating a client instance
     2. Fetching mapped data (typed models)
     3. Displaying the results
     """
-    # Create a client - configuration loaded from environment variables
-    # Required: IREGUL_DEVICE_KEY
-    # Optional: IREGUL_HOST, IREGUL_PORT, IREGUL_DEVICE_ID, IREGUL_USERNAME
-    client = IRegulClient()
+    # Create a client (uses default host/port for i-regul.fr:443)
+    client = IRegulClient(
+        host="i-regul.fr",
+        port=443,
+        username="empty",
+        device_key="REDACTED",
+    )
 
     try:
         print("Connecting to IRegul device...")
@@ -33,7 +28,7 @@ async def main():
 
         # Fetch data with 502 command (full data with parameters/labels)
         # Returns mapped data (typed models) by default
-        data = await client.get_data(timeout=60, mapped=True)
+        data = await client.get_data(device_id="REDACTED", timeout=60, mapped=True)
 
         print("✓ Successfully retrieved device data")
         print()

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import pytest
-from src.aioiregul.decoder import decode_file
+from src.aioiregul.v2.decoder import decode_file
 
 
 @pytest.mark.asyncio

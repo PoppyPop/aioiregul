@@ -1,4 +1,5 @@
 import asyncio
+import os
 import sys
 from datetime import datetime
 
@@ -16,8 +17,14 @@ async def get_datas():
     device_id = os.getenv("IREGUL_DEVICE_ID")
     device_key = os.getenv("IREGUL_DEVICE_KEY")
 
+    if not device_id or not device_key:
+        print("Error: IREGUL_DEVICE_ID and IREGUL_DEVICE_KEY must be set in .env or environment")
+        sys.exit(1)
+
+    reader, writer = await asyncio.open_connection(host, port, limit=128 * 1024)
+
     messagecode = 502
-    message = f"cdraminfoREDACTED{{{messagecode}#}}"
+    message = f"cdraminfo{device_id}{device_key}{{{messagecode}#}}"
     writer.write(message.encode())
     await writer.drain()
 

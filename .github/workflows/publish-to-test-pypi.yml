@@ -15,15 +15,12 @@ jobs:
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
-
-      - name: Set up Python
-        uses: actions/setup-python@v6.1.0
         with:
-          python-version: "3.13"
-
+          cache-dependency-glob: |
+            **/pyproject.toml
+          python-version: 3.13
       - name: Build distribution packages
         run: uv build
-
       - name: Publish distribution 📦 to TestPyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:

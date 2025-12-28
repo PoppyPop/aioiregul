@@ -1,0 +1,2140 @@
+{
+  "C": {
+    "0": {
+      "autorisation_chauffage": 1,
+      "autorisation_rafraichissement": 0,
+      "autorisation_rampe": 0,
+      "option_capteur_horizontal": 0,
+      "option_capteur_vertical": 0,
+      "option_capteur_nappe": 0,
+      "option_capteur_air": 1,
+      "option_capteur_bassin": 0,
+      "option_capteur_direct": 0,
+      "option_capteur_toit": 0,
+      "option_capteur_capteur": 0,
+      "option_capteur_chauffage": 0,
+      "option_demarreur": 0,
+      "option_compteur": 1,
+      "option_controleur_phase": 0,
+      "option_HC": 0,
+      "option_EJP": 0,
+      "option_EVI": 0,
+      "option_bi": 0,
+      "option_alarme_t": 0,
+      "option_inverter": 1,
+      "option_tandem_sans": 1,
+      "option_tandem_master": 0,
+      "option_tandem_slave": 0,
+      "option_tri": 1,
+      "option_mono": 1,
+      "option_407": 0,
+      "option_410": 1,
+      "option_ballon": 1,
+      "option_smart_ballon": 0,
+      "option_appoint": 1,
+      "option_releve": 0,
+      "option_ecs_sans": 1,
+      "option_ecs_direct": 0,
+      "option_ecs_indirect": 0,
+      "option_ecs_twin": 0,
+      "option_appoint_ECS": 0,
+      "option_antilegionellose": 0,
+      "option_pisc_sans": 1,
+      "option_pisc_direct": 0,
+      "option_pisc_indirect": 0,
+      "option_pisc_twin": 0,
+      "option_raf_direct": 0,
+      "option_raf_indirect": 1,
+      "option_raf_independant": 0,
+      "temperature_mini_capteur": 0,
+      "temperature_maxi_chauffage": 50,
+      "temperature_mini_chauffage": 30,
+      "nb_zones": 2,
+      "option_raf_sans": 0,
+      "option_electronique": 1,
+      "tempo_capteur": 45,
+      "langue": 0,
+      "logo_num": 0,
+      "blocage_chauffage": 0,
+      "blocage_raf": 0,
+      "blocage_ecs": 0,
+      "blocage_pisc": 0,
+      "option_cordon_chauffant": 1,
+      "option_debit_capteur": 0,
+      "option_debit_chauffage": 1,
+      "option_COP": 0,
+      "raf_fort": 0,
+      "raf_normal": 1,
+      "raf_faible": 0,
+      "consigne_releve": -5,
+      "option_solaire": 0,
+      "vitesse_ventilo": 90,
+      "IP_serveur": "i-regul.fr",
+      "adr_MAC": 0,
+      "cdram_famille": 0,
+      "cdram_modele": 0,
+      "cdram_version": 9,
+      "cdram_addon": 5,
+      "cdram_SN": 6949,
+      "option_ecs_autre": 0,
+      "option_pisc_autre": 0,
+      "option_free_cooling": 0,
+      "option_niveau": 0,
+      "degivrage_pressostatique": 0,
+      "solar_cpt": 0,
+      "solar_bypass_sans": 1,
+      "solar_bypass_vanne": 0,
+      "solar_bypass_circulateur": 0,
+      "nb_solar": 1,
+      "option_404": 0,
+      "nb_panel": 1,
+      "solar_10K": 1,
+      "solar_20K": 0,
+      "solar_1K": 0,
+      "option_internet": 1,
+      "option_pisc_circu": 0,
+      "nb_slaves": 1,
+      "num_slave": 1,
+      "ecs_bi": 0,
+      "ecs_solaire_primaire": 0,
+      "option_solaire_hybrid": 0,
+      "option_recirculation": 0,
+      "sechage": 0,
+      "sechage_cpt": 0,
+      "sechage_consigne": 0,
+      "gestion_evaporation": 0,
+      "sens_blocage_partiel": 0,
+      "sens_blocage_total": 0,
+      "forcage_max": 0,
+      "capteur_HP": 0,
+      "pwm09": 100,
+      "pwm10": 100
+    }
+  },
+  "Z": {
+    "1": {
+      "consigne_normal": 50,
+      "consigne_reduit": 40,
+      "consigne_horsgel": 10,
+      "mode_select": 0,
+      "mode": 0,
+      "id": 1,
+      "flag": 0,
+      "temperature_pente_chaud": 20,
+      "temperature_pente_froid": 45,
+      "temperature_pente_mini": 25,
+      "temperature_pente_maxi": 50,
+      "temperature_max": 57,
+      "temperature_min": 5,
+      "zone_nom": "(ecs1)",
+      "zone_raf": 0,
+      "zone_sonde_depart": 0,
+      "zone_sonde_ambiance": 0,
+      "zone_hygrometre": 0,
+      "zone_circulateur_permanent": 0,
+      "zone_correction_pente": 0,
+      "zone_blocage": 0,
+      "zone_adjust": 0,
+      "zone_4-20mA": 0,
+      "zone_active": 1,
+      "zone_regle": 0
+    },
+    "2": {
+      "consigne_normal": 25,
+      "consigne_reduit": 20,
+      "consigne_horsgel": 10,
+      "mode_select": 0,
+      "mode": 0,
+      "id": 2,
+      "flag": 0,
+      "temperature_pente_chaud": 20,
+      "temperature_pente_froid": 45,
+      "temperature_pente_mini": 25,
+      "temperature_pente_maxi": 50,
+      "temperature_max": 55,
+      "temperature_min": 5,
+      "zone_nom": "(piscine)",
+      "zone_raf": 0,
+      "zone_sonde_depart": 0,
+      "zone_sonde_ambiance": 0,
+      "zone_hygrometre": 0,
+      "zone_circulateur_permanent": 0,
+      "zone_correction_pente": 0,
+      "zone_blocage": 0,
+      "zone_adjust": 0,
+      "zone_4-20mA": 0,
+      "zone_active": 1,
+      "zone_regle": 0
+    },
+    "3": {
+      "consigne_normal": 35,
+      "consigne_reduit": 35,
+      "consigne_horsgel": 10,
+      "mode_select": 0,
+      "mode": 0,
+      "id": 3,
+      "flag": 0,
+      "temperature_pente_chaud": 20,
+      "temperature_pente_froid": 45,
+      "temperature_pente_mini": 25,
+      "temperature_pente_maxi": 50,
+      "temperature_max": 70,
+      "temperature_min": 5,
+      "zone_nom": "(appoint ecs1)",
+      "zone_raf": 0,
+      "zone_sonde_depart": 0,
+      "zone_sonde_ambiance": 0,
+      "zone_hygrometre": 0,
+      "zone_circulateur_permanent": 0,
+      "zone_correction_pente": 0,
+      "zone_blocage": 0,
+      "zone_adjust": 0,
+      "zone_4-20mA": 0,
+      "zone_active": 1,
+      "zone_regle": 0
+    },
+    "4": {
+      "consigne_normal": 10,
+      "consigne_reduit": 10,
+      "consigne_horsgel": 10,
+      "mode_select": 0,
+      "mode": 0,
+      "id": 4,
+      "flag": 0,
+      "temperature_pente_chaud": 20,
+      "temperature_pente_froid": 45,
+      "temperature_pente_mini": 25,
+      "temperature_pente_maxi": 50,
+      "temperature_max": 70,
+      "temperature_min": 5,
+      "zone_nom": "(appoint chauffage )",
+      "zone_raf": 0,
+      "zone_sonde_depart": 0,
+      "zone_sonde_ambiance": 0,
+      "zone_hygrometre": 0,
+      "zone_circulateur_permanent": 0,
+      "zone_correction_pente": 0,
+      "zone_blocage": 0,
+      "zone_adjust": 0,
+      "zone_4-20mA": 0,
+      "zone_active": 1,
+      "zone_regle": 0
+    },
+    "5": {
+      "consigne_normal": 20,
+      "consigne_reduit": 19,
+      "consigne_horsgel": 10,
+      "mode_select": 0,
+      "mode": 0,
+      "id": 5,
+      "flag": 0,
+      "temperature_pente_chaud": 20,
+      "temperature_pente_froid": 45,
+      "temperature_pente_mini": 25,
+      "temperature_pente_maxi": 50,
+      "temperature_max": 57,
+      "temperature_min": 5,
+      "zone_nom": "(recirculation ecs1)",
+      "zone_raf": 0,
+      "zone_sonde_depart": 0,
+      "zone_sonde_ambiance": 0,
+      "zone_hygrometre": 0,
+      "zone_circulateur_permanent": 0,
+      "zone_correction_pente": 0,
+      "zone_blocage": 0,
+      "zone_adjust": 0,
+      "zone_4-20mA": 0,
+      "zone_active": 1,
+      "zone_regle": 0
+    },
+    "6": {
+      "consigne_normal": 80,
+      "consigne_reduit": 40,
+      "consigne_horsgel": 10,
+      "mode_select": 0,
+      "mode": 0,
+      "id": 6,
+      "flag": 0,
+      "temperature_pente_chaud": 20,
+      "temperature_pente_froid": 45,
+      "temperature_pente_mini": 25,
+      "temperature_pente_maxi": 50,
+      "temperature_max": 100,
+      "temperature_min": 5,
+      "zone_nom": "----> 1",
+      "zone_raf": 0,
+      "zone_sonde_depart": 0,
+      "zone_sonde_ambiance": 0,
+      "zone_hygrometre": 0,
+      "zone_circulateur_permanent": 0,
+      "zone_correction_pente": 0,
+      "zone_blocage": 0,
+      "zone_adjust": 0,
+      "zone_4-20mA": 0,
+      "zone_active": 1,
+      "zone_regle": 0
+    },
+    "7": {
+      "consigne_normal": 80,
+      "consigne_reduit": 40,
+      "consigne_horsgel": 10,
+      "mode_select": 0,
+      "mode": 0,
+      "id": 7,
+      "flag": 0,
+      "temperature_pente_chaud": 20,
+      "temperature_pente_froid": 45,
+      "temperature_pente_mini": 25,
+      "temperature_pente_maxi": 50,
+      "temperature_max": 100,
+      "temperature_min": 5,
+      "zone_nom": "----> 2",
+      "zone_raf": 0,
+      "zone_sonde_depart": 0,
+      "zone_sonde_ambiance": 0,
+      "zone_hygrometre": 0,
+      "zone_circulateur_permanent": 0,
+      "zone_correction_pente": 0,
+      "zone_blocage": 0,
+      "zone_adjust": 0,
+      "zone_4-20mA": 0,
+      "zone_active": 1,
+      "zone_regle": 0
+    },
+    "8": {
+      "consigne_normal": 25,
+      "consigne_reduit": 20,
+      "consigne_horsgel": 10,
+      "mode_select": 0,
+      "mode": 0,
+      "id": 8,
+      "flag": 0,
+      "temperature_pente_chaud": 20,
+      "temperature_pente_froid": 45,
+      "temperature_pente_mini": 25,
+      "temperature_pente_maxi": 50,
+      "temperature_max": 40,
+      "temperature_min": 5,
+      "zone_nom": "----> 3",
+      "zone_raf": 0,
+      "zone_sonde_depart": 0,
+      "zone_sonde_ambiance": 0,
+      "zone_hygrometre": 0,
+      "zone_circulateur_permanent": 0,
+      "zone_correction_pente": 0,
+      "zone_blocage": 0,
+      "zone_adjust": 0,
+      "zone_4-20mA": 0,
+      "zone_active": 1,
+      "zone_regle": 0
+    },
+    "9": {
+      "consigne_normal": 20,
+      "consigne_reduit": 19,
+      "consigne_horsgel": 10,
+      "mode_select": 0,
+      "mode": 0,
+      "id": 9,
+      "flag": 0,
+      "temperature_pente_chaud": 10,
+      "temperature_pente_froid": 45,
+      "temperature_pente_mini": 25,
+      "temperature_pente_maxi": 45,
+      "temperature_max": 30,
+      "temperature_min": 5,
+      "zone_nom": "----> 4",
+      "zone_raf": 0,
+      "zone_sonde_depart": 0,
+      "zone_sonde_ambiance": 0,
+      "zone_hygrometre": 0,
+      "zone_circulateur_permanent": 0,
+      "zone_correction_pente": 0,
+      "zone_blocage": 0,
+      "zone_adjust": 0,
+      "zone_4-20mA": 0,
+      "zone_active": 1,
+      "zone_regle": 0
+    },
+    "10": {
+      "consigne_normal": 20,
+      "consigne_reduit": 19,
+      "consigne_horsgel": 10,
+      "mode_select": 0,
+      "mode": 0,
+      "id": 10,
+      "flag": 0,
+      "temperature_pente_chaud": 10,
+      "temperature_pente_froid": 10,
+      "temperature_pente_mini": 10,
+      "temperature_pente_maxi": 45,
+      "temperature_max": 60,
+      "temperature_min": 5,
+      "zone_nom": "T° minimum",
+      "zone_raf": 0,
+      "zone_sonde_depart": 0,
+      "zone_sonde_ambiance": 0,
+      "zone_hygrometre": 0,
+      "zone_circulateur_permanent": 0,
+      "zone_correction_pente": 0,
+      "zone_blocage": 0,
+      "zone_adjust": 0,
+      "zone_4-20mA": 0,
+      "zone_active": 1,
+      "zone_regle": 0
+    },
+    "11": {
+      "consigne_normal": 20.1,
+      "consigne_reduit": 16,
+      "consigne_horsgel": 10,
+      "mode_select": 1,
+      "mode": 0,
+      "id": 11,
+      "flag": 0,
+      "temperature_pente_chaud": 32,
+      "temperature_pente_froid": 50,
+      "temperature_pente_mini": 10,
+      "temperature_pente_maxi": 50,
+      "temperature_max": 30,
+      "temperature_min": 5,
+      "zone_nom": "Radiateur",
+      "zone_raf": 0,
+      "zone_sonde_depart": 0,
+      "zone_sonde_ambiance": 1,
+      "zone_hygrometre": 0,
+      "zone_circulateur_permanent": 0,
+      "zone_correction_pente": 0,
+      "zone_blocage": 0,
+      "zone_adjust": 0,
+      "zone_4-20mA": 0,
+      "zone_active": 1,
+      "zone_regle": 0
+    },
+    "12": {
+      "consigne_normal": 20.1,
+      "consigne_reduit": 16,
+      "consigne_horsgel": 10,
+      "mode_select": 1,
+      "mode": 0,
+      "id": 12,
+      "flag": 0,
+      "temperature_pente_chaud": 32,
+      "temperature_pente_froid": 50,
+      "temperature_pente_mini": 10,
+      "temperature_pente_maxi": 50,
+      "temperature_max": 30,
+      "temperature_min": 5,
+      "zone_nom": "Ventilo-conv.",
+      "zone_raf": 1,
+      "zone_sonde_depart": 0,
+      "zone_sonde_ambiance": 1,
+      "zone_hygrometre": 0,
+      "zone_circulateur_permanent": 0,
+      "zone_correction_pente": 0,
+      "zone_blocage": 0,
+      "zone_adjust": 0,
+      "zone_4-20mA": 0,
+      "zone_active": 1,
+      "zone_regle": 0
+    }
+  },
+  "I": {
+    "1": {
+      "id": 1,
+      "flag": 1,
+      "adr": 0,
+      "type": 1,
+      "min": 7,
+      "max": 25,
+      "alias": "Sécurité capteur",
+      "esclave": 2
+    },
+    "9": {
+      "id": 9,
+      "flag": 1,
+      "adr": 0,
+      "type": 1,
+      "min": 7,
+      "max": 25,
+      "alias": "Sécurité chauffage",
+      "esclave": 2
+    },
+    "13": {
+      "id": 13,
+      "flag": 1,
+      "adr": 0,
+      "type": 1,
+      "min": 7,
+      "max": 25,
+      "alias": "Indication tarif T3",
+      "esclave": 2
+    },
+    "14": {
+      "id": 14,
+      "flag": 1,
+      "adr": 0,
+      "type": 1,
+      "min": 7,
+      "max": 25,
+      "alias": "Indication tarif T2",
+      "esclave": 2
+    },
+    "30": {
+      "id": 30,
+      "flag": 1,
+      "adr": 0,
+      "type": 1,
+      "min": 7,
+      "max": 25,
+      "alias": "Forcage chaud",
+      "esclave": 2
+    },
+    "31": {
+      "id": 31,
+      "flag": 1,
+      "adr": 0,
+      "type": 1,
+      "min": 7,
+      "max": 25,
+      "alias": "Forcage froid",
+      "esclave": 2
+    },
+    "32": {
+      "id": 32,
+      "flag": 1,
+      "adr": 0,
+      "type": 1,
+      "min": 7,
+      "max": 25,
+      "alias": "Forcage ECS",
+      "esclave": 2
+    },
+    "33": {
+      "id": 33,
+      "flag": 1,
+      "adr": 0,
+      "type": 1,
+      "min": 7,
+      "max": 25,
+      "alias": "Forcage piscine",
+      "esclave": 2
+    },
+    "34": {
+      "id": 34,
+      "flag": 1,
+      "adr": 0,
+      "type": 1,
+      "min": 7,
+      "max": 25,
+      "alias": "Forcage divers",
+      "esclave": 2
+    }
+  },
+  "O": {
+    "3": {
+      "id": 3,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Compresseur",
+      "adr": 1,
+      "type": 1,
+      "esclave": 2
+    },
+    "4": {
+      "id": 4,
+      "flag": 1,
+      "min": 100,
+      "max": 100,
+      "alias": "Détendeur",
+      "adr": 100,
+      "type": 3,
+      "esclave": 2
+    },
+    "6": {
+      "id": 6,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Distri chaud/froid",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    },
+    "8": {
+      "id": 8,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Capteur",
+      "adr": 6,
+      "type": 1,
+      "esclave": 2
+    },
+    "10": {
+      "id": 10,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Vanne inversion",
+      "adr": 9,
+      "type": 1,
+      "esclave": 2
+    },
+    "12": {
+      "id": 12,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Cordon chauffant",
+      "adr": 4,
+      "type": 1,
+      "esclave": 2
+    },
+    "13": {
+      "id": 13,
+      "flag": 1,
+      "min": 101,
+      "max": 105,
+      "alias": "Vitesse capteur",
+      "adr": 101,
+      "type": 2,
+      "esclave": 2
+    },
+    "25": {
+      "id": 25,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Fonction externe",
+      "adr": 5,
+      "type": 1,
+      "esclave": 2
+    },
+    "26": {
+      "id": 26,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Prod chaud/froid",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    },
+    "97": {
+      "id": 97,
+      "flag": 1,
+      "min": 0,
+      "max": 255,
+      "alias": "Test",
+      "adr": 0,
+      "type": 3,
+      "esclave": 2
+    },
+    "98": {
+      "id": 98,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Chauffage autorisé",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    },
+    "99": {
+      "id": 99,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Rafraichissement autorisé",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    },
+    "100": {
+      "id": 100,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Circulateur technique",
+      "adr": 7,
+      "type": 1,
+      "esclave": 2
+    },
+    "60": {
+      "id": 60,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Circulateur ballon tampon",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    },
+    "101": {
+      "id": 101,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Appoint chauffage",
+      "adr": 3,
+      "type": 1,
+      "esclave": 2
+    },
+    "110": {
+      "id": 110,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Circulateur zone 1",
+      "adr": 8,
+      "type": 1,
+      "esclave": 2
+    },
+    "120": {
+      "id": 120,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Circulateur zone 2",
+      "adr": 11,
+      "type": 1,
+      "esclave": 2
+    },
+    "50": {
+      "id": 50,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Pas d'alarme",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    },
+    "451": {
+      "id": 451,
+      "flag": 1,
+      "min": 0,
+      "max": 0,
+      "alias": "Vitesse compresseur",
+      "adr": 0,
+      "type": 2,
+      "esclave": 2
+    },
+    "52": {
+      "id": 52,
+      "flag": 1,
+      "min": 101,
+      "max": 105,
+      "alias": "PWM a",
+      "adr": 105,
+      "type": 2,
+      "esclave": 2
+    },
+    "53": {
+      "id": 53,
+      "flag": 1,
+      "min": 101,
+      "max": 105,
+      "alias": "PWM b",
+      "adr": 102,
+      "type": 2,
+      "esclave": 2
+    },
+    "54": {
+      "id": 54,
+      "flag": 1,
+      "min": 101,
+      "max": 105,
+      "alias": "PWM c",
+      "adr": 103,
+      "type": 2,
+      "esclave": 2
+    },
+    "55": {
+      "id": 55,
+      "flag": 1,
+      "min": 101,
+      "max": 105,
+      "alias": "PWM d",
+      "adr": 104,
+      "type": 2,
+      "esclave": 2
+    },
+    "61": {
+      "id": 61,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Forcage divers",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    },
+    "62": {
+      "id": 62,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Forcage chaud",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    },
+    "63": {
+      "id": 63,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Forcage froid",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    },
+    "64": {
+      "id": 64,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Forcage ECS",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    },
+    "606": {
+      "id": 606,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Distri chaud/froid bis",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    },
+    "625": {
+      "id": 625,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Fonction externe bis",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    },
+    "626": {
+      "id": 626,
+      "flag": 1,
+      "min": 0,
+      "max": 22,
+      "alias": "Prod chaud/froid bis",
+      "adr": 0,
+      "type": 1,
+      "esclave": 2
+    }
+  },
+  "A": {
+    "3": {
+      "id": 3,
+      "flag": 1,
+      "adr": 7,
+      "type": "NTC10K1",
+      "min": 1,
+      "max": 24,
+      "unit": "°",
+      "alias": "T° extérieure",
+      "esclave": 2
+    },
+    "4": {
+      "id": 4,
+      "flag": 1,
+      "adr": 11,
+      "type": "NTC10K1",
+      "min": 1,
+      "max": 24,
+      "unit": "°",
+      "alias": "T° départ condenseur",
+      "esclave": 2
+    },
+    "5": {
+      "id": 5,
+      "flag": 1,
+      "adr": 12,
+      "type": "NTC10K1",
+      "min": 1,
+      "max": 24,
+      "unit": "°",
+      "alias": "T° retour condenseur",
+      "esclave": 2
+    },
+    "6": {
+      "id": 6,
+      "flag": 1,
+      "adr": 1,
+      "type": "P_0_16",
+      "min": 1,
+      "max": 6,
+      "unit": "bar",
+      "alias": "Basse pression",
+      "esclave": 2
+    },
+    "7": {
+      "id": 7,
+      "flag": 1,
+      "adr": 2,
+      "type": "P_0_40",
+      "min": 1,
+      "max": 6,
+      "unit": "bar",
+      "alias": "Haute pression",
+      "esclave": 2
+    },
+    "15": {
+      "id": 15,
+      "flag": 1,
+      "adr": 1,
+      "type": "R410A_TV_0_16",
+      "min": 1,
+      "max": 6,
+      "unit": "°",
+      "alias": "T° évaporation",
+      "esclave": 2
+    },
+    "16": {
+      "id": 16,
+      "flag": 1,
+      "adr": 2,
+      "type": "R410A_TL_0_40",
+      "min": 1,
+      "max": 6,
+      "unit": "°",
+      "alias": "T° condensation",
+      "esclave": 2
+    },
+    "17": {
+      "id": 17,
+      "flag": 1,
+      "adr": 8,
+      "type": "NTC10K1",
+      "min": 1,
+      "max": 24,
+      "unit": "°",
+      "alias": "T° évaporateur",
+      "esclave": 2
+    },
+    "21": {
+      "id": 21,
+      "flag": 1,
+      "adr": 3,
+      "type": "DN25",
+      "min": 1,
+      "max": 6,
+      "unit": "l/m",
+      "alias": "Débit chauffage",
+      "esclave": 2
+    },
+    "28": {
+      "id": 28,
+      "flag": 1,
+      "adr": 9,
+      "type": "NTC10K1",
+      "min": 1,
+      "max": 24,
+      "unit": "°",
+      "alias": "T° entrée évaporateur",
+      "esclave": 2
+    },
+    "29": {
+      "id": 29,
+      "flag": 1,
+      "adr": 10,
+      "type": "NTC10K1",
+      "min": 1,
+      "max": 24,
+      "unit": "°",
+      "alias": "T° sortie évaporateur",
+      "esclave": 2
+    },
+    "100": {
+      "id": 100,
+      "flag": 1,
+      "adr": 13,
+      "type": "NTC10K1",
+      "min": 1,
+      "max": 24,
+      "unit": "°",
+      "alias": "T° ballon tampon",
+      "esclave": 2
+    },
+    "101": {
+      "id": 101,
+      "flag": 1,
+      "adr": 13,
+      "type": "NTC10K1",
+      "min": 1,
+      "max": 24,
+      "unit": "°",
+      "alias": "T° ballon technique",
+      "esclave": 2
+    },
+    "110": {
+      "id": 110,
+      "flag": 1,
+      "adr": 21,
+      "type": "NTC10K1",
+      "min": 1,
+      "max": 24,
+      "unit": "°",
+      "alias": "T° ambiance  zone 1",
+      "esclave": 2
+    },
+    "120": {
+      "id": 120,
+      "flag": 1,
+      "adr": 21,
+      "type": "NTC10K1",
+      "min": 1,
+      "max": 24,
+      "unit": "°",
+      "alias": "T°ambiance zone 2",
+      "esclave": 2
+    }
+  },
+  "M": {
+    "1": {
+      "flag": 1,
+      "id": 1,
+      "unit": "°",
+      "alias": "Surchauffe",
+      "type": 0
+    },
+    "2": {
+      "flag": 1,
+      "id": 2,
+      "unit": "°",
+      "alias": "Delta mesuré",
+      "type": 0
+    },
+    "3": {
+      "flag": 1,
+      "id": 3,
+      "unit": "°",
+      "alias": "Delta maxi",
+      "type": 0
+    },
+    "4": {
+      "flag": 1,
+      "id": 4,
+      "unit": "°",
+      "alias": "Delta moyen",
+      "type": 0
+    },
+    "5": {
+      "flag": 1,
+      "id": 5,
+      "unit": "kW",
+      "alias": "Puissance moyenne",
+      "type": 0
+    },
+    "6": {
+      "flag": 1,
+      "id": 6,
+      "unit": "kW",
+      "alias": "Puissance calorifique",
+      "type": 0
+    },
+    "7": {
+      "flag": 1,
+      "id": 7,
+      "unit": "W",
+      "alias": "Puissance compresseur",
+      "type": 0
+    },
+    "8": {
+      "flag": 1,
+      "id": 8,
+      "unit": "",
+      "alias": "COP",
+      "type": 0
+    },
+    "11": {
+      "flag": 1,
+      "id": 11,
+      "unit": "°",
+      "alias": "Delta chauffage",
+      "type": 0
+    },
+    "12": {
+      "flag": 1,
+      "id": 12,
+      "unit": "°",
+      "alias": "Delta capteur",
+      "type": 0
+    },
+    "15": {
+      "flag": 1,
+      "id": 15,
+      "unit": "W",
+      "alias": "Puissance accessoires",
+      "type": 0
+    },
+    "16": {
+      "flag": 1,
+      "id": 16,
+      "unit": "kWh",
+      "alias": "Puissance absorbée",
+      "type": 0
+    },
+    "17": {
+      "flag": 1,
+      "id": 17,
+      "unit": "MWh",
+      "alias": "Puissance absorbée",
+      "type": 0
+    },
+    "19": {
+      "flag": 1,
+      "id": 19,
+      "unit": "",
+      "alias": "Nombre Démarrages",
+      "type": 0
+    },
+    "20": {
+      "flag": 1,
+      "id": 20,
+      "unit": "kWh",
+      "alias": "Conso divers T1",
+      "type": 0
+    },
+    "21": {
+      "flag": 1,
+      "id": 21,
+      "unit": "kWh",
+      "alias": "Conso chauffage T1",
+      "type": 0
+    },
+    "22": {
+      "flag": 1,
+      "id": 22,
+      "unit": "kWh",
+      "alias": "Conso Rafraichissement T1",
+      "type": 0
+    },
+    "25": {
+      "flag": 1,
+      "id": 25,
+      "unit": "kWh",
+      "alias": "Conso dégivrage T1",
+      "type": 0
+    },
+    "26": {
+      "flag": 1,
+      "id": 26,
+      "unit": "kWh",
+      "alias": "Conso total T1",
+      "type": 0
+    },
+    "27": {
+      "flag": 1,
+      "id": 27,
+      "unit": "kWh",
+      "alias": "Conso compteur 1 T1",
+      "type": 0
+    },
+    "28": {
+      "flag": 1,
+      "id": 28,
+      "unit": "kWh",
+      "alias": "Conso compteur 2 T1",
+      "type": 0
+    },
+    "29": {
+      "flag": 1,
+      "id": 29,
+      "unit": "kWh",
+      "alias": "Conso compteur 3 T1",
+      "type": 0
+    },
+    "30": {
+      "flag": 1,
+      "id": 30,
+      "unit": "kWh",
+      "alias": "Conso divers T2",
+      "type": 0
+    },
+    "31": {
+      "flag": 1,
+      "id": 31,
+      "unit": "kWh",
+      "alias": "Conso chauffage T2",
+      "type": 0
+    },
+    "32": {
+      "flag": 1,
+      "id": 32,
+      "unit": "kWh",
+      "alias": "Conso rafraichissement T2",
+      "type": 0
+    },
+    "35": {
+      "flag": 1,
+      "id": 35,
+      "unit": "kWh",
+      "alias": "Conso dégivrage T2",
+      "type": 0
+    },
+    "36": {
+      "flag": 1,
+      "id": 36,
+      "unit": "kWh",
+      "alias": "Conso total T2",
+      "type": 0
+    },
+    "37": {
+      "flag": 1,
+      "id": 37,
+      "unit": "kWh",
+      "alias": "Conso compteur 1 T2",
+      "type": 0
+    },
+    "38": {
+      "flag": 1,
+      "id": 38,
+      "unit": "kWh",
+      "alias": "Conso compteur 2 T2",
+      "type": 0
+    },
+    "39": {
+      "flag": 1,
+      "id": 39,
+      "unit": "kWh",
+      "alias": "Conso compteur 3 T2",
+      "type": 0
+    },
+    "40": {
+      "flag": 1,
+      "id": 40,
+      "unit": "kWh",
+      "alias": "Conso divers T3",
+      "type": 0
+    },
+    "41": {
+      "flag": 1,
+      "id": 41,
+      "unit": "kWh",
+      "alias": "Conso chauffage T3",
+      "type": 0
+    },
+    "42": {
+      "flag": 1,
+      "id": 42,
+      "unit": "kWh",
+      "alias": "Conso rafraichissement T3",
+      "type": 0
+    },
+    "45": {
+      "flag": 1,
+      "id": 45,
+      "unit": "kWh",
+      "alias": "Conso dégivrage T3",
+      "type": 0
+    },
+    "46": {
+      "flag": 1,
+      "id": 46,
+      "unit": "kWh",
+      "alias": "Conso total T3",
+      "type": 0
+    },
+    "47": {
+      "flag": 1,
+      "id": 47,
+      "unit": "kWh",
+      "alias": "Conso compteur 1 T3",
+      "type": 0
+    },
+    "48": {
+      "flag": 1,
+      "id": 48,
+      "unit": "kWh",
+      "alias": "Conso compteur 2 T3",
+      "type": 0
+    },
+    "49": {
+      "flag": 1,
+      "id": 49,
+      "unit": "kWh",
+      "alias": "Conso compteur 3 T3",
+      "type": 0
+    },
+    "50": {
+      "flag": 1,
+      "id": 50,
+      "unit": "h",
+      "alias": "Heures divers T1",
+      "type": 0
+    },
+    "51": {
+      "flag": 1,
+      "id": 51,
+      "unit": "h",
+      "alias": "Heures chauffage T1",
+      "type": 0
+    },
+    "52": {
+      "flag": 1,
+      "id": 52,
+      "unit": "h",
+      "alias": "Heures rafraichissement T1",
+      "type": 0
+    },
+    "55": {
+      "flag": 1,
+      "id": 55,
+      "unit": "h",
+      "alias": "Heures dégivrage T1",
+      "type": 0
+    },
+    "56": {
+      "flag": 1,
+      "id": 56,
+      "unit": "h",
+      "alias": "Heures total T1",
+      "type": 0
+    },
+    "57": {
+      "flag": 1,
+      "id": 57,
+      "unit": "h",
+      "alias": "Heures appoint T1",
+      "type": 0
+    },
+    "60": {
+      "flag": 1,
+      "id": 60,
+      "unit": "h",
+      "alias": "Heures divers T2",
+      "type": 0
+    },
+    "61": {
+      "flag": 1,
+      "id": 61,
+      "unit": "h",
+      "alias": "Heures chauffage T2",
+      "type": 0
+    },
+    "62": {
+      "flag": 1,
+      "id": 62,
+      "unit": "h",
+      "alias": "Heures rafraichissement T2",
+      "type": 0
+    },
+    "65": {
+      "flag": 1,
+      "id": 65,
+      "unit": "h",
+      "alias": "Heures dégivrage T2",
+      "type": 0
+    },
+    "66": {
+      "flag": 1,
+      "id": 66,
+      "unit": "h",
+      "alias": "Heures total T2",
+      "type": 0
+    },
+    "67": {
+      "flag": 1,
+      "id": 67,
+      "unit": "h",
+      "alias": "Heures appoint T2",
+      "type": 0
+    },
+    "70": {
+      "flag": 1,
+      "id": 70,
+      "unit": "h",
+      "alias": "Heures divers T3",
+      "type": 0
+    },
+    "71": {
+      "flag": 1,
+      "id": 71,
+      "unit": "h",
+      "alias": "Heures chauffage T3",
+      "type": 0
+    },
+    "72": {
+      "flag": 1,
+      "id": 72,
+      "unit": "h",
+      "alias": "Heures rafraichissement T3",
+      "type": 0
+    },
+    "75": {
+      "flag": 1,
+      "id": 75,
+      "unit": "h",
+      "alias": "Heures dégivrage T3",
+      "type": 0
+    },
+    "76": {
+      "flag": 1,
+      "id": 76,
+      "unit": "h",
+      "alias": "Heures total T3",
+      "type": 0
+    },
+    "77": {
+      "flag": 1,
+      "id": 77,
+      "unit": "h",
+      "alias": "Heures appoint T3",
+      "type": 0
+    },
+    "100": {
+      "flag": 1,
+      "id": 100,
+      "unit": "zorg",
+      "alias": "u(t)",
+      "type": 0
+    },
+    "99": {
+      "flag": 1,
+      "id": 99,
+      "unit": "",
+      "alias": "boot",
+      "type": 0
+    }
+  },
+  "B": {
+    "0": {
+      "id": 0,
+      "flag": 0,
+      "nom_registre": "init",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 101
+    },
+    "1": {
+      "id": 1,
+      "flag": 0,
+      "nom_registre": "reset alarme",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 101
+    },
+    "2": {
+      "id": 2,
+      "flag": 0,
+      "nom_registre": "set alarme",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 101
+    },
+    "3": {
+      "id": 3,
+      "flag": 0,
+      "nom_registre": "set speed",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 102
+    },
+    "4": {
+      "id": 4,
+      "flag": 0,
+      "nom_registre": "start",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 100
+    },
+    "5": {
+      "id": 5,
+      "flag": 0,
+      "nom_registre": "stop",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 100
+    },
+    "6": {
+      "id": 6,
+      "flag": 0,
+      "nom_registre": "drive status",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 104
+    },
+    "7": {
+      "id": 7,
+      "flag": 0,
+      "nom_registre": "alarm code",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 105
+    },
+    "8": {
+      "id": 8,
+      "flag": 0,
+      "nom_registre": "status register",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 106
+    },
+    "9": {
+      "id": 9,
+      "flag": 0,
+      "nom_registre": "speed register",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 107
+    },
+    "10": {
+      "id": 10,
+      "flag": 0,
+      "nom_registre": "motor frequency",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 108
+    },
+    "11": {
+      "id": 11,
+      "flag": 0,
+      "nom_registre": "motor current",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 109
+    },
+    "12": {
+      "id": 12,
+      "flag": 0,
+      "nom_registre": "motor power",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 110
+    },
+    "13": {
+      "id": 13,
+      "flag": 0,
+      "nom_registre": "motor voltage",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 111
+    },
+    "14": {
+      "id": 14,
+      "flag": 0,
+      "nom_registre": "DC bus voltage",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 113
+    },
+    "15": {
+      "id": 15,
+      "flag": 0,
+      "nom_registre": "drive température",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 114
+    },
+    "16": {
+      "id": 16,
+      "flag": 0,
+      "nom_registre": "switch-on-time",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 115
+    },
+    "17": {
+      "id": 17,
+      "flag": 0,
+      "nom_registre": "drive run time",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 116
+    },
+    "18": {
+      "id": 18,
+      "flag": 0,
+      "nom_registre": "drive run time last alarm",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 117
+    },
+    "19": {
+      "id": 19,
+      "flag": 0,
+      "nom_registre": "kWh meter",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 118
+    },
+    "20": {
+      "id": 20,
+      "flag": 0,
+      "nom_registre": "MWh meter",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 119
+    },
+    "21": {
+      "id": 21,
+      "flag": 0,
+      "nom_registre": "Network adress",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 120
+    },
+    "22": {
+      "id": 22,
+      "flag": 0,
+      "nom_registre": "Dip-switch adress",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 121
+    },
+    "23": {
+      "id": 23,
+      "flag": 0,
+      "nom_registre": "modbus error",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 122
+    },
+    "24": {
+      "id": 24,
+      "flag": 0,
+      "nom_registre": "error counter",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 123
+    },
+    "25": {
+      "id": 25,
+      "flag": 0,
+      "nom_registre": "switching frequency",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 124
+    },
+    "26": {
+      "id": 26,
+      "flag": 0,
+      "nom_registre": "rotor frequency",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 132
+    },
+    "27": {
+      "id": 27,
+      "flag": 0,
+      "nom_registre": "alarm 1",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 137
+    },
+    "28": {
+      "id": 28,
+      "flag": 0,
+      "nom_registre": "alarm 2",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 137
+    },
+    "29": {
+      "id": 29,
+      "flag": 0,
+      "nom_registre": "alarm 3",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 137
+    },
+    "30": {
+      "id": 30,
+      "flag": 0,
+      "nom_registre": "alarm 4",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 137
+    },
+    "31": {
+      "id": 31,
+      "flag": 0,
+      "nom_registre": "motor overload counter",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 153
+    },
+    "32": {
+      "id": 32,
+      "flag": 0,
+      "nom_registre": "drive overload counter",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 154
+    },
+    "33": {
+      "id": 33,
+      "flag": 0,
+      "nom_registre": "Motor base frequency",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 1
+    },
+    "34": {
+      "id": 34,
+      "flag": 0,
+      "nom_registre": "Motor base voltage",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 2
+    },
+    "35": {
+      "id": 35,
+      "flag": 0,
+      "nom_registre": "Motor related current",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 3
+    },
+    "36": {
+      "id": 36,
+      "flag": 0,
+      "nom_registre": "Motor power factor (cos())",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 4
+    },
+    "37": {
+      "id": 37,
+      "flag": 0,
+      "nom_registre": "maximum output current",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 5
+    },
+    "38": {
+      "id": 38,
+      "flag": 0,
+      "nom_registre": "Maximum output frequency",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 6
+    },
+    "39": {
+      "id": 39,
+      "flag": 0,
+      "nom_registre": "Minimum output frequency",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 7
+    },
+    "40": {
+      "id": 40,
+      "flag": 0,
+      "nom_registre": "Reverse speed enable",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 8
+    },
+    "41": {
+      "id": 41,
+      "flag": 0,
+      "nom_registre": "Speed profile: frequency 1",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 12
+    },
+    "42": {
+      "id": 42,
+      "flag": 0,
+      "nom_registre": "Speed profile: frequency 2",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 13
+    },
+    "43": {
+      "id": 43,
+      "flag": 0,
+      "nom_registre": "Speed profile: frequency 3",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 14
+    },
+    "44": {
+      "id": 44,
+      "flag": 0,
+      "nom_registre": "Speed profile: acceleration 1",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 15
+    },
+    "45": {
+      "id": 45,
+      "flag": 0,
+      "nom_registre": "Speed profile: acceleration 2",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 16
+    },
+    "46": {
+      "id": 46,
+      "flag": 0,
+      "nom_registre": "Speed profile: acceleration 3",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 17
+    },
+    "47": {
+      "id": 47,
+      "flag": 0,
+      "nom_registre": "Speed profile: acceleration 4",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 18
+    },
+    "48": {
+      "id": 48,
+      "flag": 0,
+      "nom_registre": "Speed profile: delay 1",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 19
+    },
+    "49": {
+      "id": 49,
+      "flag": 0,
+      "nom_registre": "Speed profile: delay 2",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 20
+    },
+    "50": {
+      "id": 50,
+      "flag": 0,
+      "nom_registre": "Speed profile: delay 3",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 21
+    },
+    "51": {
+      "id": 51,
+      "flag": 0,
+      "nom_registre": "Speed profile: execution method",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 22
+    },
+    "52": {
+      "id": 52,
+      "flag": 0,
+      "nom_registre": "Speed profile: deceleration",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 23
+    },
+    "53": {
+      "id": 53,
+      "flag": 0,
+      "nom_registre": "Switching frequency",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 24
+    },
+    "54": {
+      "id": 54,
+      "flag": 0,
+      "nom_registre": "Data communication timeout",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 29
+    },
+    "55": {
+      "id": 55,
+      "flag": 0,
+      "nom_registre": "Stop mode",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 33
+    },
+    "56": {
+      "id": 56,
+      "flag": 0,
+      "nom_registre": "Flying restart",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 34
+    },
+    "57": {
+      "id": 57,
+      "flag": 0,
+      "nom_registre": "Curent oscillation canc",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 38
+    },
+    "58": {
+      "id": 58,
+      "flag": 0,
+      "nom_registre": "Stator resistance",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 46
+    },
+    "59": {
+      "id": 59,
+      "flag": 0,
+      "nom_registre": "Stator inductance/Ld",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 48
+    },
+    "60": {
+      "id": 60,
+      "flag": 0,
+      "nom_registre": "Lq inductance",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 50
+    },
+    "61": {
+      "id": 61,
+      "flag": 0,
+      "nom_registre": "Magnetizing time",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 51
+    },
+    "62": {
+      "id": 62,
+      "flag": 0,
+      "nom_registre": "Regeneration current limit",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 53
+    },
+    "63": {
+      "id": 63,
+      "flag": 0,
+      "nom_registre": "Overvoltage control current limit",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 54
+    },
+    "64": {
+      "id": 64,
+      "flag": 0,
+      "nom_registre": "Speed loop: Kp",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 55
+    },
+    "65": {
+      "id": 65,
+      "flag": 0,
+      "nom_registre": "Speed loop: Ti",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 56
+    },
+    "66": {
+      "id": 66,
+      "flag": 0,
+      "nom_registre": "Starting current",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 57
+    },
+    "67": {
+      "id": 67,
+      "flag": 0,
+      "nom_registre": "Max frequency for starting current",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 6,
+      "adresse": 58
+    },
+    "68": {
+      "id": 68,
+      "flag": 0,
+      "nom_registre": "Bootloader release",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 141
+    },
+    "69": {
+      "id": 69,
+      "flag": 0,
+      "nom_registre": "Firmware release",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 142
+    },
+    "70": {
+      "id": 70,
+      "flag": 0,
+      "nom_registre": "Firmware checksum",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 143
+    },
+    "71": {
+      "id": 71,
+      "flag": 0,
+      "nom_registre": "Motor control release",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 144
+    },
+    "72": {
+      "id": 72,
+      "flag": 0,
+      "nom_registre": "Serial number 1",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 145
+    },
+    "73": {
+      "id": 73,
+      "flag": 0,
+      "nom_registre": "Serial number 2",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 146
+    },
+    "74": {
+      "id": 74,
+      "flag": 0,
+      "nom_registre": "Serial number 3",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 147
+    },
+    "75": {
+      "id": 75,
+      "flag": 0,
+      "nom_registre": "Serial number 4",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 148
+    },
+    "76": {
+      "id": 76,
+      "flag": 0,
+      "nom_registre": "Hardware Ident.",
+      "nom_esclave": "Driver",
+      "esclave": 1,
+      "fonction": 4,
+      "adresse": 149
+    },
+    "77": {
+      "id": 77,
+      "flag": 0,
+      "nom_registre": "Compteur 0",
+      "nom_esclave": "Compteur",
+      "esclave": 2,
+      "fonction": 3,
+      "adresse": 201
+    },
+    "78": {
+      "id": 78,
+      "flag": 0,
+      "nom_registre": "Compteur 1",
+      "nom_esclave": "Compteur",
+      "esclave": 2,
+      "fonction": 3,
+      "adresse": 202
+    },
+    "79": {
+      "id": 79,
+      "flag": 0,
+      "nom_registre": "Compteur 2",
+      "nom_esclave": "Compteur",
+      "esclave": 3,
+      "fonction": 3,
+      "adresse": 201
+    },
+    "80": {
+      "id": 80,
+      "flag": 0,
+      "nom_registre": "Compteur 3",
+      "nom_esclave": "Compteur",
+      "esclave": 3,
+      "fonction": 3,
+      "adresse": 202
+    }
+  }
+}

@@ -1,9 +1,0 @@
-BeautifulSoup4
-aiohttp
-python-slugify
-requests
-FastAPI
-uvicorn
-pytest-asyncio
-pytest-xdist
-pre-commit

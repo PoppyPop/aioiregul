@@ -32,11 +32,6 @@ dependencies = [
     "python-slugify>=8.0.0",
 ]
 
-[project.optional-dependencies]
-examples = [
-    "aiofiles>=24.1.0",
-]
-
 [project.urls]
 Homepage = "https://github.com/PoppyPop/aioiregul"
 Repository = "https://github.com/PoppyPop/aioiregul"
@@ -148,5 +143,4 @@ dev = [
     "ruff>=0.1.0",
     # Type Stubs
     "types-beautifulsoup4",
-    "types-aiofiles>=25.1.0.20251011",
 ]

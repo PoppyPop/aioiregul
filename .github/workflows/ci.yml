@@ -9,15 +9,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6.0.1
-      - uses: actions/setup-python@v6.1.0
-        with:
-          python-version: "3.14"
+
       - name: Install uv
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-      - name: Install dev dependencies
-        run: uv sync --all-extras
+        uses: astral-sh/setup-uv@v7
+        with:
+          cache-dependency-glob: |
+            **/pyproject.toml
+          python-version: 3.13
       - name: Run pre-commit
         run: uv run pre-commit run --all-files
 
@@ -25,14 +23,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6.0.1
-      - uses: actions/setup-python@v6.1.0
-        with:
-          python-version: "3.14"
+
       - name: Install uv
-        run: |
-          curl -LsSf https://astral.sh/uv/install.sh | sh
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
-      - name: Install dev dependencies
-        run: uv sync --all-extras
+        uses: astral-sh/setup-uv@v7
+        with:
+          cache-dependency-glob: |
+            **/pyproject.toml
+          python-version: 3.13
       - name: Run tests
         run: uv run pytest

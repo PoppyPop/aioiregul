@@ -35,7 +35,7 @@ format:
 	uv run ruff check . --fix
 
 type-check:
-	uv run mypy src/
+	uv run pyright
 
 pre-commit:
 	uv run pre-commit run --all-files

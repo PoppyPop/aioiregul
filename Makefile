@@ -1,6 +1,6 @@
 # Makefile for aioiregul development
 
-.PHONY: help sync install-dev test test-cov lint format type-check clean pre-commit rebase-master
+.PHONY: help sync install-dev test test-cov lint format type-check clean pre-commit rebase-master build build-check
 
 help:
 	@echo "Available commands:"
@@ -13,6 +13,8 @@ help:
 	@echo "  make type-check   - Run type checker (MyPy)"
 	@echo "  make pre-commit   - Run all pre-commit hooks"
 	@echo "  make rebase-master- Fetch and rebase current branch onto master"
+	@echo "  make build        - Build distribution packages (wheel and sdist)"
+	@echo "  make build-check  - Build and verify package integrity"
 	@echo "  make clean        - Clean up build artifacts"
 
 sync:
@@ -57,3 +59,21 @@ clean:
 rebase-master:
 	git fetch --all --prune
 	git rebase origin/master
+
+# Build distribution packages
+build:
+	@echo "Building distribution packages..."
+	uv build
+	@echo "Build complete! Packages are in dist/"
+	@ls -lh dist/
+
+# Build and verify package integrity
+build-check: clean build
+	@echo "\n=== Checking package contents ==="
+	@echo "\n--- Wheel contents ---"
+	@unzip -l dist/*.whl || true
+	@echo "\n--- Source distribution contents ---"
+	@tar -tzf dist/*.tar.gz | head -n 50 || true
+	@echo "\n=== Build verification complete ==="
+	@echo "To test installation locally, run:"
+	@echo "  uv pip install dist/*.whl"

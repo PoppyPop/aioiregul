@@ -59,67 +59,88 @@ async def mock_server():
 
 @pytest.mark.asyncio
 async def test_auth(mock_server):
-    opt = src.aioiregul.v1.ConnectionOptions(
-        username="empty",
-        password="bottle",
-        iregul_base_url=f"{mock_server}/modules/",
-    )
-
     async with aiohttp.ClientSession() as session:
-        dev = src.aioiregul.v1.Device(opt, session)
+        dev = src.aioiregul.v1.Device(
+            session,
+            host="localhost",
+            port=8779,
+            device_id="empty",
+            password="bottle",
+        )
+        dev.base_url = f"{mock_server}/modules/"
+        dev.main_url = f"{mock_server}/modules/login/main.php"
+        dev.login_url = f"{mock_server}/modules/login/process.php"
+        dev.iregulApiBaseUrl = f"{mock_server}/modules/i-regul/"
         assert await dev.get_data()
 
 
 @pytest.mark.asyncio
 async def test_isauth(mock_server):
-    opt = src.aioiregul.v1.ConnectionOptions(
-        username="empty",
-        password="bottle",
-        iregul_base_url=f"{mock_server}/modules/",
-    )
-
     async with aiohttp.ClientSession() as session:
-        dev = src.aioiregul.v1.Device(opt, session)
+        dev = src.aioiregul.v1.Device(
+            session,
+            host="localhost",
+            port=8779,
+            device_id="empty",
+            password="bottle",
+        )
+        dev.base_url = f"{mock_server}/modules/"
+        dev.main_url = f"{mock_server}/modules/login/main.php"
+        dev.login_url = f"{mock_server}/modules/login/process.php"
+        dev.iregulApiBaseUrl = f"{mock_server}/modules/i-regul/"
         assert await dev.get_data()
 
 
 @pytest.mark.asyncio
 async def test_defrost(mock_server):
-    opt = src.aioiregul.v1.ConnectionOptions(
-        username="empty",
-        password="bottle",
-        iregul_base_url=f"{mock_server}/modules/",
-    )
-
     async with aiohttp.ClientSession() as session:
-        dev = src.aioiregul.v1.Device(opt, session)
+        dev = src.aioiregul.v1.Device(
+            session,
+            host="localhost",
+            port=8779,
+            device_id="empty",
+            password="bottle",
+        )
+        dev.base_url = f"{mock_server}/modules/"
+        dev.main_url = f"{mock_server}/modules/login/main.php"
+        dev.login_url = f"{mock_server}/modules/login/process.php"
+        dev.iregulApiBaseUrl = f"{mock_server}/modules/i-regul/"
         assert await dev.defrost()
 
 
 @pytest.mark.asyncio
 async def test_notisauth(mock_server):
-    opt = src.aioiregul.v1.ConnectionOptions(
-        username="empty",
-        password="bottle",
-        iregul_base_url=f"{mock_server}/fail/",
-    )
-
     async with aiohttp.ClientSession() as session:
-        dev = src.aioiregul.v1.Device(opt, session)
+        dev = src.aioiregul.v1.Device(
+            session,
+            host="localhost",
+            port=8779,
+            device_id="empty",
+            password="bottle",
+        )
+        # Point auth check to failing path and login to non-existent path
+        dev.base_url = f"{mock_server}/fail/"
+        dev.main_url = f"{mock_server}/fail/login/main.php"
+        dev.login_url = f"{mock_server}/fail/login/process.php"
+        dev.iregulApiBaseUrl = f"{mock_server}/modules/i-regul/"
         with pytest.raises(src.aioiregul.v1.InvalidAuth):
             await dev.get_data()
 
 
 @pytest.mark.asyncio
 async def test_collect(mock_server):
-    opt = src.aioiregul.v1.ConnectionOptions(
-        username="empty",
-        password="bottle",
-        iregul_base_url=f"{mock_server}/modules/",
-    )
-
     async with aiohttp.ClientSession() as session:
-        dev = src.aioiregul.v1.Device(opt, session)
+        dev = src.aioiregul.v1.Device(
+            session,
+            host="localhost",
+            port=8779,
+            device_id="empty",
+            password="bottle",
+        )
+        dev.base_url = f"{mock_server}/modules/"
+        dev.main_url = f"{mock_server}/modules/login/main.php"
+        dev.login_url = f"{mock_server}/modules/login/process.php"
+        dev.iregulApiBaseUrl = f"{mock_server}/modules/i-regul/"
         res = await dev.get_data()
 
         assert res is not None
@@ -137,15 +158,19 @@ async def test_collect(mock_server):
 
 @pytest.mark.asyncio
 async def test_update(mock_server):
-    opt = src.aioiregul.v1.ConnectionOptions(
-        username="empty",
-        password="bottle",
-        iregul_base_url=f"{mock_server}/modules/",
-        refresh_rate=timedelta(seconds=1),
-    )
-
     async with aiohttp.ClientSession() as session:
-        dev = src.aioiregul.v1.Device(opt, session)
+        dev = src.aioiregul.v1.Device(
+            session,
+            host="localhost",
+            port=8779,
+            device_id="empty",
+            password="bottle",
+            refresh_rate=timedelta(seconds=1),
+        )
+        dev.base_url = f"{mock_server}/modules/"
+        dev.main_url = f"{mock_server}/modules/login/main.php"
+        dev.login_url = f"{mock_server}/modules/login/process.php"
+        dev.iregulApiBaseUrl = f"{mock_server}/modules/i-regul/"
         res = await dev.get_data()
 
         await asyncio.sleep(2)

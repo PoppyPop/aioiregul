@@ -45,7 +45,7 @@ class IRegulClient(IRegulApiInterface):
         host: str | None = None,
         port: int | None = None,
         device_id: str | None = None,
-        device_key: str | None = None,
+        password: str | None = None,
         timeout: float = 60.0,
         config_skeleton: dict[str, dict[int, dict[str, ValueType]]] | None = None,
     ):
@@ -56,7 +56,7 @@ class IRegulClient(IRegulApiInterface):
         - IREGUL_HOST (default: i-regul.fr)
         - IREGUL_PORT (default: 443)
         - IREGUL_DEVICE_ID (required if not provided)
-        - IREGUL_DEVICE_KEY (required if not provided)
+        - IREGUL_PASSWORD_V2 (required if not provided)
 
         Optionally, provide a configuration skeleton (keys only, no values).
         When supplied, the client will fetch values via command 501 and merge
@@ -66,7 +66,7 @@ class IRegulClient(IRegulApiInterface):
             host: Hostname or IP address of the IRegul device
             port: Port number for the socket connection
             device_id: Device identifier for the IRegul device
-            device_key: Device key/token for authentication
+            password: Device password for authentication
             timeout: Default timeout for socket operations in seconds
             config_skeleton: Configuration dictionary without values, structured
                 as {group: {index: {field_name: ""}}}
@@ -77,7 +77,7 @@ class IRegulClient(IRegulApiInterface):
         self.host = host or os.getenv("IREGUL_HOST", "i-regul.fr")
         self.port = port or int(os.getenv("IREGUL_PORT", "443"))
         self.device_id = device_id or _get_env("IREGUL_DEVICE_ID")
-        self.device_key = device_key or _get_env("IREGUL_DEVICE_KEY")
+        self.password = password or _get_env("IREGUL_PASSWORD_V2")
         self.timeout = timeout
         self.config_skeleton: dict[str, dict[int, dict[str, ValueType]]] | None = config_skeleton
 
@@ -107,7 +107,7 @@ class IRegulClient(IRegulApiInterface):
 
         try:
             # Build and send the defrost command
-            message = f"cdraminfo{self.device_id}{self.device_key}{{203#}}"
+            message = f"cdraminfo{self.device_id}{self.password}{{203#}}"
             LOGGER.debug(f"Sending defrost command: {message}")
             writer.write(message.encode("utf-8"))
             await writer.drain()
@@ -158,7 +158,7 @@ class IRegulClient(IRegulApiInterface):
         try:
             # Choose command based on presence of a config skeleton
             cmd = "501" if self.config_skeleton is not None else "502"
-            message = f"cdraminfo{self.device_id}{self.device_key}{{{cmd}#}}"
+            message = f"cdraminfo{self.device_id}{self.password}{{{cmd}#}}"
             LOGGER.debug(f"Sending command: {message}")
             writer.write(message.encode("utf-8"))
             await writer.drain()

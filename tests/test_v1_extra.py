@@ -132,15 +132,19 @@ async def server_no_table_entrees():
 
 @pytest.mark.asyncio
 async def test_refresh_fail_returns_none(server_bad_update):
-    opt = v1.ConnectionOptions(
-        username="user",
-        password="pass",
-        iregul_base_url=f"{server_bad_update}/modules/",
-        refresh_rate=timedelta(seconds=0),
-    )
-
     async with aiohttp.ClientSession() as session:
-        dev = v1.Device(opt, session)
+        dev = v1.Device(
+            session,
+            host="localhost",
+            port=8781,
+            device_id="user",
+            password="pass",
+            refresh_rate=timedelta(seconds=0),
+        )
+        dev.base_url = f"{server_bad_update}/modules/"
+        dev.main_url = f"{server_bad_update}/modules/login/main.php"
+        dev.login_url = f"{server_bad_update}/modules/login/process.php"
+        dev.iregulApiBaseUrl = f"{server_bad_update}/modules/i-regul/"
         # First call sets lastupdate and skips posting
         _ = await dev.get_data()
         # Second call triggers processform with non-success CMD
@@ -188,28 +192,36 @@ async def server_auth_flow():
 
 @pytest.mark.asyncio
 async def test_connect_success_when_not_authenticated(server_auth_flow):
-    opt = v1.ConnectionOptions(
-        username="user",
-        password="pass",
-        iregul_base_url=f"{server_auth_flow}/modules/",
-    )
-
     async with aiohttp.ClientSession() as session:
-        dev = v1.Device(opt, session)
+        dev = v1.Device(
+            session,
+            host="localhost",
+            port=8784,
+            device_id="user",
+            password="pass",
+        )
+        dev.base_url = f"{server_auth_flow}/modules/"
+        dev.main_url = f"{server_auth_flow}/login/main.php".replace("/login/", "/modules/login/")
+        dev.login_url = f"{server_auth_flow}/modules/login/process.php"
+        dev.iregulApiBaseUrl = f"{server_auth_flow}/modules/i-regul/"
         res = await dev.get_data()
         assert res is not None
 
 
 @pytest.mark.asyncio
 async def test_collect_no_table_entrees(server_no_table_entrees):
-    opt = v1.ConnectionOptions(
-        username="user",
-        password="pass",
-        iregul_base_url=f"{server_no_table_entrees}/modules/",
-    )
-
     async with aiohttp.ClientSession() as session:
-        dev = v1.Device(opt, session)
+        dev = v1.Device(
+            session,
+            host="localhost",
+            port=8782,
+            device_id="user",
+            password="pass",
+        )
+        dev.base_url = f"{server_no_table_entrees}/modules/"
+        dev.main_url = f"{server_no_table_entrees}/modules/login/main.php"
+        dev.login_url = f"{server_no_table_entrees}/modules/login/process.php"
+        dev.iregulApiBaseUrl = f"{server_no_table_entrees}/modules/i-regul/"
         res = await dev.get_data()
         assert res is not None
         # 'entrees' page had no table, so inputs should be empty
@@ -223,15 +235,19 @@ async def test_collect_no_table_entrees(server_no_table_entrees):
 @pytest.mark.asyncio
 async def test_quick_refresh_skips_request(mock_server):
     """Call get_data twice quickly to hit 'Too short' branch."""
-    opt = v1.ConnectionOptions(
-        username="empty",
-        password="bottle",
-        iregul_base_url=f"{mock_server}/modules/",
-        refresh_rate=timedelta(hours=1),
-    )
-
     async with aiohttp.ClientSession() as session:
-        dev = v1.Device(opt, session)
+        dev = v1.Device(
+            session,
+            host="localhost",
+            port=8780,
+            device_id="empty",
+            password="bottle",
+            refresh_rate=timedelta(hours=1),
+        )
+        dev.base_url = f"{mock_server}/modules/"
+        dev.main_url = f"{mock_server}/modules/login/main.php"
+        dev.login_url = f"{mock_server}/modules/login/process.php"
+        dev.iregulApiBaseUrl = f"{mock_server}/modules/i-regul/"
         res1 = await dev.get_data()
         res2 = await dev.get_data()
         assert res1 is not None and res2 is not None
@@ -242,10 +258,8 @@ async def test_checkreturn_non_success_nonmandatory():
     """Directly test __checkreturn when refresh is not mandatory."""
     # Build a dummy device (session not used here)
     async with aiohttp.ClientSession() as session:
-        dev = v1.Device(
-            v1.ConnectionOptions(username="u", password="p", iregul_base_url="http://localhost/"),
-            session,
-        )
+        dev = v1.Device(session, host="localhost", port=80, device_id="u", password="p")
+        dev.iregulApiBaseUrl = "http://localhost/modules/i-regul/"
         # Non-success with non-mandatory should return True
         ok = await dev._Device__checkreturn(
             False, "http://localhost/modules/i-regul/index-Etat.php?CMD=Fail"
@@ -264,10 +278,7 @@ async def test_isauth_connection_error(monkeypatch):
         raise aiohttp.ClientConnectionError()
 
     async with aiohttp.ClientSession() as session:
-        dev = v1.Device(
-            v1.ConnectionOptions(username="u", password="p", iregul_base_url="http://localhost/"),
-            session,
-        )
+        dev = v1.Device(session, host="localhost", port=80, device_id="u", password="p")
         monkeypatch.setattr(session, "get", raise_conn_error)
         with pytest.raises(v1.CannotConnect):
             await dev.get_data()
@@ -293,10 +304,11 @@ async def test_connect_connection_error(monkeypatch):
 
     try:
         async with aiohttp.ClientSession() as session:
-            dev = v1.Device(
-                v1.ConnectionOptions(username="u", password="p", iregul_base_url=base),
-                session,
-            )
+            dev = v1.Device(session, host="localhost", port=8783, device_id="u", password="p")
+            dev.base_url = base
+            dev.main_url = f"{base}login/main.php"
+            dev.login_url = f"{base}login/process.php"
+            dev.iregulApiBaseUrl = base.replace("fail/", "modules/i-regul/")
             monkeypatch.setattr(session, "post", raise_conn_error)
             with pytest.raises(v1.CannotConnect):
                 await dev.get_data()
@@ -306,13 +318,17 @@ async def test_connect_connection_error(monkeypatch):
 
 @pytest.mark.asyncio
 async def test_defrost_non_success(server_bad_update):
-    opt = v1.ConnectionOptions(
-        username="user",
-        password="pass",
-        iregul_base_url=f"{server_bad_update}/modules/",
-    )
-
     async with aiohttp.ClientSession() as session:
-        dev = v1.Device(opt, session)
+        dev = v1.Device(
+            session,
+            host="localhost",
+            port=8781,
+            device_id="user",
+            password="pass",
+        )
+        dev.base_url = f"{server_bad_update}/modules/"
+        dev.main_url = f"{server_bad_update}/modules/login/main.php"
+        dev.login_url = f"{server_bad_update}/modules/login/process.php"
+        dev.iregulApiBaseUrl = f"{server_bad_update}/modules/i-regul/"
         res = await dev.defrost()
         assert res is False

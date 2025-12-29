@@ -11,7 +11,7 @@ import asyncio
 
 import aiohttp
 
-from aioiregul.v1 import ConnectionOptions, Device, IRegulApiInterface
+from aioiregul.v1 import Device, IRegulApiInterface
 
 
 async def collect_and_print_data(device: IRegulApiInterface) -> None:
@@ -33,13 +33,11 @@ async def collect_and_print_data(device: IRegulApiInterface) -> None:
 
 async def main() -> None:
     """Main example."""
-    # Create connection options
-    options = ConnectionOptions()
 
     # Create an HTTP session (shared across the device lifetime)
     async with aiohttp.ClientSession() as session:
         # Initialize device with session in constructor
-        device: IRegulApiInterface = Device(options, session)
+        device: IRegulApiInterface = Device(session)
 
         try:
             await collect_and_print_data(device)

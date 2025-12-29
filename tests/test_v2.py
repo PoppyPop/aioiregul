@@ -20,14 +20,14 @@ class TestIRegulClientInit:
             host="test.local",
             port=8080,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
             timeout=30.0,
         )
 
         assert client.host == "test.local"
         assert client.port == 8080
         assert client.device_id == "dev123"
-        assert client.device_key == "key456"
+        assert client.password == "key456"
         assert client.timeout == 30.0
 
     def test_init_with_env_defaults(self, monkeypatch):
@@ -35,19 +35,19 @@ class TestIRegulClientInit:
         monkeypatch.setenv("IREGUL_HOST", "env.host")
         monkeypatch.setenv("IREGUL_PORT", "9000")
         monkeypatch.setenv("IREGUL_DEVICE_ID", "env_dev")
-        monkeypatch.setenv("IREGUL_DEVICE_KEY", "env_key")
+        monkeypatch.setenv("IREGUL_PASSWORD_V2", "env_key")
 
         client = IRegulClient()
 
         assert client.host == "env.host"
         assert client.port == 9000
         assert client.device_id == "env_dev"
-        assert client.device_key == "env_key"
+        assert client.password == "env_key"
 
     def test_init_default_host_and_port(self, monkeypatch):
         """Test default host and port values."""
         monkeypatch.setenv("IREGUL_DEVICE_ID", "dev")
-        monkeypatch.setenv("IREGUL_DEVICE_KEY", "key")
+        monkeypatch.setenv("IREGUL_PASSWORD_V2", "key")
         monkeypatch.delenv("IREGUL_HOST", raising=False)
         monkeypatch.delenv("IREGUL_PORT", raising=False)
 
@@ -58,7 +58,7 @@ class TestIRegulClientInit:
 
     def test_init_missing_required_env_device_id(self, monkeypatch):
         """Test initialization fails with missing IREGUL_DEVICE_ID."""
-        monkeypatch.setenv("IREGUL_DEVICE_KEY", "key")
+        monkeypatch.setenv("IREGUL_PASSWORD_V2", "key")
         monkeypatch.delenv("IREGUL_DEVICE_ID", raising=False)
 
         with pytest.raises(
@@ -69,10 +69,10 @@ class TestIRegulClientInit:
     def test_init_missing_required_env_device_key(self, monkeypatch):
         """Test initialization fails with missing IREGUL_DEVICE_KEY."""
         monkeypatch.setenv("IREGUL_DEVICE_ID", "dev")
-        monkeypatch.delenv("IREGUL_DEVICE_KEY", raising=False)
+        monkeypatch.delenv("IREGUL_PASSWORD_V2", raising=False)
 
         with pytest.raises(
-            ValueError, match="Missing required environment variable: IREGUL_DEVICE_KEY"
+            ValueError, match="Missing required environment variable: IREGUL_PASSWORD_V2"
         ):
             IRegulClient()
 
@@ -81,14 +81,14 @@ class TestIRegulClientInit:
         monkeypatch.setenv("IREGUL_HOST", "env.host")
         monkeypatch.setenv("IREGUL_PORT", "9000")
         monkeypatch.setenv("IREGUL_DEVICE_ID", "env_dev")
-        monkeypatch.setenv("IREGUL_DEVICE_KEY", "env_key")
+        monkeypatch.setenv("IREGUL_PASSWORD_V2", "env_key")
 
         client = IRegulClient(host="override.host", port=8888)
 
         assert client.host == "override.host"
         assert client.port == 8888
         assert client.device_id == "env_dev"
-        assert client.device_key == "env_key"
+        assert client.password == "env_key"
 
 
 class TestDefrostCommand:
@@ -101,7 +101,7 @@ class TestDefrostCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         # Mock the socket connection
@@ -136,7 +136,7 @@ class TestDefrostCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         mock_reader = AsyncMock()
@@ -157,7 +157,7 @@ class TestDefrostCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
             timeout=1.0,
         )
 
@@ -174,7 +174,7 @@ class TestDefrostCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         with (
@@ -192,7 +192,7 @@ class TestDefrostCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         with (
@@ -208,7 +208,7 @@ class TestDefrostCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         mock_reader = AsyncMock()
@@ -230,7 +230,7 @@ class TestDefrostCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         mock_reader = AsyncMock()
@@ -257,7 +257,7 @@ class TestGetDataCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         # Mock the socket connection
@@ -313,7 +313,7 @@ class TestGetDataCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
             config_skeleton=skeleton,
         )
 
@@ -365,7 +365,7 @@ class TestGetDataCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         # First call: no skeleton, expect 502 and skeleton population
@@ -448,7 +448,7 @@ class TestGetDataCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
             timeout=1.0,
         )
 
@@ -465,7 +465,7 @@ class TestGetDataCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         with (
@@ -483,7 +483,7 @@ class TestGetDataCommand:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         mock_reader = AsyncMock()
@@ -516,7 +516,7 @@ class TestReadNewResponse:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         mock_reader = AsyncMock()
@@ -534,7 +534,7 @@ class TestReadNewResponse:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         mock_reader = AsyncMock()
@@ -556,7 +556,7 @@ class TestReadNewResponse:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         mock_reader = AsyncMock()
@@ -577,7 +577,7 @@ class TestReadNewResponse:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         mock_reader = AsyncMock()
@@ -593,7 +593,7 @@ class TestReadNewResponse:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         mock_reader = AsyncMock()
@@ -609,7 +609,7 @@ class TestReadNewResponse:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         mock_reader = AsyncMock()
@@ -629,7 +629,7 @@ class TestIRegulClientIntegration:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         mock_reader = AsyncMock()
@@ -673,7 +673,7 @@ class TestGetConfigSkeleton:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         # Mock the socket connection
@@ -754,7 +754,7 @@ class TestGetConfigSkeleton:
             host="test.local",
             port=443,
             device_id="dev123",
-            device_key="key456",
+            password="key456",
         )
 
         # Initially, client has no skeleton

@@ -13,7 +13,7 @@ Key Components:
 
 import logging
 import os
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from decimal import Decimal
 from urllib import parse
@@ -41,18 +41,6 @@ def _get_env(key: str, default: str | None = None) -> str:
 
 
 @dataclass
-class ConnectionOptions:
-    """IRegul options for connection."""
-
-    username: str = field(default_factory=lambda: _get_env("IREGUL_USERNAME"))
-    password: str = field(default_factory=lambda: _get_env("IREGUL_PASSWORD"))
-    iregul_base_url: str = field(
-        default_factory=lambda: os.getenv("IREGUL_BASE_URL", "https://vpn.i-regul.com/modules/")
-    )
-    refresh_rate: timedelta = timedelta(minutes=5)
-
-
-@dataclass
 class IRegulData:
     """IRegul data."""
 
@@ -70,7 +58,6 @@ class Device(IRegulApiInterface):
     of the device object.
     """
 
-    options: ConnectionOptions
     login_url: str
     iregulApiBaseUrl: str
     lastupdate: datetime | None = None
@@ -78,8 +65,12 @@ class Device(IRegulApiInterface):
 
     def __init__(
         self,
-        options: ConnectionOptions,
         http_session: aiohttp.ClientSession,
+        host: str | None = None,
+        port: int | None = None,
+        device_id: str | None = None,
+        password: str | None = None,
+        refresh_rate: timedelta = timedelta(minutes=5),
     ):
         """Initialize Device with connection options and HTTP session.
 
@@ -87,12 +78,19 @@ class Device(IRegulApiInterface):
             options: Connection configuration.
             http_session: Shared aiohttp ClientSession for requests.
         """
-        self.options = options
-        self._http_session = http_session
+        self.host = host or os.getenv("IREGUL_HOST", "vpn.i-regul.com")
+        self.port = port or int(os.getenv("IREGUL_PORT", "443"))
+        self.device_id = device_id or _get_env("IREGUL_DEVICE_ID")
+        self.password = password or _get_env("IREGUL_PASSWORD_V1")
 
-        self.main_url = urljoin(self.options.iregul_base_url, "login/main.php")
-        self.login_url = urljoin(self.options.iregul_base_url, "login/process.php")
-        self.iregulApiBaseUrl = urljoin(self.options.iregul_base_url, "i-regul/")
+        self.base_url = f"https://{self.host}:{self.port}/modules/"
+
+        self._http_session = http_session
+        self.refresh_rate = refresh_rate
+
+        self.main_url = urljoin(self.base_url, "login/main.php")
+        self.login_url = urljoin(self.base_url, "login/process.php")
+        self.iregulApiBaseUrl = urljoin(self.base_url, "i-regul/")
 
     async def __isauth(self) -> bool:
         try:
@@ -112,8 +110,8 @@ class Device(IRegulApiInterface):
     async def __connect(self, throwException: bool) -> bool:
         payload = {
             "sublogin": "1",
-            "user": self.options.username,
-            "pass": self.options.password,
+            "user": self.device_id,
+            "pass": self.password,
         }
 
         try:
@@ -133,7 +131,7 @@ class Device(IRegulApiInterface):
             raise CannotConnect() from e
 
     async def __refresh(self, refreshMandatory: bool) -> bool:
-        payload = {"SNiregul": self.options.username, "Update": "etat", "EtatSel": "1"}
+        payload = {"SNiregul": self.device_id, "Update": "etat", "EtatSel": "1"}
 
         # Refresh rate limit
         if self.lastupdate is None:
@@ -141,7 +139,7 @@ class Device(IRegulApiInterface):
             self.lastupdate = datetime.now()
             return True
 
-        if datetime.now() - self.lastupdate < self.options.refresh_rate:
+        if datetime.now() - self.lastupdate < self.refresh_rate:
             LOGGER.info("Too short, refresh not required")
             return True
 
@@ -235,7 +233,7 @@ class Device(IRegulApiInterface):
             self._http_session.cookie_jar.clear()
             await self.__connect(True)
 
-        payload = {"SNiregul": self.options.username, "Update": "203"}
+        payload = {"SNiregul": self.device_id, "Update": "203"}
 
         async with self._http_session.post(
             urljoin(self.iregulApiBaseUrl, "includes/processform.php"), data=payload

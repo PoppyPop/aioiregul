@@ -4,7 +4,7 @@ Docstring for aioiregul.iregulapi
 
 from typing import Protocol
 
-from aioiregul.models import MappedFrame
+from .models import MappedFrame
 
 
 class IRegulApiInterface(Protocol):

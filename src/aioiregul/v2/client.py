@@ -141,7 +141,7 @@ class IRegulClient(IRegulApiInterface):
             writer.close()
             await writer.wait_closed()
 
-    async def get_data(self) -> MappedFrame:
+    async def get_data(self) -> MappedFrame | None:
         """
         Retrieve device data using 502 (full) or 501 (values-only).
 
@@ -156,7 +156,8 @@ class IRegulClient(IRegulApiInterface):
             timeout: Maximum time in seconds to wait for response (default: 60)
 
         Returns:
-            MappedFrame containing the typed device data.
+            MappedFrame containing the typed device data. Signature allows
+            None for interface compatibility.
 
         Raises:
             asyncio.TimeoutError: If response not received within timeout period

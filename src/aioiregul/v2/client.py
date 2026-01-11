@@ -81,6 +81,38 @@ class IRegulClient(IRegulApiInterface):
         self.timeout = timeout
         self.config_skeleton: dict[str, dict[int, dict[str, ValueType]]] | None = config_skeleton
 
+    async def _send_command(
+        self, command: str
+    ) -> tuple[asyncio.StreamReader, asyncio.StreamWriter]:
+        """Open connection and send command to device.
+
+        Args:
+            command: Command code to send (e.g., "501", "502", "203")
+
+        Returns:
+            Tuple of (reader, writer) for further communication
+
+        Raises:
+            TimeoutError: If connection timeout occurs
+            ConnectionError: If unable to connect to device
+        """
+        try:
+            reader, writer = await asyncio.wait_for(
+                asyncio.open_connection(self.host, self.port, limit=100000),
+                timeout=self.timeout,
+            )
+        except TimeoutError as e:
+            raise TimeoutError(f"Connection timeout to {self.host}:{self.port}") from e
+        except (ConnectionRefusedError, OSError) as e:
+            raise ConnectionError(f"Failed to connect to {self.host}:{self.port}: {e}") from e
+
+        message = f"cdraminfo{self.device_id}{self.password}{{{command}#}}"
+        LOGGER.debug(f"Sending command {command} to device {self.device_id}")
+        writer.write(message.encode("utf-8"))
+        await writer.drain()
+
+        return reader, writer
+
     async def defrost(self) -> bool:
         """
         Trigger defrost operation on the device.
@@ -95,23 +127,9 @@ class IRegulClient(IRegulApiInterface):
             ConnectionError: If unable to connect to device
             ValueError: If response format is invalid
         """
-        try:
-            reader, writer = await asyncio.wait_for(
-                asyncio.open_connection(self.host, self.port, limit=100000),
-                timeout=self.timeout,
-            )
-        except TimeoutError as e:
-            raise TimeoutError(f"Connection timeout to {self.host}:{self.port}") from e
-        except (ConnectionRefusedError, OSError) as e:
-            raise ConnectionError(f"Failed to connect to {self.host}:{self.port}: {e}") from e
+        reader, writer = await self._send_command("203")
 
         try:
-            # Build and send the defrost command
-            message = f"cdraminfo{self.device_id}{self.password}{{203#}}"
-            LOGGER.debug(f"Sending defrost command: {message}")
-            writer.write(message.encode("utf-8"))
-            await writer.drain()
-
             # Read response
             response = await asyncio.wait_for(reader.readuntil(b"}"), timeout=self.timeout)
             response_text = response.decode("utf-8")
@@ -145,24 +163,11 @@ class IRegulClient(IRegulApiInterface):
             ConnectionError: If unable to connect to device
             ValueError: If response format is invalid
         """
-        try:
-            reader, writer = await asyncio.wait_for(
-                asyncio.open_connection(self.host, self.port, limit=100000),
-                timeout=self.timeout,
-            )
-        except TimeoutError as e:
-            raise TimeoutError(f"Connection timeout to {self.host}:{self.port}") from e
-        except (ConnectionRefusedError, OSError) as e:
-            raise ConnectionError(f"Failed to connect to {self.host}:{self.port}: {e}") from e
+        # Choose command based on presence of a config skeleton
+        cmd = "501" if self.config_skeleton is not None else "502"
+        reader, writer = await self._send_command(cmd)
 
         try:
-            # Choose command based on presence of a config skeleton
-            cmd = "501" if self.config_skeleton is not None else "502"
-            message = f"cdraminfo{self.device_id}{self.password}{{{cmd}#}}"
-            LOGGER.debug(f"Sending command: {message}")
-            writer.write(message.encode("utf-8"))
-            await writer.drain()
-
             # Read responses until we get the NEW format (skip OLD)
             new_response = await self._read_new_response(reader, timeout=self.timeout)
             LOGGER.debug(f"Received NEW response: {len(new_response)} bytes")
@@ -184,6 +189,53 @@ class IRegulClient(IRegulApiInterface):
                 groups=merged_groups,
             )
             return map_frame(merged_frame)
+        finally:
+            writer.close()
+            await writer.wait_closed()
+
+    async def check_auth(self) -> bool:
+        """Check if credentials are valid.
+
+        Performs minimal authentication check to verify credentials
+        by issuing a 501 command and checking for an OLD frame response.
+
+        Returns:
+            True if authentication is successful, False otherwise.
+
+        Raises:
+            asyncio.TimeoutError: If response not received within timeout period
+            ConnectionError: If unable to connect to device
+        """
+        reader, writer = await self._send_command("501")
+
+        try:
+            # Read first response - should be OLD frame if auth is valid
+            try:
+                frame = await asyncio.wait_for(
+                    reader.readuntil(b"}"),
+                    timeout=self.timeout,
+                )
+            except asyncio.IncompleteReadError as e:
+                LOGGER.error(f"Incomplete response during auth check: {e}")
+                return False
+            except asyncio.LimitOverrunError as e:
+                LOGGER.error(f"Response too large during auth check: {e}")
+                return False
+
+            if not frame:
+                LOGGER.error("Empty response during auth check")
+                return False
+
+            response_text = frame.decode("utf-8")
+            LOGGER.debug(f"Received auth check response: {response_text[:50]}...")
+
+            # Check if this is an OLD format response (indicates successful auth)
+            if response_text.startswith("OLD"):
+                LOGGER.debug("Auth check successful (OLD frame received)")
+                return True
+
+            LOGGER.warning("Auth check failed (no OLD frame received)")
+            return False
         finally:
             writer.close()
             await writer.wait_closed()

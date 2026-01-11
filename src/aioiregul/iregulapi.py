@@ -37,3 +37,17 @@ class IRegulApiInterface(Protocol):
             InvalidAuth: If authentication fails.
         """
         ...
+
+    async def check_auth(self) -> bool:
+        """Check if credentials are valid.
+
+        Performs minimal authentication check to verify credentials.
+
+        Returns:
+            True if authentication is successful, False otherwise.
+
+        Raises:
+            CannotConnect: If unable to connect to the device.
+            InvalidAuth: If authentication fails.
+        """
+        ...

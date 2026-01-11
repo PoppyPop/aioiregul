@@ -1,6 +1,7 @@
 # Makefile for aioiregul development
 
 .PHONY: help sync install-dev test test-cov lint format type-check clean pre-commit rebase-master build build-check
+.PHONY: stubs-generate
 
 help:
 	@echo "Available commands:"
@@ -16,6 +17,7 @@ help:
 	@echo "  make build        - Build distribution packages (wheel and sdist)"
 	@echo "  make build-check  - Build and verify package integrity"
 	@echo "  make clean        - Clean up build artifacts"
+	@echo "  make stubs-generate - Generate inline .pyi stubs into src"
 
 sync:
 	uv sync --all-extras
@@ -77,3 +79,9 @@ build-check: clean build
 	@echo "\n=== Build verification complete ==="
 	@echo "To test installation locally, run:"
 	@echo "  uv pip install dist/*.whl"
+
+# Generate stubs and sync inline into src
+stubs-generate:
+	@echo "Generating stubs with stubgen and syncing inline into src..."
+	UV_PYTHONPATH=src uv run python stubs/scripts/generate_stubs.py
+	@echo "Inline stubs synced to src/aioiregul/*.pyi"

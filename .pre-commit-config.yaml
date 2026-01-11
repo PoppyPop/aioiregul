@@ -1,5 +1,20 @@
 exclude: ^tests/data
 repos:
+  - repo: local
+    hooks:
+      - id: generate-stubs
+        name: generate-stubs
+        entry: uv run python stubs/scripts/generate_stubs.py
+        language: system
+        pass_filenames: false
+        files: ^src/aioiregul/.*\.py$
+      - id: pyright
+        name: pyright
+        entry: .venv/bin/pyright
+        language: system
+        types_or: [python]
+        pass_filenames: false
+        args: ["--project", "pyproject.toml"]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.3.0
     hooks:
@@ -16,15 +31,6 @@ repos:
         args: [--fix]
       # Run the formatter.
       - id: ruff-format
-  - repo: local
-    hooks:
-      - id: pyright
-        name: pyright
-        entry: .venv/bin/pyright
-        language: system
-        types_or: [python]
-        pass_filenames: false
-        args: ["--project", "pyproject.toml"]
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: v2.2.1
     hooks:

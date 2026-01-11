@@ -181,3 +181,5 @@ $RECYCLE.BIN/
 d2utmp*
 *.old
 *.new
+
+typings/

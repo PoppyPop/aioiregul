@@ -50,6 +50,14 @@ class IRegulData:
     unit: str
 
 
+class CannotConnect(Exception):
+    """Error to indicate we cannot connect."""
+
+
+class InvalidAuth(Exception):
+    """Error to indicate there is invalid auth."""
+
+
 class Device(IRegulApiInterface):
     """IRegul device representation.
 
@@ -320,10 +328,17 @@ class Device(IRegulApiInterface):
             memory=None,
         )
 
+    async def check_auth(self) -> bool:
+        """Check if credentials are valid.
 
-class CannotConnect(Exception):
-    """Error to indicate we cannot connect."""
+        Performs minimal authentication check to verify credentials
+        by attempting to connect.
 
+        Returns:
+            True if authentication is successful, False otherwise.
 
-class InvalidAuth(Exception):
-    """Error to indicate there is invalid auth."""
+        Raises:
+            CannotConnect: If unable to connect to the device.
+            InvalidAuth: If authentication fails.
+        """
+        return await self.__connect(throwException=True)

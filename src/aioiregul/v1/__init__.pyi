@@ -32,6 +32,7 @@ class Device(IRegulApiInterface):
     login_url: str
     iregulApiBaseUrl: str
     lastupdate: datetime | None
+    _last_message_timestamp: datetime | None
     host: Incomplete
     port: Incomplete
     device_id: Incomplete
@@ -48,6 +49,8 @@ class Device(IRegulApiInterface):
         password: str | None = ...,
         refresh_rate: timedelta = ...,
     ) -> None: ...
+    @property
+    def last_message_timestamp(self) -> datetime | None: ...
     async def defrost(self) -> bool: ...
     async def get_data(self) -> MappedFrame | None: ...
     async def check_auth(self) -> bool: ...

@@ -2,6 +2,7 @@
 Docstring for aioiregul.iregulapi
 """
 
+from datetime import datetime
 from typing import Protocol
 
 from .models import MappedFrame
@@ -13,6 +14,18 @@ class IRegulApiInterface(Protocol):
     Defines the contract for device client implementations (v1 and v2).
     Both methods handle authentication and device communication internally.
     """
+
+    @property
+    def last_message_timestamp(self) -> datetime | None:
+        """Get the timestamp of the last message received from device.
+
+        For v2 API: timestamp from the last NEW message.
+        For v1 API: current date of the request.
+
+        Returns:
+            datetime: Timestamp of the last message, or None if no message received.
+        """
+        ...
 
     async def get_data(self) -> MappedFrame | None:
         """Retrieve device data as a MappedFrame.

@@ -16,7 +16,6 @@ import asyncio
 import json
 import logging
 import os
-from datetime import datetime
 
 from dotenv import load_dotenv
 
@@ -81,16 +80,6 @@ class IRegulClient(IRegulApiInterface):
         self.password = password or _get_env("IREGUL_PASSWORD_V2")
         self.timeout = timeout
         self.config_skeleton: dict[str, dict[int, dict[str, ValueType]]] | None = config_skeleton
-        self._last_message_timestamp: datetime | None = None
-
-    @property
-    def last_message_timestamp(self) -> datetime | None:
-        """Get the timestamp of the last message received from device.
-
-        Returns:
-            datetime: Timestamp from the last NEW message, or None if no message received.
-        """
-        return self._last_message_timestamp
 
     async def _send_command(
         self, command: str
@@ -188,9 +177,6 @@ class IRegulClient(IRegulApiInterface):
             decoded = await decode_text(new_response)
             LOGGER.debug(f"Decoded frame with timestamp: {decoded.timestamp}")
 
-            # Track the last message timestamp from NEW frames
-            self._last_message_timestamp = decoded.timestamp
-
             # Initialize skeleton if not present
             if self.config_skeleton is None:
                 self.config_skeleton = {}
@@ -203,10 +189,7 @@ class IRegulClient(IRegulApiInterface):
                 count=decoded.count,
                 groups=merged_groups,
             )
-            mapped = map_frame(merged_frame)
-            # Set last_message_timestamp in the MappedFrame
-            mapped.last_message_timestamp = self._last_message_timestamp
-            return mapped
+            return map_frame(merged_frame)
         finally:
             writer.close()
             await writer.wait_closed()

@@ -69,7 +69,6 @@ class Device(IRegulApiInterface):
     login_url: str
     iregulApiBaseUrl: str
     lastupdate: datetime | None = None
-    _last_message_timestamp: datetime | None = None
     _http_session: aiohttp.ClientSession
 
     def __init__(
@@ -100,15 +99,6 @@ class Device(IRegulApiInterface):
         self.main_url = urljoin(self.base_url, "login/main.php")
         self.login_url = urljoin(self.base_url, "login/process.php")
         self.iregulApiBaseUrl = urljoin(self.base_url, "i-regul/")
-
-    @property
-    def last_message_timestamp(self) -> datetime | None:
-        """Get the timestamp of the last message received from device.
-
-        Returns:
-            datetime: Current date of the request, or None if no request made.
-        """
-        return self._last_message_timestamp
 
     async def __isauth(self) -> bool:
         try:
@@ -321,9 +311,6 @@ class Device(IRegulApiInterface):
             for i, data in enumerate(measures_raw.values(), start=1)
         }
 
-        # Set the last message timestamp to current date of request
-        self._last_message_timestamp = datetime.now()
-
         # Build a minimal mapped frame compatible with v2
         return MappedFrame(
             is_old=False,
@@ -339,7 +326,6 @@ class Device(IRegulApiInterface):
             analog_sensors=analog_sensors,
             configuration=None,
             memory=None,
-            last_message_timestamp=self._last_message_timestamp,
         )
 
     async def check_auth(self) -> bool:

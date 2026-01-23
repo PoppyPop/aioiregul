@@ -292,7 +292,6 @@ class MappedFrame:
         analog_sensors: Dictionary of analog sensor data indexed by sensor ID.
         configuration: System configuration.
         memory: System memory/state.
-        last_message_timestamp: Timestamp of the last message received from device.
     """
 
     is_old: bool
@@ -308,7 +307,6 @@ class MappedFrame:
     analog_sensors: dict[int, AnalogSensor]
     configuration: Configuration | None
     memory: Memory | None
-    last_message_timestamp: datetime | None = None
 
     def as_json(self, indent: int | None = None, ensure_ascii: bool = False) -> str:
         """Serialize the mapped frame to a JSON string.

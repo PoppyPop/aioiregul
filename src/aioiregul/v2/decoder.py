@@ -1,13 +1,19 @@
 """Async decoder for the undocumented IRegul text protocol.
 
 This module parses frames returned by the legacy socket/RPC API using the
-observed grammar from samples in the examples directory. A frame looks like:
+observed grammar from samples in the examples directory. Frames support two
+header formats:
 
+Standard format:
     OLD15/01/2025 23:34:47{10#mem@0&etat[10]#...}
+
+Alternative format (with device info):
+    cdraminfo<device_id>{10#mem@0&etat[10]#...}
 
 Structure:
 - Optional "OLD" literal prefix to indicate previous snapshot.
-- Timestamp in format DD/MM/YYYY HH:MM:SS.
+- Header: either a timestamp in DD/MM/YYYY HH:MM:SS format, or cdraminfo<device_id>.
+  When cdraminfo format is detected, the timestamp is set to the current time.
 - Curly-braced payload with tokens separated by '#'. The first payload element
   is typically a numeric count of following tokens.
 - Each token matches: <Group>@<Index>&<Field>[<Value>]
@@ -35,12 +41,14 @@ class DecodedFrame:
         is_old: Whether the frame was marked with the "OLD" prefix.
         timestamp: The frame timestamp parsed from the header.
         count: Optional token count extracted from the payload first element.
+        is_keepalive: Whether the frame is a keepalive message (empty payload).
         groups: Nested mapping of groups -> index -> field -> parsed value.
     """
 
     is_old: bool
     timestamp: datetime
     count: int | None
+    is_keepalive: bool
     groups: dict[str, dict[int, dict[str, ValueType]]]
 
 
@@ -83,6 +91,10 @@ def _parse_value(raw: str) -> ValueType:
 def _parse_header(text: str) -> tuple[bool, datetime, int]:
     """Extract `(is_old, timestamp, data_start_index)` from the frame header.
 
+    Supports two header formats:
+    - Standard: DD/MM/YYYY HH:MM:SS
+    - Alternative: cdraminfo<device_id> (timestamp set to current time)
+
     Args:
         text: Raw frame string.
 
@@ -91,7 +103,7 @@ def _parse_header(text: str) -> tuple[bool, datetime, int]:
         index of the opening '{'.
 
     Raises:
-        ValueError: If the header is malformed or timestamp cannot be parsed.
+        ValueError: If the header is malformed or cannot be parsed.
     """
 
     if not text:
@@ -108,12 +120,20 @@ def _parse_header(text: str) -> tuple[bool, datetime, int]:
         is_old = True
         header = header[3:].strip()
 
+    # Try to parse as standard timestamp
     try:
         ts = datetime.strptime(header, "%d/%m/%Y %H:%M:%S")
-    except ValueError as exc:
-        raise ValueError(f"Invalid timestamp header: {header}") from exc
+        return is_old, ts, brace_index
+    except ValueError:
+        pass
 
-    return is_old, ts, brace_index
+    # Try to parse as cdraminfo format (cdraminfo<device_id>)
+    if header.startswith("cdraminfo"):
+        # Use current time when cdraminfo format is detected
+        ts = datetime.now()
+        return is_old, ts, brace_index
+
+    raise ValueError(f"Invalid header format: {header}")
 
 
 def _parse_payload(payload: str) -> tuple[int | None, dict[str, dict[int, dict[str, ValueType]]]]:
@@ -168,7 +188,8 @@ async def decode_text(text: str) -> DecodedFrame:
         text: Raw text of the frame (with optional leading whitespace).
 
     Returns:
-        DecodedFrame with timestamp, old/new flag, token count, and groups.
+        DecodedFrame with timestamp, old/new flag, token count, keepalive status,
+        and groups.
 
     Raises:
         ValueError: If the frame format is invalid.
@@ -185,7 +206,16 @@ async def decode_text(text: str) -> DecodedFrame:
     payload = raw[brace_index + 1 : end_brace_index]
     count, groups = _parse_payload(payload)
 
-    return DecodedFrame(is_old=is_old, timestamp=ts, count=count, groups=groups)
+    # Keepalive is detected when payload is empty
+    is_keepalive = len(payload) == 0
+
+    return DecodedFrame(
+        is_old=is_old,
+        timestamp=ts,
+        count=count,
+        is_keepalive=is_keepalive,
+        groups=groups,
+    )
 
 
 async def decode_file(path: str) -> DecodedFrame:

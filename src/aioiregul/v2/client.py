@@ -187,6 +187,7 @@ class IRegulClient(IRegulApiInterface):
                 is_old=decoded.is_old,
                 timestamp=decoded.timestamp,
                 count=decoded.count,
+                is_keepalive=decoded.is_keepalive,
                 groups=merged_groups,
             )
             return map_frame(merged_frame)

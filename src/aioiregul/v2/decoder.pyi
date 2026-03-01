@@ -15,6 +15,7 @@ class DecodedFrame:
     is_old: bool
     timestamp: datetime
     count: int | None
+    is_keepalive: bool
     groups: dict[str, dict[int, dict[str, ValueType]]]
     ...
 

@@ -1,7 +1,7 @@
 from datetime import datetime
 
 import pytest
-from src.aioiregul.v2.decoder import decode_file
+from src.aioiregul.v2.decoder import decode_file, decode_text
 
 
 @pytest.mark.asyncio
@@ -11,6 +11,7 @@ async def test_decode_501_new_basic():
     assert not frame.is_old
     assert frame.timestamp == datetime(2025, 1, 15, 23, 38, 51)
     assert frame.count is not None and frame.count > 0
+    assert not frame.is_keepalive
 
     # Basic groups existence
     assert "mem" in frame.groups
@@ -34,6 +35,7 @@ async def test_decode_501_old_flag():
     assert frame.is_old
     assert frame.timestamp == datetime(2025, 1, 15, 23, 34, 47)
     assert frame.count is not None and frame.count > 0
+    assert not frame.is_keepalive
 
 
 @pytest.mark.asyncio
@@ -43,6 +45,7 @@ async def test_decode_502_new_rich_groups():
     assert not frame.is_old
     assert frame.timestamp == datetime(2025, 1, 15, 23, 37, 46)
     assert frame.count is not None and frame.count >= 200
+    assert not frame.is_keepalive
 
     # Rich groups P and J should be present
     assert "P" in frame.groups
@@ -67,3 +70,58 @@ async def test_decode_502_old_flag():
     assert frame.is_old
     assert frame.timestamp == datetime(2025, 1, 15, 23, 37, 3)
     assert frame.count is not None and frame.count > 0
+    assert not frame.is_keepalive
+
+
+@pytest.mark.asyncio
+async def test_decode_cdraminfo_format():
+    """Test decoding frame with cdraminfo format (no explicit timestamp)."""
+    frame = await decode_text("cdraminfo123456{10#mem@0&etat[1]#Z@11&temp[25.5]}")
+
+    # Should have current-like timestamp (can't assert exact time)
+    assert frame.timestamp is not None
+    assert not frame.is_old
+    assert frame.count == 10
+    assert not frame.is_keepalive
+
+    # Verify payload parsing
+    assert "mem" in frame.groups
+    assert "Z" in frame.groups
+    assert frame.groups["mem"][0]["etat"] == 1
+    assert frame.groups["Z"][11]["temp"] == pytest.approx(25.5)
+
+
+@pytest.mark.asyncio
+async def test_decode_cdraminfo_with_old_flag():
+    """Test cdraminfo format with OLD prefix."""
+    frame = await decode_text("OLDcdraminfo123456{5#mem@0&status[True]}")
+
+    assert frame.is_old
+    assert frame.timestamp is not None
+    assert frame.count == 5
+    assert not frame.is_keepalive
+    assert frame.groups["mem"][0]["status"] is True
+
+
+@pytest.mark.asyncio
+async def test_decode_cdraminfo_keepalive():
+    """Test keepalive message with empty payload."""
+    frame = await decode_text("cdraminfo123456{}")
+
+    assert not frame.is_old
+    assert frame.timestamp is not None
+    assert frame.count is None
+    assert frame.is_keepalive
+    assert frame.groups == {}
+
+
+@pytest.mark.asyncio
+async def test_decode_timestamp_keepalive():
+    """Test keepalive message with standard timestamp format."""
+    frame = await decode_text("15/01/2025 23:34:47{}")
+
+    assert not frame.is_old
+    assert frame.timestamp == datetime(2025, 1, 15, 23, 34, 47)
+    assert frame.count is None
+    assert frame.is_keepalive
+    assert frame.groups == {}

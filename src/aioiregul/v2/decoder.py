@@ -42,6 +42,7 @@ class DecodedFrame:
         timestamp: The frame timestamp parsed from the header.
         count: Optional token count extracted from the payload first element.
         is_keepalive: Whether the frame is a keepalive message (empty payload).
+        message_type: Raw string of the first payload token (between '{' and first '#').
         groups: Nested mapping of groups -> index -> field -> parsed value.
     """
 
@@ -49,6 +50,7 @@ class DecodedFrame:
     timestamp: datetime
     count: int | None
     is_keepalive: bool
+    message_type: str | None
     groups: dict[str, dict[int, dict[str, ValueType]]]
 
 
@@ -136,27 +138,35 @@ def _parse_header(text: str) -> tuple[bool, datetime, int]:
     raise ValueError(f"Invalid header format: {header}")
 
 
-def _parse_payload(payload: str) -> tuple[int | None, dict[str, dict[int, dict[str, ValueType]]]]:
-    """Parse payload inside braces to `(count, groups)` mapping.
+def _parse_payload(
+    payload: str,
+) -> tuple[int | None, str | None, dict[str, dict[int, dict[str, ValueType]]]]:
+    """Parse payload inside braces to `(count, message_type, groups)` mapping.
 
     Args:
         payload: String between '{' and '}'.
 
     Returns:
-        The optional `count` and decoded `groups` mapping.
+        The optional `count`, the raw `message_type` string (first token before
+        the first '#'), and the decoded `groups` mapping.
     """
 
     parts = [p for p in payload.split("#") if p]
     if not parts:
-        return None, {}
+        return None, None, {}
 
     count: int | None = None
-    # First part is often a numeric count
+    message_type: str | None = None
+    # First part is often a numeric count; capture it as message_type either way
     if re.fullmatch(r"\d+", parts[0]):
+        message_type = parts[0]
         try:
             count = int(parts.pop(0))
         except ValueError:
             count = None
+    elif not _TOKEN_RE.match(parts[0]):
+        # Non-token first element (e.g. a string type marker)
+        message_type = parts.pop(0)
 
     groups: dict[str, dict[int, dict[str, ValueType]]] = {}
 
@@ -178,7 +188,7 @@ def _parse_payload(payload: str) -> tuple[int | None, dict[str, dict[int, dict[s
             groups[group][index] = {}
         groups[group][index][name] = value
 
-    return count, groups
+    return count, message_type, groups
 
 
 async def decode_text(text: str) -> DecodedFrame:
@@ -204,7 +214,7 @@ async def decode_text(text: str) -> DecodedFrame:
         raise ValueError("Missing closing '}' in frame")
 
     payload = raw[brace_index + 1 : end_brace_index]
-    count, groups = _parse_payload(payload)
+    count, message_type, groups = _parse_payload(payload)
 
     # Keepalive is detected when payload is empty
     is_keepalive = len(payload) == 0
@@ -214,6 +224,7 @@ async def decode_text(text: str) -> DecodedFrame:
         timestamp=ts,
         count=count,
         is_keepalive=is_keepalive,
+        message_type=message_type,
         groups=groups,
     )
 

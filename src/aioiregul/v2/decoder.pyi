@@ -16,6 +16,7 @@ class DecodedFrame:
     timestamp: datetime
     count: int | None
     is_keepalive: bool
+    message_type: str | None
     groups: dict[str, dict[int, dict[str, ValueType]]]
     ...
 

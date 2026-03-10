@@ -100,6 +100,7 @@ class TestDecodeCommand:
                 self.is_old = False
                 self.timestamp = datetime(2025, 12, 28, 10, 30, 45)
                 self.count = 100
+                self.message_type = "100"
                 self.groups = {
                     "zones": {0: {}, 1: {}},
                     "measurements": {0: {}, 1: {}, 2: {}},

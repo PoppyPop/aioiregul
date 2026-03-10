@@ -12,6 +12,7 @@ async def test_decode_501_new_basic():
     assert frame.timestamp == datetime(2025, 1, 15, 23, 38, 51)
     assert frame.count is not None and frame.count > 0
     assert not frame.is_keepalive
+    assert frame.message_type == "10"
 
     # Basic groups existence
     assert "mem" in frame.groups
@@ -36,6 +37,7 @@ async def test_decode_501_old_flag():
     assert frame.timestamp == datetime(2025, 1, 15, 23, 34, 47)
     assert frame.count is not None and frame.count > 0
     assert not frame.is_keepalive
+    assert frame.message_type == "10"
 
 
 @pytest.mark.asyncio
@@ -46,6 +48,7 @@ async def test_decode_502_new_rich_groups():
     assert frame.timestamp == datetime(2025, 1, 15, 23, 37, 46)
     assert frame.count is not None and frame.count >= 200
     assert not frame.is_keepalive
+    assert frame.message_type == "200"
 
     # Rich groups P and J should be present
     assert "P" in frame.groups
@@ -71,6 +74,7 @@ async def test_decode_502_old_flag():
     assert frame.timestamp == datetime(2025, 1, 15, 23, 37, 3)
     assert frame.count is not None and frame.count > 0
     assert not frame.is_keepalive
+    assert frame.message_type is not None
 
 
 @pytest.mark.asyncio
@@ -83,6 +87,7 @@ async def test_decode_cdraminfo_format():
     assert not frame.is_old
     assert frame.count == 10
     assert not frame.is_keepalive
+    assert frame.message_type == "10"
 
     # Verify payload parsing
     assert "mem" in frame.groups
@@ -100,6 +105,7 @@ async def test_decode_cdraminfo_with_old_flag():
     assert frame.timestamp is not None
     assert frame.count == 5
     assert not frame.is_keepalive
+    assert frame.message_type == "5"
     assert frame.groups["mem"][0]["status"] is True
 
 
@@ -112,6 +118,7 @@ async def test_decode_cdraminfo_keepalive():
     assert frame.timestamp is not None
     assert frame.count is None
     assert frame.is_keepalive
+    assert frame.message_type is None
     assert frame.groups == {}
 
 
@@ -124,4 +131,5 @@ async def test_decode_timestamp_keepalive():
     assert frame.timestamp == datetime(2025, 1, 15, 23, 34, 47)
     assert frame.count is None
     assert frame.is_keepalive
+    assert frame.message_type is None
     assert frame.groups == {}

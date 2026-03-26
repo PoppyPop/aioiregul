@@ -19,7 +19,7 @@ import os
 
 from dotenv import load_dotenv
 
-from ..iregulapi import IRegulApiInterface
+from ..iregulapi import IRegulApiInterface, split_host_port
 from .decoder import DecodedFrame, ValueType, decode_text
 from .mappers import MappedFrame, map_frame
 
@@ -74,8 +74,9 @@ class IRegulClient(IRegulApiInterface):
         Raises:
             ValueError: If required environment variables are missing
         """
-        self.host = host or os.getenv("IREGUL_HOST", "i-regul.fr")
-        self.port = port or int(os.getenv("IREGUL_PORT", "443"))
+        raw_host = host or os.getenv("IREGUL_HOST", "i-regul.fr")
+        raw_port = port or int(os.getenv("IREGUL_PORT", "443"))
+        self.host, self.port = split_host_port(raw_host, raw_port)  # type: ignore[assignment]
         self.device_id = device_id or _get_env("IREGUL_DEVICE_ID")
         self.password = password or _get_env("IREGUL_PASSWORD_V2")
         self.timeout = timeout

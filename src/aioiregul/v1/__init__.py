@@ -24,7 +24,7 @@ from bs4 import BeautifulSoup, Tag
 from dotenv import load_dotenv
 from slugify import slugify
 
-from ..iregulapi import IRegulApiInterface
+from ..iregulapi import IRegulApiInterface, split_host_port
 from ..models import AnalogSensor, Input, MappedFrame, Measurement, Output
 
 LOGGER = logging.getLogger(__name__)
@@ -86,8 +86,9 @@ class Device(IRegulApiInterface):
             options: Connection configuration.
             http_session: Shared aiohttp ClientSession for requests.
         """
-        self.host = host or os.getenv("IREGUL_HOST", "vpn.i-regul.com")
-        self.port = port or int(os.getenv("IREGUL_PORT", "443"))
+        raw_host = host or os.getenv("IREGUL_HOST", "vpn.i-regul.com")
+        raw_port = port or int(os.getenv("IREGUL_PORT", "443"))
+        self.host, self.port = split_host_port(raw_host, raw_port)  # type: ignore[assignment]
         self.device_id = device_id or _get_env("IREGUL_DEVICE_ID")
         self.password = password or _get_env("IREGUL_PASSWORD_V1")
 
